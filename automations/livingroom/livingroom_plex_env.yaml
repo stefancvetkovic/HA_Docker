@@ -1,0 +1,64 @@
+- alias: Livingroom Plex Environmetal
+  description: 'Define lights and surroundings based on plex states'
+  trigger:
+    - platform: state
+      entity_id: media_player.livingroom_plex
+  action:
+    - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.to_state.state not in ['Unavailable','Unknown'] and trigger.to_state.state in ['playing'] and trigger.from_state.state in ['idle']}}"
+        sequence:
+            - service: script.turn_off
+              entity_id: script.play_notification
+
+            - service: media_player.volume_set
+              entity_id: media_player.living_room_tv
+              data:
+                volume_level: 0.5
+
+            - service: script.turn_on
+              entity_id: script.play_notification
+              data:
+                variables:
+                  speaker: "media_player.living_room_tv"
+                  volume: "0.4"
+                  custom_message: "Movie night on plex! Prepare your popcorn and enjoy!"
+                  delay: "00:00:03"
+                  chromecast_device: "media_player.system_chromecast"
+            - service: switch.turn_off
+              entity_id:
+                - switch.livingroom_main_light
+
+            - service: cover.set_cover_position
+              entity_id: cover.ds_l
+              data:
+                position: 40 
+                
+            - service: light.turn_off
+              entity_id: 
+                - light.kitchen_topgun_ac
+                - light.kitchen_wled
+                - light.livingroom_wled_below_tv
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.to_state.state not in ['Unavailable','Unknown'] and trigger.to_state.state in ['paused'] }}"
+        sequence:
+          - service: light.turn_on
+            entity_id: light.livingroom_wled_below_tv
+            data:
+              brightness_pct: 40
+              effect: 'breathe' 
+
+
+  # - service: media_player.volume_set
+  #   entity_id: media_player.lounge
+  #   data:
+  #     volume_level: 0.2
+  #     entity_id: media_player.lounge
+  # - service: homeassistant.turn_off
+  #   entity_id: automation.watching_plex_on_the_tv_at_night_time
+  # condition: 
+  #   condition: state
+  #   entity_id: sun.sun
+  #   state: 'below_horizon'

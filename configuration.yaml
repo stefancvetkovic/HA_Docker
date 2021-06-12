@@ -1,0 +1,134 @@
+default_config:
+alarm_control_panel:
+  - platform: manual
+system_health:
+my:
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+ios: !include ios_settings.yaml
+mobile_app:
+frontend:
+  themes: !include_dir_merge_named themes
+switch: !include switches.yaml
+# python_script:
+wake_on_lan:
+
+influxdb:
+  api_version: 2
+  host: 192.168.1.79
+  port: 8086
+  token: !secret influxdb_token
+  organization: homeassistant
+  bucket: homeassistant
+
+
+# Text to speech
+tts:
+  - platform: google_translate
+    base_url: http://192.168.1.79:8123
+    cache: true
+
+# tts:
+#   - platform: google_translate
+#     cache: true
+#     cache_dir: /tmp/tts
+#     time_memory: 300
+#     base_url: http://192.168.1.79:8123
+#     service_name: google_say
+# hacs:
+#   token: !secret hacs_token
+#   appdaemon: true
+group: !include groups.yaml
+
+scene: !include_dir_merge_list scenes 
+
+spotcast:
+  sp_dc: !secret spotcast_sp_dc
+  sp_key: !secret spotcast_sp_key
+  accounts:
+    livingroom:
+      sp_dc: !secret spotcast_livingroom_sp_dc
+      sp_key: !secret spotcast_livingroom_sp_key
+    bedroom:
+      sp_dc: !secret spotcast_bedroom_sp_dc
+      sp_key: !secret spotcast_bedroom_sp_key
+    office:
+      sp_dc: !secret spotcast_office_sp_dc
+      sp_key: !secret spotcast_office_sp_key
+
+spotify:
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_secret_id
+binary_sensor: !include_dir_merge_list binary_sensors/
+sensor: !include_dir_merge_list sensors/
+input_boolean: !include_dir_named input_boolean/
+input_number: !include_dir_named input_number/
+input_select: !include_dir_named input_select/
+input_text: !include_dir_named  input_text/
+input_datetime: !include_dir_named input_datetime/
+light: !include_dir_merge_list lights 
+
+timer: !include_dir_named timers/
+script: !include_dir_named scripts/
+automation: !include automations.yaml
+automation old: !include_dir_merge_list automations
+
+#Google calendar
+google:
+  client_id: !secret google_calendar_client_id
+  client_secret: !secret google_calendar_client_secret
+  track_new_calendar: true
+
+
+webostv:
+  host: !secret office_tv_ip
+  name: Office TV
+  turn_on_action:
+    service: wake_on_lan.send_magic_packet
+    data:
+      mac: !secret office_tv_mac_address
+  customize:
+    sources:
+      - youtube
+      - netflix
+      - eon
+      # - Spotify
+      - plex
+      # - Chromecast
+
+media_player:
+  - platform: braviatv_psk
+    host: 192.168.1.159
+    psk: sony_bedroom
+    mac: 94:db:56:8a:40:39
+    amp: True
+    android: True
+    time_format: 24H
+    user_labels: True
+    name: bedroom_bravia
+
+  # - platform: braviatv_psk
+  #   host: 192.168.1.49
+  #   psk: sony
+  #   mac: 94:db:56:22:88:d0
+  #   amp: True
+  #   android: True
+  #   time_format: 24H
+  #   user_labels: True
+  #   name: livingroom_bravia
+
+
+
+
+# !include_dir_merge_list media_player
+notify:
+
+# influxdb:
+#   host: a0d7b954-influxdb
+#   port: 8086
+#   database: homeassistant
+#   username: homeassistant
+#   password: !secret influx_db_ha_password
+#   max_retries: 3
+#   default_measurement: state

@@ -1,0 +1,28 @@
+alias: Low Battery Iphone
+icon: "mdi:party-popper"
+description: 'Notify TTS residents if iphone is at home'
+sequence:
+  - repeat:
+      sequence:
+        - service: script.turn_off
+          entity_id: script.play_notification
+
+        - service: script.turn_on
+          entity_id: script.play_notification
+          data:
+            variables:
+              speaker: "media_player.bedroom_ceiling_speaker"
+              source: "Primary Chromecast"
+              custom_message: "Attention, Stefan's iphone need to be charged. Please put mobile phone to a charger."
+              volume: "0.2"
+              platform: "tts.google_translate_say"
+              delay: "00:00:03"
+              chromecast_device: "media_player.system_chromecast"
+
+          #wait 5 minutes 
+        - delay: 00:05:00
+      until:
+        # Did it work?
+        - condition: state
+          entity_id: sensor.stefans_iphone_battery_state
+          state: 'Charging'

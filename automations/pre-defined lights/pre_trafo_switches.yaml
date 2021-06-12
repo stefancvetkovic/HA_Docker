@@ -1,0 +1,28 @@
+- alias: Turn on pre-trafo switches after homeassistant startup
+  initial_state: 'on'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - delay: '00:05:00'
+    - service: switch.turn_on
+      entity_id: 
+        - switch.office_pre_trafo_wardrobe
+        - switch.kitchen_pre_trafo_working_desk_light
+        - switch.bedroom_wardrobe_pre_trafo
+        - switch.living_room_below_tv_led_pre_trafo
+        - switch.kitchen_stove
+        - switch.hallway_led_pre_trafo
+
+- alias: Kitchen stove switch always on
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.kitchen_stove
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.kitchen_stove

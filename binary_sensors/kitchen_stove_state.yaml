@@ -1,0 +1,7 @@
+- platform: template
+  sensors:
+    kitchen_stove_state:
+      friendly_name: "Kitchen Stove Status"
+      #device_class: Power
+      value_template: >-
+        {{ states('sensor.kitchen_stove_energy_power') | float > 10 }}

@@ -1,0 +1,21 @@
+- alias: "iOS action going out"
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: ios.action_fired
+      event_data:
+        actionName: 'Going Out'
+  action:
+    service: script.turn_on
+    entity_id: script.turn_off_all_lights_and_devices
+
+- alias: "iOS Cancel warning charging phone"
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: device_tracker.stefans_iphone_2
+      from:  'home'
+      to:  'not home'
+  action:
+    service: script.turn_of
+    entity_id: script.low_battery_iphone

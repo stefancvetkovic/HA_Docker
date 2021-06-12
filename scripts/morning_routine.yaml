@@ -1,0 +1,31 @@
+alias: Morning routine
+description: Set up some lights and devices for morning routines
+# condition: state
+# entity_id: input_boolean.guest_mode
+# state: "off"
+sequence:
+  - service: cover.set_cover_position
+    data:
+      position: 35
+      entity_id: 
+        - cover.ss_l
+        - cover.ss_d
+  - service: braviatv_psk.bravia_open_app
+    data:
+      entity_id: media_player.bedroom_bravia
+      uri: >-
+        com.sony.dtv.com.ug.eon.android.tv.com.ug.eon.android.tv.TvActivity
+  
+  - service: script.turn_on
+    entity_id: script.set_speaker
+    data:
+      variables:
+        speaker: "media_player.bathroom_ceiling_speaker"
+        volume: "0.3"
+        source: "Bedroom TV"
+        
+    #set tv eon program to N1
+  - service: braviatv_psk.bravia_command
+    data:
+      entity_id: media_player.bedroom_bravia
+      command_id: Num0

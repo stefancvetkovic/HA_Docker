@@ -1,0 +1,42 @@
+alias: Turn off all lights and devices
+sequence:
+  - service: script.turn_off
+    entity_id: 
+      - script.play_notification
+      - script.play_notification_everywhere
+  - service: script.turn_on
+    entity_id: script.play_notification_everywhere
+    data:
+      variables:
+        source: "Primary Chromecast"
+        volume: "0.3"
+        custom_message: "Attention: Lights and media will be turned off in a few seconds."
+
+  - wait_template: "{{ is_state('script.play_notification_everywhere','off') }}"
+    timeout: '00:03:00'
+    continue_on_timeout: 'true'
+
+  #Kill all the lights
+  - service: script.turn_on
+    entity_id: script.lights_off
+
+  #Turn off all media players
+  - service: media_player.turn_off
+    data:
+      entity_id:
+        - group.livingroom_media_players
+        - media_player.bedroom_tv
+        - group.office_media_players
+        - group.all_zoned_media_players
+
+# turn off the lights in the wardrobes
+  - service: light.turn_off
+    data:
+      entity_id:
+        - group.bedroom_wardrobe_lights
+        - group.office_wardrobe_lights
+        - group.office_closet_lights
+  # - delay: 00:00:03
+  # - service: media_player.turn_off
+  #   data:
+  #     entity_id: media_player.bedroom_ceiling_speaker
