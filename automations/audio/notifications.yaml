@@ -13,17 +13,17 @@
   - service: script.turn_off
     entity_id: script.play_notification
 
-  # - service: script.turn_on
-  #   entity_id: script.play_notification
-  #   data:
-  #     variables:
-  #       speaker: "media_player.bathroom_ceiling_speaker"
-  #       source: "Primary Chromecast"
-  #       volume: "0.4"
-  #       custom_message: "Welcome master."
-  #       platform: "tts.google_translate_say"
-  #       delay: "00:00:03"
-  #       chromecast_device: "media_player.system_chromecast"
+  - service: script.turn_on
+    entity_id: script.play_notification
+    data:
+      variables:
+        speaker: "media_player.bathroom_ceiling_speaker"
+        source: "Primary Chromecast"
+        volume: "0.4"
+        custom_message: "Welcome master."
+        platform: "tts.google_translate_say"
+        delay: "00:00:03"
+        chromecast_device: "media_player.system_chromecast"
 
 - alias: 'Bedroom Wardrobe Notification Based On Door Sensor'
   id: bedroom_wardrobe_notification_based_on_door_sensor
