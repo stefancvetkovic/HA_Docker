@@ -1,0 +1,32 @@
+- alias: Open Bedroom Right Cover
+  description: 'Open Bedroom Right Cover at midnight when outside temperature above 12 degrees'
+  trigger:
+    - platform: time
+      at: 00:00:00
+  condition:
+    - condition: template
+      value_template: > 
+        {{ states.weather.home.attributes.temperature > 12 }}
+  action:
+    - service: cover.set_cover_position
+      data:
+        position: 100
+        entity_id: 
+          - cover.ss_d
+
+
+- alias: Close Bedroom Right Cover At Morning
+  description: 'Close Bedroom Right Cover at morning when outside temperature above 12 degrees'
+  trigger:
+    - platform: time
+      at: 05:30:00
+  condition:
+    - condition: template
+      value_template: > 
+        {{ states.weather.home.attributes.temperature > 12 }}
+  action:
+    - service: cover.set_cover_position
+      data:
+        position: 30
+        entity_id: 
+          - cover.ss_d

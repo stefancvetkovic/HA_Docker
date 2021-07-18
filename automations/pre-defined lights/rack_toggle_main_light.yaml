@@ -9,4 +9,4 @@
         {% else %}
           switch.turn_off
         {% endif %}
-      entity_id: switch.rack_main_light
+      entity_id: switch.rack_light

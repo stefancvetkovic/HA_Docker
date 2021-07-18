@@ -237,3 +237,22 @@
     input:
       topic: tautulli
       light: light.livingroom_wled_below_tv
+- id: '1624958902748'
+  alias: Turn Off All Lights VM
+  description: When vacation mode is turned on, turn off all lights at 01:00 am
+  trigger:
+  - platform: time
+    at: 01:00:00
+  condition:
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - service: script.turn_on
+    target:
+      entity_id: script.turn_off_all_lights_and_devices
+  - service: persistent_notification.create
+    data:
+      message: 01:00 - All Lights turned off
+      title: Automation kicks in
+  mode: single

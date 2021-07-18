@@ -1,0 +1,14 @@
+name: Uzmite veš iz veš mašine
+done_message: Veš je uzet iz veš mašine
+entity_id: input_boolean.pickup_laundry
+state: "on"
+repeat: 
+- 1
+- 5
+- 10
+can_acknowledge: true
+skip_first: false
+notifiers:
+  - mobile_app_stefans_iphone
+  - mobile_app_anjas_iphone
+  - persistent_notification

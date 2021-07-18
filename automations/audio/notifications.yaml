@@ -2,7 +2,7 @@
   alias: Audio notification in bathroom when main light in bathroom is turned on
   trigger:
     - platform: state
-      entity_id: switch.bathroom_light
+      entity_id: switch.bathroom_main_light
       from:  'off'
       to:  'on'
   condition:
@@ -20,7 +20,12 @@
         speaker: "media_player.bathroom_ceiling_speaker"
         source: "Primary Chromecast"
         volume: "0.4"
-        custom_message: "Welcome master."
+        custom_message: >
+          {% if is_state("input_boolean.pickup_laundry", "on") -%}
+            "Hello. Please check washing machine, there might be laundry to pick up."
+          {%- else -%}
+            "Welcome master."
+          {%- endif %}
         platform: "tts.google_translate_say"
         delay: "00:00:03"
         chromecast_device: "media_player.system_chromecast"

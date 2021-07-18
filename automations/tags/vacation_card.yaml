@@ -1,0 +1,25 @@
+- alias: Vacation card scanned
+  description: >
+    Sets vacation mode to on!
+  trigger:
+    - platform: tag
+      tag_id: 19-B0-1D-B4
+  action:
+    - service: input_boolean.toggle
+      entity_id: input_boolean.vacation_mode
+    - service: script.turn_on
+      entity_id: script.play_notification
+      data:
+        variables:
+          speaker: "media_player.hallway_ceiling_speaker"
+          source: "Primary Chromecast"
+          volume: "0.4"
+          custom_message: >
+            {% if is_state('input_boolean.vacation_mode', 'on') %}
+              Vacation mode activated. Have a nice trip!
+            {% else %}
+              Vacation mode deactivated. Welcome back!
+            {% endif %}
+          platform: "tts.google_translate_say"
+          delay: "00:00:03"
+          chromecast_device: "media_player.system_chromecast"

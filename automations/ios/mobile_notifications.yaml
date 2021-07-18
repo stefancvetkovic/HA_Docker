@@ -38,11 +38,14 @@
   action:
     service: notify.mobile_app_stefans_iphone
     data:
-      title: 'Action in Bathroom'
-      message: "Bojler je ugasen"
+      title: 'Kupatilo'
+      message: "Bojler je ugašen"
       data:
-        push:
-          category: "boiler" # Needs to match the top level identifier you used in the ios configuration
+        actions:
+        - action: "BOILERON"
+          title: "Uključi bojler"
+          authenticationRequired: false
+
 
 - alias: ios action bathroom boiler on
   initial_state: 'on'
@@ -90,3 +93,14 @@
     entity_id: 
       - script.turn_off_music_all
       - script.residents_left
+
+- alias: "Laundry pick up"
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: ios.action_fired
+      event_data:
+        actionName: 'Laundry is picked up'
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.pickup_laundry

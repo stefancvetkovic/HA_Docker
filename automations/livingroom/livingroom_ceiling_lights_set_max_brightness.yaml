@@ -1,0 +1,21 @@
+- alias: 'Livingroom Ceiling LED 1 Max Brightness'
+  trigger:
+    - platform: state
+      entity_id: light.livingroom_ceiling_led_1
+      to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.livingroom_ceiling_led_1
+      data:
+        brightness_pct: 50
+
+- alias: 'Livingroom Ceiling LED 2 Max Brightness'
+  trigger:
+    - platform: state
+      entity_id: light.livingroom_ceiling_led_2
+      to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.livingroom_ceiling_led_2
+      data:
+        brightness_pct: 50

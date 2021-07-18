@@ -4,18 +4,6 @@
       - light.livingroom_go_temp_abovetv
       - light.livingroom_go_color_abovetv
 
-  livingroom_led_teracewall_all_channels:
-    name: livingroom led terace wall all channels
-    entities:
-      - light.livingroom_go_color_teracewall
-      - light.livingroom_go_temp_teracewall
-
-  livingroom_led_graywall_all_channels:
-    name: livingroom led graywall all channels
-    entities:
-      - light.livingroom_go_temp_greywall
-      - light.livingroom_go_color_greywall
-
   office_closet_lights:
     name: office closet lights
     entities:
@@ -57,7 +45,7 @@
       - group.bedroom_bed_ledstrip_all_channels
       - group.bedroom_wall_ledstrip_all_channels
       - group.livingroom_led_graywall_all_channels
-      - group.livingroom_led_teracewall_all_channels
+      
       - group.livingroom_led_above_tv_all_channels
       - light.livingroom_ac_bulbs_mirrowall
       - light.kitchen_topgun_ac
@@ -101,8 +89,8 @@
   all_switch_lights_livingroom:
     name: All switch lights in the livingroom
     entities:
-      - switch.living_room_above_tv_light_mini_led
-      - switch.living_room_main_light
+      - switch.livingroom_above_tv_light_mini_led
+      - switch.livingroom_main_light
   
   all_switch_lights_terace:
     name: All lights terace
@@ -114,36 +102,34 @@
     name: All lights in the livingroom
     entities:
       - group.livingroom_led_above_tv_all_channels
-      - group.livingroom_led_graywall_all_channels
-      - group.livingroom_led_teracewall_all_channels
+      - light.livingroom_ceiling_led_1
+      - light.livingroom_ceiling_led_2
       - light.livingroom_wled_below_tv
       - group.all_kitchen_lights
 
   all_switchlights_entites:
     name: All switch lights
     entities:
-     - switch.bathroom_light
+     - switch.bathroom_main_light
      - switch.bedroom_main_light
-     - switch.bedroom_coridor_main_light
-     - switch.bedroom_coridor_wall_light
+     - switch.coridor_bedroom_wall_light
+     - switch.coridor_bedroom_main_light
      - switch.bedroom_led_light_trafo
      - switch.bedroom_left_lamp
      - switch.bedroom_right_lamp
-     - switch.living_room_above_tv_led
-     - switch.living_room_above_tv_light_mini_led
+     - switch.livingroom_led_tv_above
+     - switch.livingroom_above_tv_light_mini_led
      - switch.livingroom_coridor_main_light
-     - switch.living_room_main_light
-     - switch.rack_main_light
+     - switch.livingroom_main_light
+     - switch.rack_light
      - switch.office_main_light
      - switch.terace_main_light
      - switch.terace_wall_light
-     - switch.toilet_main_light
+     - switch.toilet_light
 
   all_ledstrips_livingroom:
     name: All ledstrips livingroom
     entities:
-      - light.livingroom_go_color_greywall
-      - light.livingroom_go_color_teracewall
       - light.livingroom_go_color_abovetv
       - light.livingroom_wled_below_tv
 

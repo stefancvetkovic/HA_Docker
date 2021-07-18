@@ -13,10 +13,12 @@ from . import (
     FEAT_ERROR_MSG,
     FEAT_MEDICRINSE,
     FEAT_PRE_STATE,
+    FEAT_PROCESS_STATE,
     FEAT_PREWASH,
     FEAT_REMOTESTART,
     FEAT_RUN_STATE,
     FEAT_SPINSPEED,
+    FEAT_STANDBY,
     FEAT_STEAM,
     FEAT_STEAMSOFTENER,
     FEAT_TEMPCONTROL,
@@ -31,6 +33,7 @@ from .device import (
     DeviceStatus,
     DeviceType,
     STATE_OPTIONITEM_NONE,
+    STATE_OPTIONITEM_OFF,
     STATE_OPTIONITEM_ON,
 )
 
@@ -52,9 +55,10 @@ STATE_WM_ERROR_NO_ERROR = [
 WM_ROOT_DATA = "washerDryer"
 
 POWER_STATUS_KEY = ["State", "state"]
+REMOTE_START_KEY = ["RemoteStart", "remoteStart"]
 
 CMD_POWER_OFF = [["Control", "WMControl"], ["Power", "WMOff"], ["Off", None]]
-CMD_WAKE_UP = [["Control", "WMControl"], ["Operation", "WMWakeup"], ["WakeUp", None]]
+CMD_WAKE_UP = [["Control", "WMWakeup"], ["Operation", "WMWakeup"], ["WakeUp", None]]
 CMD_REMOTE_START = [["Control", "WMStart"], ["OperationStart", "WMStart"], ["Start", "WMStart"]]
 
 _LOGGER = logging.getLogger(__name__)
@@ -73,11 +77,52 @@ class WMDevice(Device):
             if status_value:
                 self._status.update_status(status_key, status_value)
 
+    def _get_course_info(self, course_key, course_id):
+        """Get definition for a specific course ID."""
+        if course_key is None:
+            return None
+        if self.model_info.is_info_v2:
+            return self.model_info.data_root(course_key).get(course_id)
+        return self.model_info.value(course_key).reference.get(course_id)
+
+    def _update_course_info(self, data, course_id=None):
+        """Save information in the data payload for a specific course
+        or default course if not already available.
+        """
+        ret_data = data.copy()
+        if self.model_info.is_info_v2:
+            n_course_key = self.model_info.config_value("courseType")
+            s_course_key = self.model_info.config_value("smartCourseType")
+            def_course_id = self.model_info.config_value("defaultCourse")
+        else:
+            n_course_key = "APCourse" if self.model_info.value_exist("APCourse") else "Course"
+            s_course_key = "SmartCourse"
+            def_course_id = str(self.model_info.config_value("defaultCourseId"))
+        if course_id is None:
+            # check if course is defined in data payload
+            for course_key in [n_course_key, s_course_key]:
+                course_id = str(data.get(course_key))
+                if self._get_course_info(course_key, course_id):
+                    return ret_data
+            course_id = def_course_id
+
+        # save information for specific or default course
+        course_info = self._get_course_info(n_course_key, course_id)
+        if course_info:
+            ret_data[n_course_key] = course_id
+            for func_key in course_info["function"]:
+                key = func_key.get("value")
+                data = func_key.get("default")
+                if key and data:
+                    ret_data[key] = data
+
+        return ret_data
+
     def _prepare_command_v1(self, cmd, key, value):
         """Prepare command for specific ThinQ1 device."""
         if "data" in cmd:
             str_data = cmd["data"]
-            status_data = self._remote_start_status
+            status_data = self._update_course_info(self._remote_start_status)
             for dt_key, dt_value in status_data.items():
                 # for start command we set initial bit to 1, assuming that
                 # is the 1st bit of Option2. This probably should be reviewed
@@ -101,7 +146,7 @@ class WMDevice(Device):
             return cmd
 
         if key and key == "WMStart":
-            status_data = self._remote_start_status
+            status_data = self._update_course_info(self._remote_start_status)
             n_course_key = self.model_info.config_value("courseType")
             s_course_key = self.model_info.config_value("smartCourseType")
             cmd_data_set = {}
@@ -171,8 +216,10 @@ class WMDevice(Device):
         return self._status
 
     def _set_remote_start_opt(self, res):
+        """Save the status to use for remote start."""
 
-        remote_enabled = self._status.remotestart_state == STATE_OPTIONITEM_ON
+        status_key = self._get_state_key(REMOTE_START_KEY)
+        remote_enabled = self._status.lookup_bit(status_key) == STATE_OPTIONITEM_ON
         if not self._remote_start_status:
             if remote_enabled:
                 self._remote_start_status = res
@@ -186,8 +233,8 @@ class WMDevice(Device):
         if not res:
             return None
 
-        self._set_remote_start_opt(res)
         self._status = WMStatus(self, res)
+        self._set_remote_start_opt(res)
         return self._status
 
 
@@ -201,11 +248,12 @@ class WMStatus(DeviceStatus):
         super().__init__(device, data)
         self._run_state = None
         self._pre_state = None
+        self._process_state = None
         self._error = None
 
     def _get_run_state(self):
         if not self._run_state:
-            state = self.lookup_enum(["State", "state"])
+            state = self.lookup_enum(POWER_STATUS_KEY)
             if not state:
                 self._run_state = STATE_WM_POWER_OFF
             else:
@@ -214,12 +262,25 @@ class WMStatus(DeviceStatus):
 
     def _get_pre_state(self):
         if not self._pre_state:
+            if not self.key_exist(["PreState", "preState"]):
+                return None
             state = self.lookup_enum(["PreState", "preState"])
             if not state:
                 self._pre_state = STATE_WM_POWER_OFF
             else:
                 self._pre_state = state
         return self._pre_state
+
+    def _get_process_state(self):
+        if not self._process_state:
+            if not self.key_exist(["ProcessState", "processState"]):
+                return None
+            state = self.lookup_enum(["ProcessState", "processState"])
+            if not state:
+                self._process_state = STATE_OPTIONITEM_NONE
+            else:
+                self._process_state = state
+        return self._process_state
 
     def _get_error(self):
         if not self._error:
@@ -253,6 +314,8 @@ class WMStatus(DeviceStatus):
     def is_run_completed(self):
         run_state = self._get_run_state()
         pre_state = self._get_pre_state()
+        if pre_state is None:
+            pre_state = self._get_process_state() or STATE_OPTIONITEM_NONE
         if run_state in STATE_WM_END or (
             run_state == STATE_WM_POWER_OFF and pre_state in STATE_WM_END
         ):
@@ -334,10 +397,21 @@ class WMStatus(DeviceStatus):
     @property
     def pre_state(self):
         pre_state = self._get_pre_state()
+        if pre_state is None:
+            return None
         if pre_state == STATE_WM_POWER_OFF:
             pre_state = STATE_OPTIONITEM_NONE
         return self._update_feature(
             FEAT_PRE_STATE, pre_state
+        )
+
+    @property
+    def process_state(self):
+        process = self._get_process_state()
+        if process is None:
+            return None
+        return self._update_feature(
+            FEAT_PROCESS_STATE, process
         )
 
     @property
@@ -425,6 +499,26 @@ class WMStatus(DeviceStatus):
         )
 
     @property
+    def standby_state(self):
+        if not self.key_exist(["Standby", "standby"]):
+            return None
+        status = self.lookup_enum(["Standby", "standby"])
+        if not status:
+            status = STATE_OPTIONITEM_OFF
+        return self._update_feature(
+            FEAT_STANDBY, status
+        )
+
+    @property
+    def remotestart_state(self):
+        status = self.lookup_bit(
+            REMOTE_START_KEY[1] if self.is_info_v2 else REMOTE_START_KEY[0]
+        )
+        return self._update_feature(
+            FEAT_REMOTESTART, status, False
+        )
+
+    @property
     def doorlock_state(self):
         status = self.lookup_bit(
             "doorLock" if self.is_info_v2 else "DoorLock"
@@ -449,15 +543,6 @@ class WMStatus(DeviceStatus):
         )
         return self._update_feature(
             FEAT_CHILDLOCK, status, False
-        )
-
-    @property
-    def remotestart_state(self):
-        status = self.lookup_bit(
-            "remoteStart" if self.is_info_v2 else "RemoteStart"
-        )
-        return self._update_feature(
-            FEAT_REMOTESTART, status, False
         )
 
     @property
@@ -518,6 +603,7 @@ class WMStatus(DeviceStatus):
         result = [
             self.run_state,
             self.pre_state,
+            self.process_state,
             self.error_msg,
             self.spin_option_state,
             self.water_temp_option_state,
@@ -525,10 +611,11 @@ class WMStatus(DeviceStatus):
             self.temp_control_option_state,
             # self.time_dry_option_state,
             self.tubclean_count,
+            self.standby_state,
+            self.remotestart_state,
             self.doorlock_state,
             self.doorclose_state,
             self.childlock_state,
-            self.remotestart_state,
             self.creasecare_state,
             self.steam_state,
             self.steam_softener_state,

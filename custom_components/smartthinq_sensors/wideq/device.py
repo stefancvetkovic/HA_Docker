@@ -12,6 +12,9 @@ from typing import Any, Dict, Optional
 
 from .core_exceptions import MonitorError
 
+BIT_OFF = "OFF"
+BIT_ON = "ON"
+
 LABEL_BIT_OFF = "@CP_OFF_EN_W"
 LABEL_BIT_ON = "@CP_ON_EN_W"
 
@@ -30,12 +33,14 @@ UNIT_TEMP_FAHRENHEIT = "fahrenheit"
 LOCAL_LANG_PACK = {
     LABEL_BIT_OFF: STATE_OPTIONITEM_OFF,
     LABEL_BIT_ON: STATE_OPTIONITEM_ON,
-    "OFF": STATE_OPTIONITEM_OFF,
-    "ON": STATE_OPTIONITEM_ON,
+    BIT_OFF: STATE_OPTIONITEM_OFF,
+    BIT_ON: STATE_OPTIONITEM_ON,
     "CLOSE": STATE_OPTIONITEM_OFF,
     "OPEN": STATE_OPTIONITEM_ON,
     "UNLOCK": STATE_OPTIONITEM_OFF,
     "LOCK": STATE_OPTIONITEM_ON,
+    "INITIAL_BIT_OFF": STATE_OPTIONITEM_OFF,
+    "INITIAL_BIT_ON": STATE_OPTIONITEM_ON,
     "IGNORE": STATE_OPTIONITEM_NONE,
     "NOT_USE": "Not Used",
 }
@@ -333,8 +338,7 @@ class ModelInfo(object):
     def value_type(self, name):
         if name in self._data["Value"]:
             return self._data["Value"][name]["type"]
-        else:
-            return None
+        return None
 
     def value_exist(self, name):
         return name in self._data["Value"]
@@ -363,11 +367,16 @@ class ModelInfo(object):
             ref = d["option"][0]
             return ReferenceValue(self._data[ref])
         elif d["type"] == "Boolean":
-            return EnumValue({"0": "False", "1": "True"})
+            return EnumValue({"0": BIT_OFF, "1": BIT_ON})
         elif d["type"] == "String":
             pass
         else:
-            assert False, "unsupported value type {}".format(d["type"])
+            _LOGGER.error(
+                "ModelInfo: unsupported value type (%s) - value: %s",
+                d["type"],
+                d,
+            )
+            return None
 
     def default(self, name):
         """Get the default value, if it exists, for a given value.
@@ -537,6 +546,23 @@ class ModelInfo(object):
         else:
             return self.decode_monitor_json(data)
 
+    @staticmethod
+    def _get_current_temp_key(key: str, data):
+        """Special case for oven current temperature, that in protocol
+        is represented with a suffix "F" or "C" depending from the unit
+        """
+        if key.count("CurrentTemperature") == 0:
+            return key
+        new_key = key[:-1]
+        if not new_key.endswith("CurrentTemperature"):
+            return key
+        unit_key = f"{new_key}Unit"
+        if unit_key not in data:
+            return key
+        if data[unit_key][0] == key[-1]:
+            return f"{new_key}Value"
+        return key
+
     def decode_snapshot(self, data, key):
         """Decode  status data."""
         decoded = {}
@@ -545,6 +571,7 @@ class ModelInfo(object):
         info = data.get(key)
         if not info:
             return decoded
+
         protocol = self._data["Monitoring"]["protocol"]
         if isinstance(protocol, list):
             for elem in protocol:
@@ -552,18 +579,21 @@ class ModelInfo(object):
                     key = elem["value"]
                     value = data
                     for ident in elem["superSet"].split("."):
-                        if value is not None:
-                            value = value.get(ident)
+                        if value is None:
+                            break
+                        pr_key = self._get_current_temp_key(ident, value)
+                        value = value.get(pr_key)
                     if value is not None:
                         if isinstance(value, Number):
                             value = int(value)
                         decoded[key] = str(value)
-        else:
-            for data_key, value_key in protocol.items():
-                value = info.get(data_key, "")
-                if value is not None and isinstance(value, Number):
-                    value = int(value)
-                decoded[value_key] = str(value)
+            return decoded
+
+        for data_key, value_key in protocol.items():
+            value = info.get(data_key, "")
+            if value is not None and isinstance(value, Number):
+                value = int(value)
+            decoded[value_key] = str(value)
         return decoded
 
 
@@ -586,6 +616,8 @@ class ModelInfoV2(object):
         return self._data.get("Config", {}).get(key, "")
 
     def value_type(self, name):
+        if name in self._data["MonitoringValue"]:
+            return self._data["MonitoringValue"][name].get("dataType")
         return None
 
     def value_exist(self, name):
@@ -593,12 +625,11 @@ class ModelInfoV2(object):
 
     def data_root(self, name):
         if name in self._data["MonitoringValue"]:
-            if self._data["MonitoringValue"][name].get("dataType"):
+            if "dataType" in self._data["MonitoringValue"][name]:
                 return self._data["MonitoringValue"][name]
-            else:
-                ref = self._data["MonitoringValue"][name].get("ref")
-                if ref:
-                    return self._data.get(ref)
+            ref = self._data["MonitoringValue"][name].get("ref")
+            if ref:
+                return self._data.get(ref)
 
         return None
 
@@ -629,12 +660,19 @@ class ModelInfoV2(object):
         #    return ReferenceValue(
         #            self.data[ref]
         #            )
-        # elif d['dataType'] == 'Boolean':
-        #    return EnumValue({'0': 'False', '1' : 'True'})
+        elif data_type in ("Boolean", "boolean"):
+            ret_val = {"BOOL": True}
+            ret_val.update(data["valueMapping"])
+            return ret_val
         # elif d['dataType'] == 'String':
         #    pass
         else:
-            assert False, "unsupported value type {}".format(data_type)
+            _LOGGER.error(
+                "ModelInfoV2: unsupported value type (%s) - value: %s",
+                data_type,
+                data,
+            )
+            return None
 
     def default(self, name):
         """Get the default value, if it exists, for a given value.
@@ -665,6 +703,9 @@ class ModelInfoV2(object):
 
         options = self.value(data)
         item = options.get(value, {})
+        if options.get("BOOL", False):
+            index = item.get("index", 0)
+            return BIT_ON if index == 1 else BIT_OFF
         return item.get("label", "")
 
     def enum_index(self, key, index):
@@ -779,8 +820,7 @@ class ModelInfoV2AC(ModelInfo):
     def value_type(self, name):
         if name in self._data["Value"]:
             return self._data["Value"][name]["data_type"]
-        else:
-            return None
+        return None
 
     def value(self, name):
         """Look up information about a value.
@@ -872,16 +912,16 @@ class Device(object):
         self._status = None
         return self._status
 
-    def _get_feature_title(self, item_key, def_value):
+    def _get_feature_title(self, feature_name, item_key):
         """Override this function to manage feature title per device type"""
-        return def_value or item_key
+        return feature_name
 
-    def feature_title(self, feature_name, def_value=None, status=None):
+    def feature_title(self, feature_name, item_key=None, status=None):
         title = self._available_features.get(feature_name)
         if title is None:
             if status is None:
                 return None
-            title = self._get_feature_title(feature_name, def_value)
+            title = self._get_feature_title(feature_name, item_key)
             if not title:
                 return None
             self._available_features[feature_name] = title
@@ -901,24 +941,26 @@ class Device(object):
 
         return [ctrl, cmd, key]
 
-    def _set_control(self, ctrl_key, command, *, key=None, value=None, data=None):
+    def _set_control(self, ctrl_key, command=None, *, key=None, value=None, data=None):
         """Set a device's control for `key` to `value`.
         """
         if self._should_poll:
             self._client.session.set_device_controls(
                 self._device_info.id,
-                ctrl_key, command,
-                value={key: value} if key and value else value or "",
-                data={key: data} if key and data else data or "",
+                ctrl_key,
+                command,
+                {key: value} if key and value else value,
+                {key: data} if key and data else data,
             )
             self._control_set = 2
             return
 
         self._client.session.set_device_v2_controls(
             self._device_info.id,
-            ctrl_key, command,
-            key=key,
-            value=value,
+            ctrl_key,
+            command,
+            key,
+            value,
         )
 
     def _prepare_command(self, ctrl_key, command, key, value):
@@ -935,7 +977,7 @@ class Device(object):
                 "Setting new state for device %s: %s",
                 self._device_info.id, str(full_key),
             )
-            self._set_control(full_key, None)
+            self._set_control(full_key)
         else:
             _LOGGER.debug(
                 "Setting new state for device %s:  %s - %s - %s - %s",
@@ -951,7 +993,9 @@ class Device(object):
         """
         if not self._should_poll:
             return
-        data = self._client.session.get_device_config(self._device_info.id, key,)
+        data = self._client.session.get_device_config(self._device_info.id, key)
+        if self._control_set == 0:
+            self._control_set = 1
         return json.loads(base64.b64decode(data).decode("utf8"))
 
     def _get_control(self, key):
@@ -962,6 +1006,8 @@ class Device(object):
         data = self._client.session.get_device_config(
             self._device_info.id, key, "Control",
         )
+        if self._control_set == 0:
+            self._control_set = 1
 
         # The response comes in a funky key/value format: "(key:value)".
         _, value = data[1:-1].split(":")
@@ -1081,6 +1127,7 @@ class Device(object):
         either a `Status` object or `None` if the status is not yet
         available.
         """
+        res = None
 
         # load device info at first call if not loaded before
         if not self.init_device_info():
@@ -1091,28 +1138,28 @@ class Device(object):
             snapshot = self._get_device_snapshot(device_update)
             if not snapshot:
                 return None
-            res = self._model_info.decode_snapshot(snapshot, snapshot_key)
+            return self._model_info.decode_snapshot(snapshot, snapshot_key)
 
         # ThinQ V1 - Monitor data must be polled """
-        else:
+        if not self._mon:
             # Abort if monitoring has not started yet.
-            if not self._mon:
-                return None
+            return None
 
-            self._delete_permission()
-            data = self._mon.poll()
-            if not data:
-                return None
+        data = self._mon.poll()
+        if data:
             res = self._model_info.decode_monitor(data)
+            """
+                with open('/config/wideq/washer_polled_data.json','w', encoding="utf-8") as dumpfile:
+                    json.dump(res, dumpfile, ensure_ascii=False, indent="\t")
+            """
             try:
                 self._additional_poll(additional_poll_interval)
             except Exception as exc:
                 _LOGGER.warning("Error calling additional poll methods. Error %s", exc)
 
-        """
-            with open('/config/wideq/washer_polled_data.json','w', encoding="utf-8") as dumpfile:
-                json.dump(res, dumpfile, ensure_ascii=False, indent="\t")
-        """
+        # remove control permission if previously set
+        self._delete_permission()
+
         return res
 
     def get_enum_text(self, enum_name):
@@ -1120,13 +1167,11 @@ class Device(object):
         if not enum_name:
             return STATE_OPTIONITEM_NONE
 
-        text_value = None
-        if self._model_lang_pack:
+        text_value = LOCAL_LANG_PACK.get(enum_name)
+        if not text_value and self._model_lang_pack:
             text_value = self._model_lang_pack.get("pack", {}).get(enum_name)
         if not text_value and self._product_lang_pack:
             text_value = self._product_lang_pack.get("pack", {}).get(enum_name)
-        if not text_value:
-            text_value = LOCAL_LANG_PACK.get(enum_name)
         if not text_value:
             text_value = enum_name
 
@@ -1259,13 +1304,14 @@ class DeviceStatus(object):
         enum_val = self.lookup_bit_enum(key)
         if enum_val is None:
             return None
-        if enum_val == LABEL_BIT_ON or enum_val == "INITIAL_BIT_ON":
+        bit_val = LOCAL_LANG_PACK.get(enum_val, STATE_OPTIONITEM_OFF)
+        if bit_val == STATE_OPTIONITEM_ON:
             return STATE_OPTIONITEM_ON
         return STATE_OPTIONITEM_OFF
 
-    def _update_feature(self, key, status, get_text=True, def_title=None):
+    def _update_feature(self, key, status, get_text=True, item_key=None):
         title = self._device.feature_title(
-            key, def_title, status
+            key, item_key, status
         )
         if not title:
             return None
@@ -1277,7 +1323,7 @@ class DeviceStatus(object):
         else:
             value = self._device.get_enum_text(status)
 
-        self._device_features[title] = value
+        self._device_features[key] = value
         return value
 
     def _update_features(self):

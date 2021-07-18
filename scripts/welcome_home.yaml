@@ -10,7 +10,7 @@ sequence:
   - service: switch.turn_on
     data:
       entity_id:
-        - switch.bedroom_coridor_wall_light
+        - switch.coridor_bedroom_main_light
         - switch.terace_wall_light
 
   - service: media_player.turn_on

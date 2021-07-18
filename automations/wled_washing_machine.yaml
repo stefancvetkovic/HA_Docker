@@ -31,32 +31,40 @@
     - platform: state
       entity_id: binary_sensor.washer_wash_completed
       to: 'on'
-  condition:
-    - condition: time
-      after: "07:00:00"
-      before: "00:00:00"
   action:
-    - service: script.turn_on
-      entity_id: script.play_notification_everywhere
-      data:
-        variables:
-          speaker: "media_player.bathroom_ceiling_speaker"
-          source: "Primary Chromecast"
-          volume: "0.4"
-          custom_message: "Attention! Washing machine has finished washing the laundry."
-          platform: "tts.google_translate_say"
-          delay: "00:00:03"
-          chromecast_device: "media_player.system_chromecast"
+    - choose:
+      - conditions:
+          - condition: time
+            after: "07:00:00"
+            before: "00:00:00"
+        sequence:
+          - service: script.turn_on
+            entity_id: script.play_notification_everywhere
+            data:
+              variables:
+                speaker: "media_player.bathroom_ceiling_speaker"
+                source: "Primary Chromecast"
+                volume: "0.4"
+                custom_message: "Attention! Washing machine has finished washing the laundry."
+                platform: "tts.google_translate_say"
+                delay: "00:00:03"
+                chromecast_device: "media_player.system_chromecast"
 
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.pickup_laundry
     - service: light.turn_off
       entity_id: light.bathroom_wled
 
-- alias: Bathroom turn off lights above washer when washer turns off
+- alias: Bathroom washing machine door closed
+  description: 'sets input_boolean.pickup_laundry to off'
   trigger:
-  - entity_id: sensor.washer
-    from: 'on'
-    platform: state
-    to: 'off'
+    - platform: state
+      entity_id: binary_sensor.washer_door
+      to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_boolean.pickup_laundry
+      state: "on"
   action:
-      service: light.turn_off
-      entity_id: light.bathroom_wled
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.pickup_laundry
