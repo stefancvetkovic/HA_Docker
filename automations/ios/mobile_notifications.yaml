@@ -1,3 +1,18 @@
+# - id: 'Car optimum for wash'
+#   alias: Tell me when I can Clear the Car
+#   trigger:
+#   - entity_id: binary_sensor.car_wash
+#     platform: state
+#     from: off
+#     to: on
+#   action:
+#     - service: notify.mobile_app_stefans_iphone
+#       data:
+#         title: "Home Assistant"
+#         message: "You Should Plan to clean the car."
+    
+
+
 #GREJALICA NOTIFIKACIJA
 - id: iOS notify terace heater on
   alias: 'Notify when terace heater is ON'

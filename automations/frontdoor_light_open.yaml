@@ -1,0 +1,31 @@
+- alias: "Hallway LED Light Effect Frontdoor"
+  trigger:
+      platform: state
+      entity_id: binary_sensor.front_door
+  action:
+    choose:
+      - conditions:
+          - condition: template
+            value_template: "{{trigger.to_state.state == 'on'}}"
+        sequence:
+          - service: scene.create
+            data:
+              scene_id: hallway_led
+              snapshot_entities: light.hallway_wled
+          - service: light.turn_on
+            data:
+              color_name: red
+              # pallete: Breeze
+              effect: Chase
+              # speed: 169
+              # intensity: 38
+              # brightness: 150
+            target:
+              entity_id: light.hallway_wled
+      - conditions:
+          - condition: template
+            value_template: "{{trigger.to_state.state == 'off'}}"
+        sequence:
+          - service: scene.turn_on
+            data:
+              entity_id: scene.hallway_led

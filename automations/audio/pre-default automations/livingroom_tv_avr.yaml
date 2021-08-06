@@ -1,0 +1,26 @@
+# - alias: "Livingroom AVR toggle by tv "
+#   description: "When Bedroom TV is turned on, reset main zone in 20 seconds"
+#   initial_state: true
+#   trigger:
+#     - platform: state
+#       entity_id: media_player.livingroom_tv
+#       from: 'off'
+#       to: 'playing'
+#   action:
+#     - choose:
+#       - conditions:
+#           - condition: template
+#             value_template: "{{is_state('media_player.avr_zone1', 'on')}}"
+#         sequence:
+#           - service: media_player.turn_off
+#             entity_id: media_player.avr_zone1
+#           - delay: 00:00:10
+#           - service: media_player.turn_on
+#             entity_id: media_player.avr_zone1
+#       - conditions:
+#           - condition: template
+#             value_template: "{{is_state('media_player.avr_zone1', 'off')}}"
+#         sequence:
+#           - delay: 00:00:10
+#           - service: media_player.turn_on
+#             entity_id: media_player.avr_zone1

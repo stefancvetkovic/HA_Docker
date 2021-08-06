@@ -1,86 +1,54 @@
-- alias: "Bedroom Audio TV Turn On"
+- alias: "Bedroom Audio TV Toggle"
   description: "When Bedroom TV is turned on, turn on audio ceilings in bedroom and set correct source"
   initial_state: true
   trigger:
     - platform: state
       entity_id: media_player.bedroom_tv
       from: 'off'
-      to: 'on'
+      to: 'playing'
   action:
-    # - choose:
-    #   - conditions:
-    #     - condition: not
-    #       conditions:
-    #       - condition: state
-    #         entity_id: media_player.bedroom_tv
-    #         state: 'on'
-    #     sequence:
-    #     - service: media_player.turn_on
-    #       data:
-    #         entity_id: media_player.bedroom_tv
+    - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{trigger.to_state.state == 'playing'}}"
+        sequence:
+          - service: script.turn_on
+            entity_id: script.set_speaker
+            data:
+              variables:
+                speaker: "media_player.bedroom_ceiling_speaker"
+                volume: "0.3"
+                source: "Bedroom TV"
+          - service: braviatv_psk.bravia_open_app
+            data:
+              entity_id: media_player.bedroom_bravia
+              uri: >-
+                com.sony.dtv.com.ug.eon.android.tv.com.ug.eon.android.tv.TvActivity
+      - conditions:
+          - condition: template
+            value_template: "{{trigger.to_state.state == 'off'}}"
+        sequence:
+          - service: media_player.turn_off
+            data:
+              entity_id: media_player.bedroom_ceiling_speaker
 
-    # - delay: "00:00:01"
-
-    # - service: media_player.select_source
-    #   entity_id: media_player.bedroom_tv
-    #   data:
-    #     source: "EON"
-
-    - service: script.turn_on
-      entity_id: script.set_speaker
-      data:
-        variables:
-          speaker: "media_player.bedroom_ceiling_speaker"
-          volume: "0.3"
-          source: "Bedroom TV"
-
-    # - delay: "00:00:15"
-    # - service: webostv.button
-    #   data:
-    #     button: LEFT
-    #     entity_id: media_player.bedroom_tv
-      
-
-- alias: "Bedroom Audio TV Turn Off"
-  description: "When Bedroom TV is turned off, turn off audio ceilings in bedroom"
-  initial_state: true
-  trigger:
-    - platform: state
-      entity_id: media_player.bedroom_tv
-      from: 'on'
-      to: 'off'
-  action:
-      - service: media_player.turn_off
-        data:
-          entity_id: media_player.bedroom_ceiling_speaker
-
-- alias: 'Sync volume bedroom speakers ceiling and tv'
-  mode: parallel
+- alias: 'Bedroom Sync speakers ceiling to tv volume'
+  mode: single
   trigger:
   - platform: state
-    entity_id: media_player.bedroom_tv, media_player.bedroom_ceiling_speaker
+    entity_id: media_player.bedroom_tv
     attribute: volume_level
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: media_player.bedroom_tv
-        state: "on"
+        state: "playing"
       - condition: state
         entity_id: "media_player.bedroom_ceiling_speaker"
         state: "on"
   action:
-  - variables:
-      vol_from: "{{ trigger.from_state.attributes.volume_level }}" 
-      vol_to: "{{ trigger.to_state.attributes.volume_level }}" 
   - service: media_player.volume_set
     data:
-      entity_id: media_player.bedroom_tv, media_player.bedroom_ceiling_speaker
-      volume_level: >
-        {% set volumes =  state_attr('media_player.bedroom_tv', 'volume_level'),
-                          state_attr('media_player.bedroom_ceiling_speaker', 'volume_level') %}
-        {% if vol_to|float > vol_from|float %}
-          {{ (volumes|max)|float }}
-        {% else %}
-          {{ (volumes|min)|float  }}
-        {% endif %}
+      entity_id: media_player.bedroom_ceiling_speaker
+      volume_level: "{{ state_attr('media_player.bedroom_tv', 'volume_level') }}" 

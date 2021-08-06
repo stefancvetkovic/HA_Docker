@@ -60,7 +60,7 @@
   trigger:
     - platform: state
       entity_id: binary_sensor.washer_door
-      to: 'off'
+      to: 'on'
   condition:
     - condition: state
       entity_id: input_boolean.pickup_laundry

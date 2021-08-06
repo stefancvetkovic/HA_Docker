@@ -44,8 +44,6 @@
     entities:
       - group.bedroom_bed_ledstrip_all_channels
       - group.bedroom_wall_ledstrip_all_channels
-      - group.livingroom_led_graywall_all_channels
-      
       - group.livingroom_led_above_tv_all_channels
       - light.livingroom_ac_bulbs_mirrowall
       - light.kitchen_topgun_ac
@@ -54,6 +52,8 @@
       - light.livingroom_wled_below_tv
       - light.hallway_wled
       - light.bathroom_wled
+      - light.livingroom_ceiling_led_1
+      - light.livingroom_ceiling_led_2
       
   all_switch_lights_bedroom:
     name: All switch lights bedroom

@@ -15,16 +15,16 @@
             # - service: script.turn_on
             #   entity_id: script.turn_off_all_lights_and_devices
             - service: script.turn_on
-              entity_id: script.play_notification
-              data:
-                variables:
-                  speaker: "media_player.hallway_ceiling_speaker"
-                  source: "Primary Chromecast"
-                  volume: "0.4"
-                  custom_message: "Napuštate stan? Napolju je trenutna temperatura {{ states('sensor.home_realfeel_temperature')}} stepeni. Ostanite bezbedni, ponesite masku."
-                  platform: "tts.google_translate_say"
-                  delay: "00:00:03"
-                  chromecast_device: "media_player.system_chromecast"
+              entity_id: script.turn_off_all_lights_and_devices
+              # data:
+              #   variables:
+              #     speaker: "media_player.hallway_ceiling_speaker"
+              #     source: "Primary Chromecast"
+              #     volume: "0.4"
+              #     custom_message: "Napuštate stan? Napolju je trenutna temperatura {{ states('sensor.home_realfeel_temperature')}} stepeni. Ostanite bezbedni, ponesite masku."
+              #     platform: "tts.google_translate_say"
+              #     delay: "00:00:03"
+              #     chromecast_device: "media_player.system_chromecast"
         - conditions:
             - condition: template
               value_template: "{{ as_timestamp(now()) -  as_timestamp(states.binary_sensor.motion_sensor_frontdoor.last_changed) <= 25 }}"

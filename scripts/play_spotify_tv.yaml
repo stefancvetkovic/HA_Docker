@@ -12,8 +12,7 @@ fields:
 sequence:
   - service: spotcast.start
     data:
-      entity_id: media_player.office_tv
-      device_name: '{{tv_source}}'
+      entity_id: media_player.livingroom_tv
       uri: 'spotify:playlist:37i9dQZF1DX9loJQLuEvap'
       force_playback: true
       random_song: true

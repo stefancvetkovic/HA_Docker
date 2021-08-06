@@ -48,22 +48,24 @@
     event_data:
       type: single_short_click_1
   action:
+    - service: switch.toggle
+      entity_id: switch.bedroom_ac
     - choose:
-        - conditions:
-           - condition: time
-             after: "06:30:00"
-             before: "12:00:00"
-          sequence:
-            - service: script.turn_on
-              entity_id: script.morning_routine
+        # - conditions:
+        #    - condition: time
+        #      after: "06:30:00"
+        #      before: "12:00:00"
+        #   sequence:
+        #     - service: script.turn_on
+        #       entity_id: script.morning_routine
 
-        - conditions:
-            - condition: time        
-              after: "23:30:00"
-              before: "04:30:00"
-          sequence:
-            - service: script.turn_on
-              entity_id: script.turn_off_all_lights_and_devices
+        # - conditions:
+        #     - condition: time        
+        #       after: "23:30:00"
+        #       before: "04:30:00"
+        #   sequence:
+        #     - service: script.turn_on
+        #       entity_id: script.turn_off_all_lights_and_devices
 
       #volume control ceiling speakers
         - conditions:

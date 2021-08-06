@@ -1,22 +1,15 @@
 default_config:
-#alarm_control_panel:
-#  - platform: manual
-# system_health:
 my:
-# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-# http:
-#   base_url: example.duckdns.org:8123
 ios: !include ios_settings.yaml
-#mobile_app:
-
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.17.0.12
 alert: !include_dir_named alerts/
-
 
 frontend:
   themes: !include_dir_merge_named themes
 switch: !include switches.yaml
-# python_script:
-# wake_on_lan:
 
 # influxdb:
 #   api_version: 2
@@ -33,16 +26,6 @@ tts:
     base_url: http://192.168.1.79:8123
     cache: true
 
-# tts:
-#   - platform: google_translate
-#     cache: true
-#     cache_dir: /tmp/tts
-#     time_memory: 300
-#     base_url: http://192.168.1.79:8123
-#     service_name: google_say
-# hacs:
-#   token: !secret hacs_token
-#   appdaemon: true
 group: !include groups.yaml
 scene: !include_dir_merge_list scenes 
 
@@ -120,18 +103,3 @@ media_player:
   #   time_format: 24H
   #   user_labels: True
   #   name: livingroom_bravia
-
-
-
-
-# !include_dir_merge_list media_player
-#notify:
-
-# influxdb:
-#   host: a0d7b954-influxdb
-#   port: 8086
-#   database: homeassistant
-#   username: homeassistant
-#   password: !secret influx_db_ha_password
-#   max_retries: 3
-#   default_measurement: state

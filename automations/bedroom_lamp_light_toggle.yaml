@@ -1,0 +1,42 @@
+- alias: 'Bedroom toggle lights by left lamp light'
+  trigger:
+    - platform: state
+      entity_id: switch.bedroom_left_lamp
+      to: 'off'
+  action:
+    - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{is_state('switch.bedroom_main_light', 'on')}}"
+        sequence:
+          - service: switch.turn_off
+            entity_id: switch.bedroom_main_light
+    - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{is_state('switch.bedroom_left_lamp', 'on') and is_state('switch.bedroom_right_lamp', 'on')}}"
+        sequence:
+          - service: switch.turn_off
+            entity_id: switch.bedroom_right_lamp
+ 
+- alias: 'Bedroom toggle lights by right lamp light'
+  trigger:
+    - platform: state
+      entity_id: switch.bedroom_right_lamp
+      to: 'off'
+  action:
+    - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{is_state('switch.bedroom_main_light', 'on')}}"
+        sequence:
+          - service: switch.turn_off
+            entity_id: switch.bedroom_main_light
+    - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{is_state('switch.bedroom_left_lamp', 'on') and is_state('switch.bedroom_right_lamp', 'on')}}"
+        sequence:
+          - service: switch.turn_off
+            entity_id: switch.bedroom_right_lamp,switch.bedroom_left_lamp
+ 
