@@ -1,0 +1,25 @@
+- alias: "Office Audio TV Toggle"
+  description: "When office TV is toggled, toggle audio shelf speakers in office room and set correct source"
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: media_player.office_tv  
+  action:
+    - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{trigger.to_state.state == 'on'}}"
+        sequence:
+          - service: script.turn_on
+            entity_id: script.set_speaker
+            data:
+              variables:
+                speaker: "media_player.office_shelf_speakers"
+                volume: "0.3"
+                source: "Office TV"
+      - conditions:
+          - condition: template
+            value_template: "{{trigger.to_state.state == 'off'}}"
+        sequence:
+          - service: media_player.turn_off
+            entity_id: media_player.office_shelf_speakers

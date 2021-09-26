@@ -8,7 +8,7 @@ sequence:
       scene_id: before
       snapshot_entities: >
         {% if is_state("input_select.speaker", "Everywhere") %}
-          media_player.hallway_ceiling_speaker, media_player.bathroom_ceiling_speaker, media_player.bedroom_ceiling_speaker, media_player.office_shelf_speaker
+          media_player.hallway_ceiling_speaker, media_player.bathroom_ceiling_speaker, media_player.bedroom_ceiling_speaker, media_player.office_shelf_speakers
         {% elif is_state("input_select.speaker", "Hallway") %}
           media_player.hallway_ceiling_speaker
         {% elif is_state("input_select.speaker", "Bathroom") %}
@@ -16,7 +16,7 @@ sequence:
         {% elif is_state("input_select.speaker", "Bedroom") %}
           media_player.bedroom_ceiling_speaker
         {% elif is_state("input_select.speaker", "Office") %}
-          media_player.office_shelf_speaker
+          media_player.office_shelf_speakers
         {%else%} 
           #DoNothing  
         {% endif %}
@@ -26,7 +26,7 @@ sequence:
       variables:
         speaker: >
           {% if is_state("input_select.speaker", "Everywhere") %}
-            media_player.hallway_ceiling_speaker, media_player.bathroom_ceiling_speaker, media_player.bedroom_ceiling_speaker, media_player.office_shelf_speaker
+            media_player.hallway_ceiling_speaker, media_player.bathroom_ceiling_speaker, media_player.bedroom_ceiling_speaker, media_player.office_shelf_speakers
           {% elif is_state("input_select.speaker", "Hallway") %}
             media_player.hallway_ceiling_speaker
           {% elif is_state("input_select.speaker", "Bathroom") %}
@@ -34,10 +34,10 @@ sequence:
           {% elif is_state("input_select.speaker", "Bedroom") %}
             media_player.bedroom_ceiling_speaker
           {% elif is_state("input_select.speaker", "Office") %}
-            media_player.office_shelf_speaker
+            media_player.office_shelf_speakers
           {% endif %}
-        volume: >
-          "{{states('input_number.announce_volume')|float}}"
+        volume: 0.5
+          # "{{states('input_number.announce_volume')|float/100}}"
         source: "Primary Chromecast"
   - delay: "00:00:03"
   - service: tts.google_translate_say

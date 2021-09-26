@@ -1,0 +1,43 @@
+- alias: "iOS Unlock Front Door"
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: ios.action_fired
+      event_data:
+        actionName: 'Unlock Front Door'
+  action:
+    service: script.turn_on
+    entity_id: script.unlock_front_door
+
+- alias: "iOS Lock Front Door"
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: ios.action_fired
+      event_data:
+        actionName: 'Lock Front Door'
+  action:
+    service: script.turn_on
+    entity_id: script.lock_front_door
+
+- alias: "iOS Open Front Door"
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: ios.action_fired
+      event_data:
+        actionName: 'Open Front Door'
+  action:
+    service: script.turn_on
+    entity_id: script.open_front_door
+
+- alias: "iOS Unlock Bottom Door"
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: ios.action_fired
+      event_data:
+        actionName: 'Unlock Bottom Door'
+  action:
+    service: script.turn_on
+    entity_id: script.unlock_bottom_door

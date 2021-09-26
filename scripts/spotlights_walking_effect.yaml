@@ -1,0 +1,82 @@
+alias: Livingroom Spotlights Walking Effect
+icon: "mdi:party-popper"
+description: 'Sets each light after another to on, previous to off'
+# fields:
+#   speaker:
+#     description: 'The speaker that will reproduce sound'
+#     example: media_player.bedroom_ceiling_speaker
+#   source:
+#     description: 'Correct source for playing audio - amplifier sources'
+#     example: AVR Zone2, Primary Chromecast, Livingroom TV, Workroom TV, Secondary Chromecast, Bedroom TV !
+#   volume:
+#     description: "sets the volume on the speaker"
+#     example: '0.4'
+
+sequence:
+  - service: scene.create
+    data:
+      scene_id: spotlights_before_effect
+      snapshot_entities: 
+        - light.livingroom_spotlight_1_1
+        - light.livingroom_spotlight_1_2
+        - light.livingroom_spotlight_1_3
+        - light.livingroom_spotlight_1_4
+        - light.livingroom_spotlight_1_5
+        - light.livingroom_spotlight_1_6
+        - light.livingroom_spotlight_1_7
+
+
+  - service: light.turn_on
+    entity_id: light.livingroom_spotlight_1_1
+    data:
+      brightness: 150
+  - delay: 00:00:01
+  - service: light.turn_off
+    entity_id: light.livingroom_spotlight_1_1
+
+  - service: light.turn_on
+    entity_id: light.livingroom_spotlight_1_2
+    data:
+      brightness: 150
+  - delay: 00:00:01    
+  - service: light.turn_off
+    entity_id: light.livingroom_spotlight_1_2
+  - service: light.turn_on
+    entity_id: light.livingroom_spotlight_1_3
+    data:
+      brightness: 150
+  - delay: 00:00:01  
+  - service: light.turn_off
+    entity_id: light.livingroom_spotlight_1_3
+  - service: light.turn_on
+    entity_id: light.livingroom_spotlight_1_4
+    data:
+      brightness: 150
+  - delay: 00:00:01    
+  - service: light.turn_off
+    entity_id: light.livingroom_spotlight_1_4
+  - service: light.turn_on
+    entity_id: light.livingroom_spotlight_1_5
+    data:
+      brightness: 150
+  - delay: 00:00:01    
+  - service: light.turn_off
+    entity_id: light.livingroom_spotlight_1_5
+  - service: light.turn_on
+    entity_id: light.livingroom_spotlight_1_6
+    data:
+      brightness: 150
+  - delay: 00:00:01    
+  - service: light.turn_off
+    entity_id: light.livingroom_spotlight_1_6
+  - service: light.turn_on
+    entity_id: light.livingroom_spotlight_1_7
+    data:
+      brightness: 150
+  - delay: 00:00:01    
+  - service: light.turn_off
+    entity_id: light.livingroom_spotlight_1_7
+
+  - service: scene.turn_on
+    data:
+      entity_id: scene.spotlights_before_effect

@@ -16,7 +16,7 @@ sequence:
   - choose:
       - conditions:
           - condition: template
-            value_template: "{{ not is_state(speaker,'on') }}"
+            value_template: "{{ not is_state(speaker,'on') or not is_state(speaker,'playing')}}"
         sequence:
           - service: media_player.turn_on
             data:
@@ -25,7 +25,7 @@ sequence:
   - service: media_player.volume_set
     data:
       entity_id: "{{ speaker }}"
-      volume_level: "{{ volume }}"
+      volume_level: "{{ volume | float}}"
 
   - service: media_player.select_source
     data:

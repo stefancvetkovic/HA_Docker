@@ -7,7 +7,7 @@
     - choose:
       - conditions:
           - condition: template
-            value_template: "{{ trigger.to_state.state not in ['Unavailable','Unknown'] and trigger.to_state.state in ['playing'] and trigger.from_state.state in ['idle']}}"
+            value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] and trigger.to_state.state in ['playing'] and trigger.from_state.state in ['idle']}}"
         sequence:
             - service: script.turn_off
               entity_id: script.play_notification
@@ -37,12 +37,12 @@
                 
             - service: light.turn_off
               entity_id: 
-                - light.kitchen_topgun_ac
+                - light.kitchen_gun
                 - light.kitchen_wled
                 - light.livingroom_wled_below_tv
       - conditions:
           - condition: template
-            value_template: "{{ trigger.to_state.state not in ['Unavailable','Unknown'] and trigger.to_state.state in ['paused'] }}"
+            value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] and trigger.to_state.state in ['paused'] }}"
         sequence:
           - service: light.turn_on
             entity_id: light.livingroom_wled_below_tv

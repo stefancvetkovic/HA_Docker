@@ -1,0 +1,12 @@
+- platform: group
+  name:  All Lights
+  entities:
+    - light.office_all_lights
+    - light.hallway_livingroom_all_lights
+    - light.hallway_bedroom_all_lights
+    - light.livingroom_all_lights
+    - light.bedroom_all_lights
+    - light.bathroom_all_lights
+    - light.office_all_lights
+    - light.terace_all_lights
+    - light.kitchen_all_lights

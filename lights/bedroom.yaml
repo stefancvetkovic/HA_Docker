@@ -1,0 +1,28 @@
+- platform: switch
+  name: Bedroom Main Light
+  entity_id:
+    - switch.bedroom_main_light
+
+- platform: switch
+  name: Bedroom Left Lamp
+  entity_id:
+    - switch.bedroom_left_lamp
+
+- platform: switch
+  name: Bedroom Right Lamp
+  entity_id:
+    - switch.bedroom_right_lamp
+
+- platform: group
+  name: Bedroom Lights
+  entities:
+    - light.bedroom_main_light
+    - light.bedroom_left_lamp
+    - light.bedroom_right_lamp
+    - light.bedroom_led_light_trafo
+
+- platform: group
+  name: Bedroom All Lights
+  entities:
+    - light.bedroom_lights
+    - light.bedroom_wardrobe_lights

@@ -1,0 +1,13 @@
+- name: Livingroom Music Scene
+  icon: "mdi:flower-tulip"
+  entities:
+    media_player.livingroom_tv:
+      state: "playing"
+    light.livingroom_all_lights:
+      state: "off"
+    light.livingroom_wled_below_tv:
+      state: "on"
+      brightness: 200
+    light.livingroom_ceiling_led_1:
+      state: "on"
+      brightness: 100

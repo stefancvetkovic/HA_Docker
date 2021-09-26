@@ -57,7 +57,7 @@
     - choose:
         - conditions:
             - condition: template
-              value_template: "{{ trigger.to_state.state not in ['Unavailable','Unknown'] }}"
+              value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] }}"
           sequence:
             - service: light.turn_on
               entity_id: light.hallway_wled

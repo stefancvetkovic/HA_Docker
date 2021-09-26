@@ -8,7 +8,11 @@ repeat:
 - 10
 can_acknowledge: true
 skip_first: false
+data:
+  actions:
+    - action: "LAUNDRYPICKED" # The key you are sending for the event
+      title: "Veš je preuzet" # The button title
 notifiers:
   - mobile_app_stefans_iphone
   - mobile_app_anjas_iphone
-  - persistent_notification
+  # - persistent_notification

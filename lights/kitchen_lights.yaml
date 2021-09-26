@@ -1,0 +1,5 @@
+- platform: group
+  name: Kitchen all lights
+  entities:
+    - light.kitchen_gun
+    - light.kitchen_wled

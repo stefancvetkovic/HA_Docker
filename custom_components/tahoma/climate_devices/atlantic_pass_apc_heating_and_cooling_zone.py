@@ -19,11 +19,10 @@ from homeassistant.core import callback
 from homeassistant.helpers.event import async_track_state_change
 
 from ..coordinator import TahomaDataUpdateCoordinator
-from ..tahoma_entity import TahomaEntity
+from ..entity import OverkizEntity
 
 _LOGGER = logging.getLogger(__name__)
 
-COMMAND_REFRESH_OPERATING_MODE = "refreshOperatingMode"
 COMMAND_REFRESH_PASS_APC_HEATING_PROFILE = "refreshPassAPCHeatingProfile"
 COMMAND_REFRESH_TARGET_TEMPERATURE = "refreshTargetTemperature"
 COMMAND_SET_HEATING_LEVEL = "setHeatingLevel"
@@ -60,7 +59,7 @@ TAHOMA_TO_HVAC_MODE = {
 HVAC_MODE_TO_TAHOMA = {v: k for k, v in TAHOMA_TO_HVAC_MODE.items()}
 
 
-class AtlanticPassAPCHeatingAndCoolingZone(TahomaEntity, ClimateEntity):
+class AtlanticPassAPCHeatingAndCoolingZone(OverkizEntity, ClimateEntity):
     """Representation of Atlantic Pass APC Heating and Cooling Zone."""
 
     def __init__(self, device_url: str, coordinator: TahomaDataUpdateCoordinator):
@@ -74,7 +73,6 @@ class AtlanticPassAPCHeatingAndCoolingZone(TahomaEntity, ClimateEntity):
         """Register temperature sensor after added to hass."""
         await super().async_added_to_hass()
 
-        base_url = self.get_base_device_url()
         entity_registry = await self.hass.helpers.entity_registry.async_get_registry()
 
         # The linked temperature sensor uses subsystem_id + 1
@@ -84,7 +82,8 @@ class AtlanticPassAPCHeatingAndCoolingZone(TahomaEntity, ClimateEntity):
             (
                 entity_id
                 for entity_id, entry in entity_registry.entities.items()
-                if entry.unique_id == f"{base_url}#{str(new_subsystem_id)}"
+                if entry.unique_id
+                == f"{self.base_device_url}#{str(new_subsystem_id)}-core:TemperatureState"
             ),
             None,
         )
@@ -133,12 +132,12 @@ class AtlanticPassAPCHeatingAndCoolingZone(TahomaEntity, ClimateEntity):
     @property
     def min_temp(self) -> float:
         """Return the minimum temperature."""
-        return self.select_state(CORE_MINIMUM_HEATING_TARGET_TEMPERATURE_STATE)
+        return self.executor.select_state(CORE_MINIMUM_HEATING_TARGET_TEMPERATURE_STATE)
 
     @property
     def max_temp(self) -> float:
         """Return the maximum temperature."""
-        return self.select_state(CORE_MAXIMUM_HEATING_TARGET_TEMPERATURE_STATE)
+        return self.executor.select_state(CORE_MAXIMUM_HEATING_TARGET_TEMPERATURE_STATE)
 
     @property
     def current_temperature(self) -> Optional[float]:
@@ -167,37 +166,44 @@ class AtlanticPassAPCHeatingAndCoolingZone(TahomaEntity, ClimateEntity):
     def hvac_mode(self) -> str:
         """Return hvac operation ie. heat, cool mode."""
 
-        if self.select_state(CORE_HEATING_ON_OFF_STATE) == "off":
+        if self.executor.select_state(CORE_HEATING_ON_OFF_STATE) == "off":
             return HVAC_MODE_OFF
 
-        return TAHOMA_TO_HVAC_MODE[self.select_state(IO_PASS_APC_HEATING_MODE_STATE)]
+        return TAHOMA_TO_HVAC_MODE[
+            self.executor.select_state(IO_PASS_APC_HEATING_MODE_STATE)
+        ]
 
     async def async_set_hvac_mode(self, hvac_mode: str) -> None:
         """Set new target hvac mode."""
 
         if hvac_mode == HVAC_MODE_OFF:
-            await self.async_execute_command(COMMAND_SET_HEATING_ON_OFF_STATE, "off")
+            await self.executor.async_execute_command(
+                COMMAND_SET_HEATING_ON_OFF_STATE, "off"
+            )
         else:
             if self.hvac_mode == HVAC_MODE_OFF:
-                await self.async_execute_command(COMMAND_SET_HEATING_ON_OFF_STATE, "on")
+                await self.executor.async_execute_command(
+                    COMMAND_SET_HEATING_ON_OFF_STATE, "on"
+                )
 
-            await self.async_execute_command(
+            await self.executor.async_execute_command(
                 COMMAND_SET_PASS_APC_HEATING_MODE, HVAC_MODE_TO_TAHOMA[hvac_mode]
             )
 
-        await self.async_execute_command(COMMAND_REFRESH_PASS_APC_HEATING_PROFILE)
-        await self.async_execute_command(COMMAND_REFRESH_OPERATING_MODE)
+        await self.executor.async_execute_command(
+            COMMAND_REFRESH_PASS_APC_HEATING_PROFILE
+        )
 
     @property
     def target_temperature(self) -> None:
         """Return the temperature."""
-        return self.select_state(CORE_HEATING_TARGET_TEMPERATURE_STATE)
+        return self.executor.select_state(CORE_HEATING_TARGET_TEMPERATURE_STATE)
 
     async def async_set_temperature(self, **kwargs) -> None:
         """Set new temperature."""
         temperature = kwargs.get(ATTR_TEMPERATURE)
 
-        await self.async_execute_command(
+        await self.executor.async_execute_command(
             COMMAND_SET_HEATING_TARGET_TEMPERATURE, temperature
         )
-        await self.async_execute_command(COMMAND_REFRESH_TARGET_TEMPERATURE)
+        await self.executor.async_execute_command(COMMAND_REFRESH_TARGET_TEMPERATURE)

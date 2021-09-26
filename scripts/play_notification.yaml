@@ -24,6 +24,10 @@ fields:
   delay:
     description: 'sets a delay - mainly reason for monoprice speakers'
     example: '00:00:03'
+  no_snapshot_before:
+    description: not turning snapshot before, default is false
+    example: 'false'
+    default: false
 sequence:
 
 

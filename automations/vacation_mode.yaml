@@ -55,7 +55,7 @@
     - service: input_text.set_value
       data_template:
         entity_id: input_text.vacation_lights
-        value: "{{ state_attr('group.simulation_lights','entity_id') | random }}"
+        value: "{{ state_attr('light.simulation_lights','entity_id') | random }}"
 
     # Toggling entity state
     - service: homeassistant.toggle

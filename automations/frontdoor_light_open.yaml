@@ -1,7 +1,10 @@
 - alias: "Hallway LED Light Effect Frontdoor"
   trigger:
       platform: state
-      entity_id: binary_sensor.front_door
+      entity_id: binary_sensor.nuki_door_state
+      to:
+        - "on"
+        - "off"   
   action:
     choose:
       - conditions:
@@ -14,12 +17,12 @@
               snapshot_entities: light.hallway_wled
           - service: light.turn_on
             data:
-              color_name: red
-              # pallete: Breeze
+              color_name: Red
+              #pallete: Breeze
               effect: Chase
-              # speed: 169
-              # intensity: 38
-              # brightness: 150
+              #speed: 169
+              #intensity: 38
+              #brightness: 150
             target:
               entity_id: light.hallway_wled
       - conditions:

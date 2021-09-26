@@ -1,5 +1,6 @@
 - id: Bathroom Lights On
   alias: Audio notification in bathroom when main light in bathroom is turned on
+ # mode: single
   trigger:
     - platform: state
       entity_id: switch.bathroom_main_light
@@ -8,27 +9,63 @@
   condition:
     - condition: time
       after: "07:00:00"
-      before: "00:00:00"
+      before: "02:00:00"
   action:
-  - service: script.turn_off
-    entity_id: script.play_notification
+    - choose:
+        - conditions: >
+            {{is_state('input_boolean.pickup_laundry', 'on')}}
+          sequence:
+            - service: script.turn_on
+              entity_id: script.play_notification
+              data:
+                variables:
+                  speaker: "media_player.bathroom_ceiling_speaker"
+                  source: "Primary Chromecast"
+                  volume: "0.4"
+                  custom_message: "Hello. Please check washing machine, there might be laundry to pick up."
+                  platform: "tts.google_translate_say"
+                  delay: "00:00:03"
+                  chromecast_device: "media_player.system_chromecast"
+            - delay: 00:00:10
+            
+                  
+                  
+    
+    #this bottom service should be triggered always, no matter  if above choose condition is fulfilled and AFTER the service above not at the same time!
 
-  - service: script.turn_on
-    entity_id: script.play_notification
-    data:
-      variables:
-        speaker: "media_player.bathroom_ceiling_speaker"
-        source: "Primary Chromecast"
-        volume: "0.4"
-        custom_message: >
-          {% if is_state("input_boolean.pickup_laundry", "on") -%}
-            "Hello. Please check washing machine, there might be laundry to pick up."
-          {%- else -%}
-            "Welcome master."
-          {%- endif %}
-        platform: "tts.google_translate_say"
-        delay: "00:00:03"
-        chromecast_device: "media_player.system_chromecast"
+    - wait_template: "{{ is_state('media_player.system_chromecast','idle') }}"
+      timeout: '00:00:03'
+      continue_on_timeout: 'true'
+    # - service: persistent_notification.create
+    #   data:
+    #     title: 'This is a test'
+    #     message: "Test indeed."
+    - service: script.turn_on
+      entity_id: script.set_speaker
+      data:
+        variables:
+          speaker: "media_player.bathroom_ceiling_speaker"
+          volume: "0.3"
+          source: "AVR Zone2"
+    - service: script.turn_on
+      entity_id: script.play_spotify
+      data: 
+        variables:
+          source_avr: media_player.avr_zone2
+          volume_avr: 0.6
+          speaker: media_player.bathroom_ceiling_speaker
+          volume_speaker: 0.36
+
+- id: Bathroom Lights Off
+  alias: Turn off bathroom ceiling when nobody in the bathroom
+  trigger:
+    - platform: state
+      entity_id: switch.bathroom_main_light
+      from:  'on'
+      to:  'off'
+  action:
+  - service: media_player.turn_off
+    entity_id: media_player.bathroom_ceiling_speaker
 
 - alias: 'Bedroom Wardrobe Notification Based On Door Sensor'
   id: bedroom_wardrobe_notification_based_on_door_sensor
@@ -78,7 +115,7 @@
       to: 'on'
   condition:
     - condition: numeric_state
-      entity_id: sensor.bathroom_humidity
+      entity_id: sensor.bathroom_thp_humidity
       above: 60
   action:
   - service: script.turn_off

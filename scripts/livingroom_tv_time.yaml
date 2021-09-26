@@ -1,0 +1,36 @@
+alias: Livingroom TV Time
+description: Set up some lights and devices for wathing a TV
+sequence:
+  - service: cover.set_cover_position
+    data:
+      position: 35
+      entity_id: 
+        - cover.ds_l
+  - service: braviatv_psk.bravia_open_app
+    data:
+      entity_id: media_player.livingroom_bravia
+      uri: >-
+        com.sony.dtv.com.plexapp.android.com.plexapp.plex.activities.SplashActivity
+
+  - service: light.turn_off
+    entity_id:
+      - light.kitchen_all_lights
+      - light.hallway_livingroom_all_lights
+      - light.livingroom_spotlights
+      - light.livingroom_ceiling_led
+
+  - service: light.turn_on
+    entity_id: light.livingroom_wled_below_tv
+    data:
+      color_name: red
+      # pallete: Breeze
+      effect: Chase
+      # speed: 169
+      # intensity: 38
+      # brightness: 150
+  - delay: 00:30:00
+  - service: light.turn_off
+    entity_id: light.livingroom_wled_below_tv
+
+
+  

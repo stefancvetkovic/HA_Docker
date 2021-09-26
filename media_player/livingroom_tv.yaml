@@ -1,7 +1,7 @@
 - platform: braviatv_psk
-  host: 192.168.1.49
-  psk: sony
-  mac: 94:db:56:22:88:d0
+  host: !secret livingroom_tv_ip
+  psk: !secret psk_livingroom_tv
+  mac: !secret livingroom_tv_mac
   amp: True
   android: True
   time_format: 24H

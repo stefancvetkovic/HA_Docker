@@ -1,0 +1,8 @@
+alias: Unlock Front Door
+description: unlocks front door
+sequence:
+  - service: rest_command.nuki_lock_action
+    data:
+      nuki_id: !secret nuki_smart_door_id
+      dev_type: 0
+      action: 1

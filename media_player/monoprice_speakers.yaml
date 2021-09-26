@@ -1,0 +1,36 @@
+  - platform: group
+    name: Livingroom media players
+    entities:
+      - media_player.avr_zone1
+      - media_player.avr_zone2
+      - media_player.spotify_stefan
+      - media_player.livingroom_tv
+      - media_player.chromecast_livingroom_tv
+      - media_player.wallpad_livingroom
+      - media_player.plex_livingroom_tv
+
+  - platform: group
+    name: Bedroom media players
+    entities:
+      - media_player.bedroom_tv
+      - media_player.bedroom_ceiling_speaker
+
+  - platform: group
+    name: Office media players
+    entities:
+      - media_player.office_tv
+      - media_player.office_shelf_speakers
+      - media_player.chromecast_office_tv
+
+  - platform: group
+    name: Bathroom media players
+    entities:
+      - media_player.bathroom_ceiling_speaker
+
+  - platform: group
+    name: All zoned media players
+    entities:
+      - media_player.hallway_ceiling_speaker
+      - media_player.bathroom_ceiling_speaker
+      - media_player.bedroom_ceiling_speaker
+      - media_player.office_shelf_speakers

@@ -11,13 +11,16 @@ from homeassistant.components.light import (
     SUPPORT_EFFECT,
     LightEntity,
 )
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_platform
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 import homeassistant.util.color as color_util
 
 from .const import COMMAND_OFF, COMMAND_ON, CORE_ON_OFF_STATE, DOMAIN
 from .coordinator import TahomaDataUpdateCoordinator
-from .tahoma_entity import TahomaEntity
+from .entity import OverkizEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,15 +39,18 @@ SERVICE_LIGHT_MY_POSITION = "set_light_my_position"
 SUPPORT_MY = 512
 
 
-async def async_setup_entry(hass, entry, async_add_entities):
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+):
     """Set up the TaHoma lights from a config entry."""
-
     data = hass.data[DOMAIN][entry.entry_id]
     coordinator = data["coordinator"]
 
     entities = [
         TahomaLight(device.deviceurl, coordinator)
-        for device in data["platforms"].get(LIGHT)
+        for device in data["platforms"][LIGHT]
     ]
 
     async_add_entities(entities)
@@ -55,7 +61,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     )
 
 
-class TahomaLight(TahomaEntity, LightEntity):
+class TahomaLight(OverkizEntity, LightEntity):
     """Representation of a TaHoma Light."""
 
     def __init__(self, device_url: str, coordinator: TahomaDataUpdateCoordinator):
@@ -66,20 +72,20 @@ class TahomaLight(TahomaEntity, LightEntity):
     @property
     def brightness(self) -> int:
         """Return the brightness of this light between 0..255."""
-        brightness = self.select_state(CORE_LIGHT_INTENSITY_STATE)
+        brightness = self.executor.select_state(CORE_LIGHT_INTENSITY_STATE)
         return round(brightness * 255 / 100)
 
     @property
     def is_on(self) -> bool:
         """Return true if light is on."""
-        return self.select_state(CORE_ON_OFF_STATE) == STATE_ON
+        return self.executor.select_state(CORE_ON_OFF_STATE) == STATE_ON
 
     @property
     def hs_color(self):
         """Return the hue and saturation color value [float, float]."""
-        r = self.select_state(CORE_RED_COLOR_INTENSITY_STATE)
-        g = self.select_state(CORE_GREEN_COLOR_INTENSITY_STATE)
-        b = self.select_state(CORE_BLUE_COLOR_INTENSITY_STATE)
+        r = self.executor.select_state(CORE_RED_COLOR_INTENSITY_STATE)
+        g = self.executor.select_state(CORE_GREEN_COLOR_INTENSITY_STATE)
+        b = self.executor.select_state(CORE_BLUE_COLOR_INTENSITY_STATE)
         return None if None in [r, g, b] else color_util.color_RGB_to_hs(r, g, b)
 
     @property
@@ -87,16 +93,16 @@ class TahomaLight(TahomaEntity, LightEntity):
         """Flag supported features."""
         supported_features = 0
 
-        if self.has_command(COMMAND_SET_INTENSITY):
+        if self.executor.has_command(COMMAND_SET_INTENSITY):
             supported_features |= SUPPORT_BRIGHTNESS
 
-        if self.has_command(COMMAND_WINK):
+        if self.executor.has_command(COMMAND_WINK):
             supported_features |= SUPPORT_EFFECT
 
-        if self.has_command(COMMAND_SET_RGB):
+        if self.executor.has_command(COMMAND_SET_RGB):
             supported_features |= SUPPORT_COLOR
 
-        if self.has_command(COMMAND_MY):
+        if self.executor.has_command(COMMAND_MY):
             supported_features |= SUPPORT_MY
 
         return supported_features
@@ -104,7 +110,7 @@ class TahomaLight(TahomaEntity, LightEntity):
     async def async_turn_on(self, **kwargs) -> None:
         """Turn the light on."""
         if ATTR_HS_COLOR in kwargs:
-            await self.async_execute_command(
+            await self.executor.async_execute_command(
                 COMMAND_SET_RGB,
                 *[
                     round(float(c))
@@ -114,27 +120,27 @@ class TahomaLight(TahomaEntity, LightEntity):
 
         if ATTR_BRIGHTNESS in kwargs:
             brightness = round(float(kwargs[ATTR_BRIGHTNESS]) / 255 * 100)
-            await self.async_execute_command(COMMAND_SET_INTENSITY, brightness)
+            await self.executor.async_execute_command(COMMAND_SET_INTENSITY, brightness)
 
         elif ATTR_EFFECT in kwargs:
             self._effect = kwargs[ATTR_EFFECT]
-            await self.async_execute_command(self._effect, 100)
+            await self.executor.async_execute_command(self._effect, 100)
 
         else:
-            await self.async_execute_command(COMMAND_ON)
+            await self.executor.async_execute_command(COMMAND_ON)
 
     async def async_turn_off(self, **_) -> None:
         """Turn the light off."""
-        await self.async_execute_command(COMMAND_OFF)
+        await self.executor.async_execute_command(COMMAND_OFF)
 
     async def async_my(self, **_):
         """Set light to preset position."""
-        await self.async_execute_command(COMMAND_MY)
+        await self.executor.async_execute_command(COMMAND_MY)
 
     @property
     def effect_list(self) -> list:
         """Return the list of supported effects."""
-        return [COMMAND_WINK] if self.has_command(COMMAND_WINK) else None
+        return [COMMAND_WINK] if self.executor.has_command(COMMAND_WINK) else None
 
     @property
     def effect(self) -> str:

@@ -31,6 +31,7 @@ from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
 from homeassistant.const import CONF_REGION, CONF_TOKEN, TEMP_CELSIUS
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import Throttle
 
@@ -47,9 +48,6 @@ from .const import (
     SMARTTHINQ_COMPONENTS,
     STARTUP,
 )
-
-ATTR_MODEL = "model"
-ATTR_MAC_ADDRESS = "mac_address"
 
 MAX_RETRIES = 3
 MAX_UPDATE_FAIL_ALLOWED = 10
@@ -256,7 +254,7 @@ class LGEDevice:
         self._name = device.device_info.name
         self._device_id = device.device_info.id
         self._type = device.device_info.type
-        self._mac = device.device_info.macaddress or "N/A"
+        self._mac = device.device_info.macaddress
         self._firmware = device.device_info.firmware
 
         self._model = f"{device.device_info.model_name}"
@@ -287,36 +285,32 @@ class LGEDevice:
 
     @property
     def device(self):
+        """The device instance"""
         return self._device
 
     @property
     def name(self) -> str:
+        """The device name"""
         return self._name
 
     @property
     def type(self) -> DeviceType:
+        """The device type"""
         return self._type
 
     @property
     def unique_id(self) -> str:
+        """Device unique ID"""
         return self._id
 
     @property
     def state(self):
+        """Current device state"""
         return self._state
 
     @property
     def available_features(self) -> Dict:
         return self._device.available_features
-
-    @property
-    def state_attributes(self):
-        """Return the optional state attributes."""
-        data = {
-            ATTR_MODEL: self._model,
-            ATTR_MAC_ADDRESS: self._mac,
-        }
-        return data
 
     @property
     def device_info(self):
@@ -326,6 +320,8 @@ class LGEDevice:
             "manufacturer": "LG",
             "model": f"{self._model} ({self._type.name})",
         }
+        if self._mac:
+            data["connections"] = {(CONNECTION_NETWORK_MAC, self._mac)}
         if self._firmware:
             data["sw_version"] = self._firmware
 

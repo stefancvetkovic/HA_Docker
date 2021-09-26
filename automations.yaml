@@ -256,3 +256,42 @@
       message: 01:00 - All Lights turned off
       title: Automation kicks in
   mode: single
+- id: '1632074139949'
+  alias: Terace Button
+  description: ''
+  use_blueprint:
+    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    input:
+      action_sensor: sensor.terace_button
+      single_action:
+      - type: toggle
+        device_id: 5e6ea5be8424961013949a7be4c98e3a
+        entity_id: switch.terace_main_light
+        domain: switch
+      double_action:
+      - type: toggle
+        device_id: 26a1f21e11749e64a3e7b4d3039477f7
+        entity_id: switch.terace_wall_light
+        domain: switch
+      hold_action:
+      - service: cover.open_cover
+        entity_id:
+          - cover.ds_d
+          - cover.ds_s
+          - cover.ds_l
+- id: '1632074233454'
+  alias: Bathroom Button
+  description: ''
+  use_blueprint:
+    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    input:
+      action_sensor: sensor.bathroom_button_action
+      single_action:
+      - - service: script.turn_on
+          data:
+            entity_id: "{% if is_state('media_player.bathroom_ceiling_speaker', 'on')\
+              \ %}\n  script.stop_showering\n{%- else -%}\n  script.start_showering\n\
+              {%- endif %}\n"
+      double_action:
+      - - service: media_player.media_next_track
+          entity_id: media_player.spotify_stefan

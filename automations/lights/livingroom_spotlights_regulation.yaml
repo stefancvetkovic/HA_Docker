@@ -1,0 +1,18 @@
+# - alias: 'Livingroom Spotlights Regulation'
+#   description: 'Sets the lights to turn off when brightness below 26'
+#   trigger:
+#     - platform: numeric_state
+#       entity_id: 
+#         - light.livingroom_spotlight_1_1
+#         - light.livingroom_spotlight_1_2
+#         - light.livingroom_spotlight_1_3
+#         - light.livingroom_spotlight_1_4
+#         - light.livingroom_spotlight_1_5
+#         - light.livingroom_spotlight_1_6
+#         - light.livingroom_spotlight_1_7
+#       value_template: '{{ state.attributes.brightness }}'
+#       below: 42
+#   action:
+#     - service: light.turn_off
+#       data:
+#         entity_id: '{{trigger.to_state.entity_id}}'

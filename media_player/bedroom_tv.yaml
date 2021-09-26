@@ -1,11 +1,11 @@
 - platform: braviatv_psk
-  host: 192.168.1.159
-  psk: sony_bedroom
-  mac: 94:db:56:8a:40:39
+  name: bedroom_bravia
+  host: !secret bedroom_tv_ip
+  psk: !secret psk_bedroom_tv
+  mac: !secret bedroom_tv_mac
   amp: True
   android: True
   time_format: 24H
   user_labels: True
-  name: bedroom_bravia
 
   

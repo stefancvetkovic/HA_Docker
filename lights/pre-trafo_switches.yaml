@@ -1,0 +1,7 @@
+# - platform: switch
+#   name: Pre-trafo switches
+#   entities:
+#     - switch.office_pre_trafo_wardrobe
+#     - switch.kitchen_pre_trafo_working_desk_light
+#     - switch.bedroom_wardrobe_pre_trafo
+#     - switch.living_room_below_tv_led_pre_trafo

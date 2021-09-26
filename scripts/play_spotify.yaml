@@ -22,24 +22,102 @@ sequence:
       variables:
         avr_media_player: "{{ source_avr }}"
         volume: "{{ volume_avr }}"
+  - choose:
+    - conditions:
+        - condition: template
+          value_template: >
+            {{not is_state('media_player.spotify_stefan', 'playing')}}
+      sequence:
+        - service: spotcast.start
+          data:
+            spotify_device_id: "aa6a0bf7c5f107cba747e35dad2347b1f4030ae8"
+            device_name: Denon AVR-X2400H
+            uri: >
+              {% set playlists = ['spotify:playlist:37i9dQZF1DX9loJQLuEvap','spotify:playlist:37i9dQZF1DX4UtSsGT1Sbe','spotify:playlist:37i9dQZF1DX0s5kDXi1oC5', 'spotify:playlist:37i9dQZF1DX4o1oenSJRJd','spotify:playlist:37i9dQZF1DX5Ejj0EkURtP','spotify:playlist:37i9dQZF1DWSqmBTGDYngZ']%}
+              {{ playlists | random}}
+            #force_playback: true
+            random_song: true
+            #repeat: track
+            shuffle: true
+            offset: 1
 
-  - service: script.turn_on
-    entity_id: script.set_speaker
-    data:
-      variables:
-        speaker: "{{ speaker }}"
-        volume: "{{ volume_speaker }}"
-        source: "AVR Zone2"
+       
 
-  - service: spotcast.start
-    data:
-      spotify_device_id: "aa6a0bf7c5f107cba747e35dad2347b1f4030ae8"
-      device_name: Denon AVR-X2400H
-      uri: >
-       {% set playlists = ['spotify:playlist:37i9dQZF1DX9loJQLuEvap','spotify:playlist:37i9dQZF1DX4UtSsGT1Sbe','spotify:playlist:37i9dQZF1DX0s5kDXi1oC5', 'spotify:playlist:37i9dQZF1DX4o1oenSJRJd','spotify:playlist:37i9dQZF1DX5Ejj0EkURtP','spotify:playlist:37i9dQZF1DWSqmBTGDYngZ']%}
-       {{ playlists | random}}
-      #force_playback: true
-      random_song: true
-      #repeat: track
-      shuffle: true
-      offset: 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  # - service: script.turn_on
+  #   entity_id: script.set_speaker
+  #   data:
+  #     variables:
+  #       speaker: "{{ speaker }}"
+  #       volume: "{{ volume_speaker }}"
+  #       source: "AVR Zone2"
+
+  # - choose:
+  #   - conditions:
+  #     - condition: template
+  #       value_template: >
+  #         {{is_state('media_player.avr_zone2', 'off') or not state_attr('media_player.avr_zone2', 'source') == 'HEOS Music'}}
+  #   sequence:
+  #     - service: script.turn_on
+  #       entity_id: script.set_avr
+  #       data:
+  #         variables:
+  #           avr_media_player: "{{ source_avr }}"
+  #           volume: "{{ volume_avr }}"
+
+  #     - service: spotcast.start
+  #       data:
+  #         spotify_device_id: "aa6a0bf7c5f107cba747e35dad2347b1f4030ae8"
+  #         device_name: Denon AVR-X2400H
+  #         uri: >
+  #           {% set playlists = ['spotify:playlist:37i9dQZF1DX9loJQLuEvap','spotify:playlist:37i9dQZF1DX4UtSsGT1Sbe','spotify:playlist:37i9dQZF1DX0s5kDXi1oC5', 'spotify:playlist:37i9dQZF1DX4o1oenSJRJd','spotify:playlist:37i9dQZF1DX5Ejj0EkURtP','spotify:playlist:37i9dQZF1DWSqmBTGDYngZ']%}
+  #           {{ playlists | random}}
+  #           #force_playback: true
+  #           random_song: true
+  #           #repeat: track
+  #           shuffle: true
+  #           offset: 1
+  # - choose:
+  #   - conditions:
+  #     - condition: template
+  #       value_template: >
+  #         {{is_state('media_player.avr_zone2', 'on') and state_attr('media_player.avr_zone2', 'source') == 'HEOS Music'}}
+  #   sequence:
+  #     - service: script.turn_on
+  #       entity_id: script.set_avr
+  #       data:
+  #         variables:
+  #           avr_media_player: "{{ source_avr }}"
+  #           volume: "{{ volume_avr }}"
+  #     - service: media_player.play_media
+  #       entity_id: media_player.spotify_stefan
+    
+

@@ -17,7 +17,7 @@ sequence:
         speaker: "media_player.bathroom_ceiling_speaker"
         source: "Primary Chromecast"
         volume: "0.4"
-        custom_message: "Great! You're done with taking a shower! Outside temperature is {{ states('sensor.home_realfeel_temperature')}} degrees. Stay safe."
+        custom_message: "Great! You're done with taking a shower! Outside temperature is {{ states('sensor.terace_temperature')}} degrees. Stay safe."
         platform: "tts.google_translate_say"
         delay: "00:00:03"
         chromecast_device: "media_player.system_chromecast"

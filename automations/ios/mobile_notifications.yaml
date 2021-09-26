@@ -73,6 +73,47 @@
     service: switch.turn_on
     entity_id: switch.bathroom_boiler
 
+# - alias: iOS notify for laundry
+#   initial_state: 'on'
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.pickup_laundry
+#       from: 'off'
+#       to: 'on'
+#   action:
+#     - service: notify.mobile_app_stefans_iphone
+#       data:
+#         title: 'Kupatilo'
+#         message: "Uzmite veš iz veš mašine"
+#         data:
+#           actions:
+#           - action: "LAUNDRYPICKED"
+#             title: "Veš je preuzet"
+#             authenticationRequired: false
+#     - service: notify.mobile_app_anjas_iphone
+#       data:
+#         title: 'Kupatilo'
+#         message: "Bojler je ugašen"
+#         data:
+#           title: 'Kupatilo'
+#           message: "Anja, molim te pokupi veš iz veš mašine. Hvala, tvoja veš mašina. :)"
+#           data:
+#             actions:
+#             - action: "LAUNDRYPICKED"
+#               title: "Veš je preuzet"
+#               authenticationRequired: false
+
+
+- alias: ios action laundry picked up
+  initial_state: 'on'
+  trigger:
+    - platform: event
+      event_type: ios.notification_action_fired
+      event_data:
+        actionName: LAUNDRYPICKED
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.pickup_laundry
 #ACTIONS
 - alias: iOS action residents left house
   initial_state: 'on'
@@ -84,6 +125,17 @@
   action:
     service: script.turn_on
     entity_id: script.residents_left
+
+- alias: iOS action unlock interphone door
+  initial_state: 'on'
+  trigger:
+    - platform: event
+      event_type: ios.action_fired
+      event_data:
+        actionName: Unlock Interphone Door
+  action:
+    service: script.turn_on
+    entity_id: script.unlock_interphone_door
 
 - alias: iOS action turn off all media speakers
   initial_state: 'on'

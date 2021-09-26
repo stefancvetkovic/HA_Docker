@@ -1,6 +1,6 @@
-{% if now().timestamp() - as_timestamp(states.binary_sensor.motion_sensor_frontdoor.last_changed) | int >= 15 and states.binary_sensor.motion_sensor_frontdoor.last_changed == 'on' %}True{% else %}False{% endif %}
+{% if now().timestamp() - as_timestamp(states.binary_sensor.frontdoor_motion.last_changed) | int >= 15 and states.binary_sensor.frontdoor_motion.last_changed == 'on' %}True{% else %}False{% endif %}
 
-{{ states.binary_sensor.motion_sensor_frontdoor.state }}
+{{ states.binary_sensor.frontdoor_motion.state }}
 
 - wait_for_trigger:
     - platform: event
@@ -16,10 +16,10 @@
   # - alias: 'Coridor NFC In_Out Resident By Movement Entrance Door Sensor'
   #   trigger:
   #     platform: state
-  #     entity_id: binary_sensor.motion_sensor_frontdoor
+  #     entity_id: binary_sensor.frontdoor_motion
   #     to: 'on' 
   #   action:
-  #     - wait_template: "{{ is_state('binary_sensor.motion_sensor_frontdoor', 'on') }}"
+  #     - wait_template: "{{ is_state('binary_sensor.frontdoor_motion', 'on') }}"
   #       timeout: 15
   #     - choose:
   #         - conditions:

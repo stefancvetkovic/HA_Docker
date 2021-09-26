@@ -6,8 +6,31 @@
       type: single_short_click_1
   action:
     - service: light.toggle
+      entity_id: light.office_desk_lamp
+
+- alias: Office Desk Lamp Switch
+  trigger:
+    platform: event
+    event_type: esphome.office_entrance
+    event_data:
+      type: single_long_click_1
+  action:
+    - service: light.toggle
+      entity_id: light.office_desk_lamp
+
+    - service: media_player.toggle
+      entity_id: media_player.office_tv
+
+- alias: Office Closet
+  trigger:
+    platform: event
+    event_type: esphome.office_entrance
+    event_data:
+      type: double_click_1
+  action:
+    - service: light.toggle
       entity_id: 
-        - light.office_desk_lamp
+        - light.office_closet_lights
 
 # - alias: Office Rotary Encoder set
 #   trigger:
@@ -37,7 +60,7 @@
     - choose:
         - conditions:
             - condition: template
-              value_template: "{{ trigger.to_state.state not in ['Unavailable','Unknown'] }}"
+              value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] }}"
           sequence:
             - service: light.turn_on
               entity_id: light.office_desk_lamp

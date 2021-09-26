@@ -1,0 +1,33 @@
+- platform: switch
+  name:  Toilet Light
+  entity_id: switch.toilet_light
+
+- platform: switch
+  name:  Rack
+  entity_id: switch.rack_light
+
+- platform: switch
+  name:  Hallway Livingroom Main Light
+  entity_id: switch.livingroom_coridor_main_light
+
+- platform: switch
+  name:  Hallway Bedroom Main Light
+  entity_id: switch.coridor_bedroom_main_light
+
+- platform: switch
+  name:  Hallway Bedroom Wall Light
+  entity_id: switch.coridor_bedroom_wall_light
+
+- platform: group
+  name:  Hallway Bedroom All Lights
+  entities:
+    - light.hallway_bedroom_main_light
+    - light.hallway_bedroom_wall_light
+    - light.toilet_light
+
+- platform: group
+  name:  Hallway Livingroom All Lights
+  entities:
+    - light.hallway_livingroom_main_light
+    - light.hallway_wled
+    - light.rack

@@ -1,0 +1,11 @@
+- platform: switch
+  name:  Bathroom Main Light
+  entity_id:
+    - switch.bathroom_main_light
+
+- platform: group
+  name:  Bathroom All Lights
+  entities:
+    - light.bathroom_main_light
+    - light.bathroom_wled
+

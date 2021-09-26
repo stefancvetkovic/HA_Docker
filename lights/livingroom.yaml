@@ -1,0 +1,50 @@
+  - platform: switch
+    name: Livingroom Main Light
+    entity_id: switch.livingroom_main_light
+  
+  - platform: switch
+    name: Livingroom Mini Spotlights
+    entity_id: switch.livingroom_mini_led_above_tv
+
+  - platform: group
+    name: Livingroom spotlights 1
+    entities:
+      - light.livingroom_spotlight_1_1
+      - light.livingroom_spotlight_1_2
+      - light.livingroom_spotlight_1_3
+      - light.livingroom_spotlight_1_4
+      - light.livingroom_spotlight_1_5
+      - light.livingroom_spotlight_1_6
+      - light.livingroom_spotlight_1_7
+
+  - platform: group
+    name: Livingroom spotlights 2
+    entities:
+      - light.livingroom_spotlight_2_1
+      - light.livingroom_spotlight_2_2
+      - light.livingroom_spotlight_2_3
+      - light.livingroom_spotlight_2_4
+      - light.livingroom_spotlight_2_5
+      - light.livingroom_spotlight_2_6
+
+  - platform: group
+    name: Livingroom Ceiling LED
+    entities:
+      - light.livingroom_ceiling_led_1
+      - light.livingroom_ceiling_led_2
+
+  - platform: group
+    name: Livingroom Spotlights
+    entities:
+      - light.livingroom_spotlights_1
+      - light.livingroom_spotlights_2
+
+  - platform: group
+    name: Livingroom All Lights
+    entities:
+      - light.livingroom_main_light
+      - light.livingroom_mini_spotlights
+      - light.livingroom_spotlights_1
+      - light.livingroom_spotlights_2
+      - light.livingroom_ceiling_led
+      - light.livingroom_wled_below_tv

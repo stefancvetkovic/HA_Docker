@@ -1,0 +1,21 @@
+- platform: group
+  name: Office Closet Lights
+  entities:
+    - light.office_closet_left
+    - light.office_closet_right
+
+- platform: group
+  name: Office Wardrobe Lights
+  entities:
+    - light.office_wardrobe_left_left
+    - light.office_wardrobe_left_right
+    - light.office_wardrobe_right_left
+    - light.office_wardrobe_right_right
+
+- platform: group
+  name: Bedroom Wardrobe Lights
+  entities:
+    - light.wled_br_wd_r
+    - light.wled_br_wd_l
+    - light.wled_br_wd_l_segment_0
+    - light.wled_br_wd_l_segment_1

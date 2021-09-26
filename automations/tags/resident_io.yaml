@@ -1,8 +1,8 @@
 - alias: Tag Resident check in_out is scanned
   description: >
     'Based on frontdoor movement sensor we have 2 automations for leaving home and entering home. 
-    1. If 'binary_sensor.motion_sensor_frontdoor' is off for more than 15 seconds, that means that residents is leaving the house. 
-    2. If `binary_sensor.motion_sensor_frontdoor` is triggered between 0 < x < 15 seconds, that means resident is entering the house.'
+    1. If 'binary_sensor.frontdoor_motion' is off for more than 15 seconds, that means that residents is leaving the house. 
+    2. If `binary_sensor.frontdoor_motion` is triggered between 0 < x < 15 seconds, that means resident is entering the house.'
   trigger:
     - platform: tag
       tag_id: 04-6D-98-52-97-69-81
@@ -10,7 +10,7 @@
     - choose:
         - conditions:
             - condition: template
-              value_template: "{{ as_timestamp(now()) -  as_timestamp(states.binary_sensor.motion_sensor_frontdoor.last_changed) > 25 }}"
+              value_template: "{{ as_timestamp(now()) -  as_timestamp(states.binary_sensor.frontdoor_motion.last_changed) > 25 }}"
           sequence:
             # - service: script.turn_on
             #   entity_id: script.turn_off_all_lights_and_devices
@@ -27,7 +27,7 @@
               #     chromecast_device: "media_player.system_chromecast"
         - conditions:
             - condition: template
-              value_template: "{{ as_timestamp(now()) -  as_timestamp(states.binary_sensor.motion_sensor_frontdoor.last_changed) <= 25 }}"
+              value_template: "{{ as_timestamp(now()) -  as_timestamp(states.binary_sensor.frontdoor_motion.last_changed) <= 25 }}"
           sequence:
             - service: script.turn_on
               entity_id: script.play_notification
@@ -36,7 +36,7 @@
                   speaker: "media_player.hallway_ceiling_speaker"
                   source: "Primary Chromecast"
                   volume: "0.4"
-                  custom_message: "Dobrodošli! Prosečna temperatura u stanu je {{states('sensor.livingroom_temperature')}} stepeni."
+                  custom_message: "Welcome! All systems are optimal. The average temperature in the apartment is {{states('sensor.livingroom_ac_room_temperature')}}."
                   platform: "tts.google_translate_say"
                   delay: "00:00:03"
                   chromecast_device: "media_player.system_chromecast"

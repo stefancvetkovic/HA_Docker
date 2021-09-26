@@ -1,0 +1,10 @@
+- name: Welcome home
+  icon: "mdi:flower-tulip"
+  entities:
+    # media_player.livingroom_tv:
+    #   state: "playing"
+    light.hallway_bedroom_wall_light:
+      state: "on"
+    light.livingroom_wled_below_tv:
+      state: "on"
+      brightness: 200

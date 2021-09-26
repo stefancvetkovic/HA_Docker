@@ -6,7 +6,9 @@ from enum import Enum
 import logging
 
 from aiohttp import ClientError, ServerDisconnectedError
+from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR
 from homeassistant.components.scene import DOMAIN as SCENE
+from homeassistant.components.sensor import DOMAIN as SENSOR
 from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
 from homeassistant.const import CONF_EXCLUDE, CONF_PASSWORD, CONF_SOURCE, CONF_USERNAME
 from homeassistant.core import HomeAssistant, ServiceCall
@@ -18,6 +20,7 @@ from homeassistant.helpers import (
 )
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from pyhoma.client import TahomaClient
+from pyhoma.const import SUPPORTED_SERVERS
 from pyhoma.exceptions import (
     BadCredentialsException,
     InvalidCommandException,
@@ -33,9 +36,7 @@ from .const import (
     DEFAULT_HUB,
     DEFAULT_UPDATE_INTERVAL,
     DOMAIN,
-    HUB_MANUFACTURER,
     IGNORED_TAHOMA_DEVICES,
-    SUPPORTED_ENDPOINTS,
     TAHOMA_DEVICE_TO_PLATFORM,
 )
 from .coordinator import TahomaDataUpdateCoordinator
@@ -90,21 +91,50 @@ async def async_setup(hass: HomeAssistant, config: dict):
     return True
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
+async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry):
+    """Migrate old entry."""
+    _LOGGER.debug("Migrating from version %s", config_entry.version)
+
+    if config_entry.version == 1:
+
+        MAPPING = {
+            "Cozytouch": "atlantic_cozytouch",
+            "eedomus": "nexity",
+            "Hi Kumo": "hi_kumo_europe",
+            "Rexel Energeasy Connect": "rexel",
+            "Somfy Connexoon IO": "somfy_europe",
+            "Somfy Connexoon RTS": "somfy_oceania",
+            "Somfy TaHoma": "somfy_europe",
+        }
+
+        entry_data = {**config_entry.data}
+        old_hub = entry_data.get(CONF_HUB, "Somfy TaHoma")
+        entry_data[CONF_HUB] = MAPPING[old_hub]
+
+        _LOGGER.debug("Migrated %s to %s", old_hub, entry_data[CONF_HUB])
+
+        config_entry.data = {**entry_data}
+        config_entry.version = 2
+
+    _LOGGER.debug("Migration to version %s successful", config_entry.version)
+
+    return True
+
+
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up TaHoma from a config entry."""
     hass.data.setdefault(DOMAIN, {})
 
     username = entry.data.get(CONF_USERNAME)
     password = entry.data.get(CONF_PASSWORD)
-    hub = entry.data.get(CONF_HUB, DEFAULT_HUB)
-    endpoint = SUPPORTED_ENDPOINTS[hub]
+    server = SUPPORTED_SERVERS[entry.data.get(CONF_HUB, DEFAULT_HUB)]
 
     session = async_get_clientsession(hass)
     client = TahomaClient(
         username,
         password,
         session=session,
-        api_url=endpoint,
+        api_url=server.endpoint,
     )
 
     try:
@@ -158,35 +188,30 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         "update_listener": entry.add_update_listener(update_listener),
     }
 
+    # Map Overkiz device to Home Assistant platform
     for device in tahoma_coordinator.data.values():
         platform = TAHOMA_DEVICE_TO_PLATFORM.get(
             device.widget
         ) or TAHOMA_DEVICE_TO_PLATFORM.get(device.ui_class)
         if platform:
             platforms[platform].append(device)
-            _LOGGER.debug(
-                "Added device (%s - %s - %s - %s)",
-                device.controllable_name,
-                device.ui_class,
-                device.widget,
-                device.deviceurl,
-            )
+            log_device("Added device", device)
         elif (
             device.widget not in IGNORED_TAHOMA_DEVICES
             and device.ui_class not in IGNORED_TAHOMA_DEVICES
         ):
-            _LOGGER.debug(
-                "Unsupported device detected (%s - %s - %s - %s)",
-                device.controllable_name,
-                device.ui_class,
-                device.widget,
-                device.deviceurl,
-            )
+            log_device("Unsupported device detected", device)
 
         if device.widget == HOMEKIT_STACK:
             print_homekit_setup_code(device)
 
-    for platform in platforms:
+    supported_platforms = set(platforms.keys())
+
+    # Sensor and Binary Sensor will be added dynamically, based on the device states
+    supported_platforms.add(BINARY_SENSOR)
+    supported_platforms.add(SENSOR)
+
+    for platform in supported_platforms:
         hass.async_create_task(
             hass.config_entries.async_forward_entry_setup(entry, platform)
         )
@@ -217,7 +242,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
             config_entry_id=entry.entry_id,
             identifiers={(DOMAIN, gateway.id)},
             model=gateway_model,
-            manufacturer=HUB_MANUFACTURER[hub],
+            manufacturer=server.manufacturer,
             name=gateway_name,
             sw_version=gateway.connectivity.protocol_version,
         )
@@ -268,7 +293,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     entities_per_platform = hass.data[DOMAIN][entry.entry_id]["platforms"]
 
@@ -332,3 +357,15 @@ async def write_execution_history_to_log(client: TahomaClient):
 def beautify_name(name: str):
     """Return human readable string."""
     return name.replace("_", " ").title()
+
+
+def log_device(message: str, device: Device) -> None:
+    """Log device information."""
+    _LOGGER.debug(
+        "%s (%s - %s - %s - %s)",
+        message,
+        device.controllable_name,
+        device.ui_class,
+        device.widget,
+        device.deviceurl,
+    )

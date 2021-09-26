@@ -21,19 +21,46 @@ sequence:
         - media_player.bathroom_ceiling_speaker
         - media_player.hallway_ceiling_speaker
         - media_player.bedroom_ceiling_speaker
-        - media_player.office_shelf_speaker
+        - media_player.office_shelf_speakers
 
-      #group.all_zoned_media_players
-        #- media_player.hallway_ceiling_speaker
-      #group.all_zoned_media_players
-      
-  - service: script.turn_on
-    entity_id: script.set_speaker
+
+
+
+  - service: media_player.turn_on
     data:
-      variables:
-        speaker: group.all_zoned_media_players
-        volume: "{{ volume }}"
-        source: "{{ source }}"
+      entity_id: 
+        - media_player.hallway_ceiling_speaker
+        - media_player.bathroom_ceiling_speaker
+        - media_player.bedroom_ceiling_speaker
+        - media_player.office_shelf_speakers
+
+  - service: media_player.volume_set
+    data:
+      entity_id:
+        - media_player.hallway_ceiling_speaker
+        - media_player.bathroom_ceiling_speaker
+        - media_player.bedroom_ceiling_speaker
+        - media_player.office_shelf_speakers
+      volume_level: "{{ volume | float}}"
+
+  - service: media_player.select_source
+    data:
+      entity_id: 
+        - media_player.hallway_ceiling_speaker
+        - media_player.bathroom_ceiling_speaker
+        - media_player.bedroom_ceiling_speaker
+        - media_player.office_shelf_speakers
+      source: 'Primary Chromecast'
+
+
+
+  # - service: script.turn_on
+  #   entity_id: script.set_speaker
+  #   data:
+  #     variables:
+  #       speaker: media_player.all_zoned_media_players
+  #       volume: "{{ volume }}"
+  #       source: "{{ source }}"
   - delay: "00:00:03"
   - service: tts.google_translate_say
     entity_id: media_player.system_chromecast

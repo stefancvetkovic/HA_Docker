@@ -2,9 +2,4 @@ alias: Turn off all lights in bedroom
 description: Turns off the lights in bedroom
 sequence:
   - service: switch.turn_off
-    entity_id: group.all_switch_lights_bedroom
-  - service: light.turn_off
-    entity_id: group.all_lights_bedroom
-
-
-    
+    entity_id: light.bedroom_all_lights

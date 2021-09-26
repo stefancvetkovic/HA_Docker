@@ -16,7 +16,7 @@
           speaker: "media_player.bathroom_ceiling_speaker"
           source: "Primary Chromecast"
           volume: "0.4"
-          custom_message: "Attention! Washing machine started. Remaining time is {{ states.sensor.washer.attributes.remain_time }} and program temperature is set to {{ states.sensor.washer.attributes.watertemp_option_state }}"
+          custom_message: "Attention! Washing machine started. Remaining time is {{ states.sensor.washer.attributes.remain_time }} and program temperature is set to {{ states.sensor.washer.attributes.water_temp }}"
           platform: "tts.google_translate_say"
           delay: "00:00:03"
           chromecast_device: "media_player.system_chromecast"
@@ -65,6 +65,16 @@
     - condition: state
       entity_id: input_boolean.pickup_laundry
       state: "on"
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.pickup_laundry
+
+- alias: Bathroom washing machine door sensor
+  description: 'stops automation and sends an alert'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.washer_door
+      to: 'unavailable'
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.pickup_laundry

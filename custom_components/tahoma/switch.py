@@ -7,10 +7,13 @@ from homeassistant.components.switch import (
     DOMAIN as SWITCH,
     SwitchEntity,
 )
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_OFF, STATE_ON
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import COMMAND_OFF, COMMAND_ON, CORE_ON_OFF_STATE, DOMAIN
-from .tahoma_entity import TahomaEntity
+from .entity import OverkizEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -28,20 +31,24 @@ ICON_BELL_RING = "mdi:bell-ring"
 ICON_BELL_OFF = "mdi:bell-off"
 
 
-async def async_setup_entry(hass, entry, async_add_entities):
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+):
     """Set up the TaHoma sensors from a config entry."""
     data = hass.data[DOMAIN][entry.entry_id]
     coordinator = data["coordinator"]
 
     entities = [
         TahomaSwitch(device.deviceurl, coordinator)
-        for device in data["platforms"].get(SWITCH)
+        for device in data["platforms"][SWITCH]
     ]
 
     async_add_entities(entities)
 
 
-class TahomaSwitch(TahomaEntity, SwitchEntity):
+class TahomaSwitch(OverkizEntity, SwitchEntity):
     """Representation a TaHoma Switch."""
 
     @property
@@ -64,14 +71,16 @@ class TahomaSwitch(TahomaEntity, SwitchEntity):
 
     async def async_turn_on(self, **_):
         """Send the on command."""
-        if self.has_command(COMMAND_ON):
-            await self.async_execute_command(COMMAND_ON)
+        if self.executor.has_command(COMMAND_ON):
+            await self.executor.async_execute_command(COMMAND_ON)
 
-        elif self.has_command(COMMAND_SET_FORCE_HEATING):
-            await self.async_execute_command(COMMAND_SET_FORCE_HEATING, STATE_ON)
+        elif self.executor.has_command(COMMAND_SET_FORCE_HEATING):
+            await self.executor.async_execute_command(
+                COMMAND_SET_FORCE_HEATING, STATE_ON
+            )
 
-        elif self.has_command(COMMAND_RING_WITH_SINGLE_SIMPLE_SEQUENCE):
-            await self.async_execute_command(
+        elif self.executor.has_command(COMMAND_RING_WITH_SINGLE_SIMPLE_SEQUENCE):
+            await self.executor.async_execute_command(
                 COMMAND_RING_WITH_SINGLE_SIMPLE_SEQUENCE,  # https://www.tahomalink.com/enduser-mobile-web/steer-html5-client/vendor/somfy/io/siren/const.js
                 2 * 60 * 1000,  # 2 minutes
                 75,  # 90 seconds bip, 30 seconds silence
@@ -81,8 +90,8 @@ class TahomaSwitch(TahomaEntity, SwitchEntity):
 
     async def async_turn_off(self, **_):
         """Send the off command."""
-        if self.has_command(COMMAND_RING_WITH_SINGLE_SIMPLE_SEQUENCE):
-            await self.async_execute_command(
+        if self.executor.has_command(COMMAND_RING_WITH_SINGLE_SIMPLE_SEQUENCE):
+            await self.executor.async_execute_command(
                 COMMAND_RING_WITH_SINGLE_SIMPLE_SEQUENCE,
                 2000,
                 100,
@@ -90,18 +99,23 @@ class TahomaSwitch(TahomaEntity, SwitchEntity):
                 COMMAND_STANDARD,
             )
 
-        elif self.has_command(COMMAND_SET_FORCE_HEATING):
-            await self.async_execute_command(COMMAND_SET_FORCE_HEATING, STATE_OFF)
+        elif self.executor.has_command(COMMAND_SET_FORCE_HEATING):
+            await self.executor.async_execute_command(
+                COMMAND_SET_FORCE_HEATING, STATE_OFF
+            )
 
-        elif self.has_command(COMMAND_OFF):
-            await self.async_execute_command(COMMAND_OFF)
+        elif self.executor.has_command(COMMAND_OFF):
+            await self.executor.async_execute_command(COMMAND_OFF)
 
     async def async_toggle(self, **_):
         """Click the switch."""
-        if self.has_command(COMMAND_CYCLE):
-            await self.async_execute_command(COMMAND_CYCLE)
+        if self.executor.has_command(COMMAND_CYCLE):
+            await self.executor.async_execute_command(COMMAND_CYCLE)
 
     @property
     def is_on(self):
         """Get whether the switch is in on state."""
-        return self.select_state(CORE_ON_OFF_STATE, IO_FORCE_HEATING_STATE) == STATE_ON
+        return (
+            self.executor.select_state(CORE_ON_OFF_STATE, IO_FORCE_HEATING_STATE)
+            == STATE_ON
+        )
