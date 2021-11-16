@@ -22,10 +22,10 @@ sequence:
             data:
               entity_id: "{{ speaker }}"
 
-  - service: media_player.volume_set
-    data:
-      entity_id: "{{ speaker }}"
-      volume_level: "{{ volume | float}}"
+          - service: media_player.volume_set
+            data:
+              entity_id: "{{ speaker }}"
+              volume_level: "{{ volume | float}}"
 
   - service: media_player.select_source
     data:

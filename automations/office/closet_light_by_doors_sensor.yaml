@@ -1,0 +1,8 @@
+- alias: "Office Closet Lights Toggle By Door"
+  description: "Turns on or off when doors open or close"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.office_closet
+  action:
+    - service: light.turn_{{trigger.to_state.state}}
+      entity_id: light.office_closet_lights

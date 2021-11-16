@@ -276,22 +276,36 @@
       hold_action:
       - service: cover.open_cover
         entity_id:
-          - cover.ds_d
-          - cover.ds_s
-          - cover.ds_l
-- id: '1632074233454'
-  alias: Bathroom Button
+        - cover.ds_d
+        - cover.ds_s
+        - cover.ds_l
+
+- id: '1633195328880'
+  alias: Bathroom Button Actions
   description: ''
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
-      action_sensor: sensor.bathroom_button_action
+      action_sensor: sensor.bathroom_button
       single_action:
-      - - service: script.turn_on
+        - service: script.turn_on
           data:
             entity_id: "{% if is_state('media_player.bathroom_ceiling_speaker', 'on')\
               \ %}\n  script.stop_showering\n{%- else -%}\n  script.start_showering\n\
               {%- endif %}\n"
       double_action:
-      - - service: media_player.media_next_track
-          entity_id: media_player.spotify_stefan
+        - service: script.turn_on
+          data:
+            entity_id: "{% if is_state('media_player.bathroom_ceiling_speaker', 'on')\
+              \ %}\n  script.stop_showering\n{%- else -%}\n  script.start_showering\n\
+              {%- endif %}\n"
+      tripple_action:
+        - service: persistent_notification.create
+          data:
+            title: This is a test
+            message: Tripple clicked.
+      quadruple_action:
+        - service: persistent_notification.create
+          data:
+            title: This is a test
+            message: Quadruple clicked.

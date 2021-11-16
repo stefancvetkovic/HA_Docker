@@ -41,42 +41,42 @@
     - service: media_player.turn_on
       entity_id: media_player.bedroom_tv
 
-- alias: Bedroom Bed Right encoder
-  trigger:
-    platform: event
-    event_type: esphome.bedroom_bed_right
-    event_data:
-      type: single_short_click_1
-  action:
-    - service: switch.toggle
-      entity_id: switch.bedroom_ac
-    - choose:
-        # - conditions:
-        #    - condition: time
-        #      after: "06:30:00"
-        #      before: "12:00:00"
-        #   sequence:
-        #     - service: script.turn_on
-        #       entity_id: script.morning_routine
+# - alias: Bedroom Bed Right encoder
+#   trigger:
+#     platform: event
+#     event_type: esphome.bedroom_bed_right
+#     event_data:
+#       type: single_short_click_1
+#   action:
+#     - service: switch.toggle
+#       entity_id: switch.bedroom_ac
+#     - choose:
+#         # - conditions:
+#         #    - condition: time
+#         #      after: "06:30:00"
+#         #      before: "12:00:00"
+#         #   sequence:
+#         #     - service: script.turn_on
+#         #       entity_id: script.morning_routine
 
-        # - conditions:
-        #     - condition: time        
-        #       after: "23:30:00"
-        #       before: "04:30:00"
-        #   sequence:
-        #     - service: script.turn_on
-        #       entity_id: script.turn_off_all_lights_and_devices
+#         # - conditions:
+#         #     - condition: time        
+#         #       after: "23:30:00"
+#         #       before: "04:30:00"
+#         #   sequence:
+#         #     - service: script.turn_on
+#         #       entity_id: script.turn_off_all_lights_and_devices
 
-      #volume control ceiling speakers
-        - conditions:
-            - condition: template
-              value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] }}"
-          sequence:
-            - service: media_player.volume_set
-              entity_id: media_player.bedroom_ceiling_speaker
-              data:
-                volume_level: >
-                  {{ states('sensor.bedroom_audio_volume_right')|float/100 }}
+#       #volume control ceiling speakers
+#         - conditions:
+#             - condition: template
+#               value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] }}"
+#           sequence:
+#             - service: media_player.volume_set
+#               entity_id: media_player.bedroom_ceiling_speaker
+#               data:
+#                 volume_level: >
+#                   {{ states('sensor.bedroom_audio_volume_right')|float/100 }}
 
 #SINGLE LONG CLICK
 
@@ -200,20 +200,20 @@
 #                 volume_level: >
 #                   {{ states('sensor.bedroom_audio_volume_left')|float/100 }}
 
-- alias: 'Bedroom Bed Right TV Volume via encoder'
-  id: bedroom_bed_right_tv_volume_encoder 
-  trigger:
-  - platform: state
-    entity_id: 
-      - sensor.bedrom_bed_right_encoder
-  action:
-    - choose:
-        - conditions:
-            - condition: template
-              value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] }}"
-          sequence:
-            - service: media_player.volume_set
-              entity_id: media_player.bedroom_ceiling_speaker
-              data:
-                volume_level: >
-                  {{ states('sensor.bedrom_bed_right_encoder')|float/100 }}
+# - alias: 'Bedroom Bed Right TV Volume via encoder'
+#   id: bedroom_bed_right_tv_volume_encoder 
+#   trigger:
+#   - platform: state
+#     entity_id: 
+#       - sensor.bedrom_bed_right_encoder
+#   action:
+#     - choose:
+#         - conditions:
+#             - condition: template
+#               value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] }}"
+#           sequence:
+#             - service: media_player.volume_set
+#               entity_id: media_player.bedroom_ceiling_speaker
+#               data:
+#                 volume_level: >
+#                   {{ states('sensor.bedrom_bed_right_encoder')|float/100 }}

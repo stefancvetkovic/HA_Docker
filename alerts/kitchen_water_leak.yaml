@@ -1,0 +1,16 @@
+name: "Warning! Water leak detected in the kitchen!"
+done_message: "Popravljeno"
+entity_id: binary_sensor.kitchen_water_leak
+state: "on"
+repeat: 
+- 1
+- 5
+- 10
+can_acknowledge: true
+skip_first: false
+notifiers:
+  - mobile_app_stefans_iphone
+  - mobile_app_anjas_iphone
+  - bedroom_tv
+  - livingroom_tv
+  # - persistent_notification

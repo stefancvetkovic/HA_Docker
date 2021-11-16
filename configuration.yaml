@@ -31,22 +31,14 @@ tts:
     base_url: http://192.168.1.79:8123
     cache: true
 
+notify: !include_dir_merge_list notify/
 group: !include groups.yaml
 scene: !include_dir_merge_list scenes 
 
 spotcast:
   sp_dc: !secret spotcast_sp_dc
   sp_key: !secret spotcast_sp_key
-  accounts:
-    livingroom:
-      sp_dc: !secret spotcast_livingroom_sp_dc
-      sp_key: !secret spotcast_livingroom_sp_key
-    bedroom:
-      sp_dc: !secret spotcast_bedroom_sp_dc
-      sp_key: !secret spotcast_bedroom_sp_key
-    office:
-      sp_dc: !secret spotcast_office_sp_dc
-      sp_key: !secret spotcast_office_sp_key
+
 
 spotify:
   client_id: !secret spotify_client_id

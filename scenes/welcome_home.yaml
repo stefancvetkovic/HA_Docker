@@ -8,3 +8,7 @@
     light.livingroom_wled_below_tv:
       state: "on"
       brightness: 200
+      rgb_color:
+        - 212
+        - 143
+        - 15

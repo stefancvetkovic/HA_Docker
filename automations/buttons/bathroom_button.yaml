@@ -9,14 +9,14 @@
 #       unique_id: "00:15:8d:00:02:3d:c2:5a"
 #       event: 1002
 #   action:
-#     - service: script.turn_on
-#       data:
-#         entity_id: >
-#           {% if is_state('media_player.bathroom_ceiling_speaker', 'on') %}
-#             script.stop_showering
-#           {%- else -%}
-#             script.start_showering
-#           {%- endif %}
+    # - service: script.turn_on
+    #   data:
+    #     entity_id: >
+    #       {% if is_state('media_player.bathroom_ceiling_speaker', 'on') %}
+    #         script.stop_showering
+    #       {%- else -%}
+    #         script.start_showering
+    #       {%- endif %}
 
 
 

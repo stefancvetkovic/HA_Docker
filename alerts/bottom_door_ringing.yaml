@@ -1,0 +1,12 @@
+name: "Neko zvoni na interfon"
+#done_message: "Popravljeno"
+entity_id: binary_sensor.nuki_opener_ring_action_state
+state: "on"
+can_acknowledge: true
+skip_first: false
+notifiers:
+  - mobile_app_stefans_iphone
+  - mobile_app_anjas_iphone
+  - bedroom_tv
+  - livingroom_tv
+  - persistent_notification

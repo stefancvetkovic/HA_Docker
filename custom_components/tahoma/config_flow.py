@@ -1,4 +1,4 @@
-"""Config flow for TaHoma integration."""
+"""Config flow for Overkiz (by Somfy) integration."""
 from __future__ import annotations
 
 import logging
@@ -6,10 +6,10 @@ from typing import Any
 
 from aiohttp import ClientError
 from homeassistant import config_entries
+from homeassistant.components.dhcp import HOSTNAME
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
-from homeassistant.core import callback
 from homeassistant.data_entry_flow import AbortFlow, FlowResult
-from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import device_registry as dr
 from pyhoma.client import TahomaClient
 from pyhoma.const import SUPPORTED_SERVERS
 from pyhoma.exceptions import (
@@ -17,15 +17,10 @@ from pyhoma.exceptions import (
     MaintenanceException,
     TooManyRequestsException,
 )
+from pyhoma.models import obfuscate_id
 import voluptuous as vol
 
-from .const import (
-    CONF_HUB,
-    CONF_UPDATE_INTERVAL,
-    DEFAULT_HUB,
-    DEFAULT_UPDATE_INTERVAL,
-    MIN_UPDATE_INTERVAL,
-)
+from .const import CONF_HUB, DEFAULT_HUB
 from .const import DOMAIN  # pylint: disable=unused-import
 
 _LOGGER = logging.getLogger(__name__)
@@ -35,12 +30,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Somfy TaHoma."""
 
     VERSION = 2
-
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry):
-        """Handle the flow."""
-        return OptionsFlowHandler(config_entry)
 
     def __init__(self) -> None:
         """Start the Overkiz config flow."""
@@ -55,7 +44,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         server = SUPPORTED_SERVERS[user_input.get(CONF_HUB, DEFAULT_HUB)]
 
-        async with TahomaClient(username, password, api_url=server.endpoint) as client:
+        async with TahomaClient(
+            username=username, password=password, server=server
+        ) as client:
             await client.login()
 
             # Set first gateway as unique id
@@ -101,8 +92,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "cannot_connect"
             except MaintenanceException:
                 errors["base"] = "server_in_maintenance"
-            except AbortFlow:
-                raise
+            except AbortFlow as abort_flow:
+                raise abort_flow
             except Exception as exception:  # pylint: disable=broad-except
                 errors["base"] = "unknown"
                 _LOGGER.exception(exception)
@@ -156,33 +147,24 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.exception(exception)
             return self.async_abort(reason="unknown")
 
+    async def async_step_dhcp(self, discovery_info):
+        """Handle DHCP discovery."""
+        hostname = discovery_info[HOSTNAME]
+        gateway_id = hostname[8:22]
 
-class OptionsFlowHandler(config_entries.OptionsFlow):
-    """Handle a option flow for Somfy TaHoma."""
+        _LOGGER.debug("DHCP discovery detected gateway %s", obfuscate_id(gateway_id))
 
-    def __init__(self, config_entry):
-        """Initialize options flow."""
-        self.config_entry = config_entry
+        if self._gateway_already_configured(gateway_id):
+            _LOGGER.debug("Gateway %s is already configured", obfuscate_id(gateway_id))
+            return self.async_abort(reason="already_configured")
 
-    async def async_step_init(self, user_input=None):
-        """Manage the Somfy TaHoma options."""
-        return await self.async_step_update_interval()
+        return await self.async_step_user()
 
-    async def async_step_update_interval(self, user_input=None):
-        """Manage the options regarding interval updates."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
-
-        return self.async_show_form(
-            step_id="update_interval",
-            data_schema=vol.Schema(
-                {
-                    vol.Required(
-                        CONF_UPDATE_INTERVAL,
-                        default=self.config_entry.options.get(
-                            CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL
-                        ),
-                    ): vol.All(cv.positive_int, vol.Clamp(min=MIN_UPDATE_INTERVAL))
-                }
-            ),
+    def _gateway_already_configured(self, gateway_id: str):
+        """See if we already have a gateway matching the id."""
+        device_registry = dr.async_get(self.hass)
+        return bool(
+            device_registry.async_get_device(
+                identifiers={(DOMAIN, gateway_id)}, connections=set()
+            )
         )

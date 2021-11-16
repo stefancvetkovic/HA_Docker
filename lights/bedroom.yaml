@@ -13,6 +13,13 @@
   entity_id:
     - switch.bedroom_right_lamp
 
+
+- platform: group
+  name: Bedroom Wled
+  entities:
+    - light.bedroom_wall_wled
+    - light.bedroom_ceiling_wled
+
 - platform: group
   name: Bedroom Lights
   entities:
@@ -26,3 +33,6 @@
   entities:
     - light.bedroom_lights
     - light.bedroom_wardrobe_lights
+    - light.bedroom_ceiling_wled
+    - light.bedroom_wall_wled
+

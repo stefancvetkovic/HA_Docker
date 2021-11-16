@@ -45,7 +45,6 @@ COMMANDS_SET_TILT_POSITION = [COMMAND_SET_ORIENTATION]
 CORE_CLOSURE_STATE = "core:ClosureState"
 CORE_CLOSURE_OR_ROCKER_POSITION_STATE = "core:ClosureOrRockerPositionState"
 CORE_DEPLOYMENT_STATE = "core:DeploymentState"
-CORE_MEMORIZED_1_POSITION_STATE = "core:Memorized1PositionState"
 CORE_MOVING_STATE = "core:MovingState"
 CORE_OPEN_CLOSED_PARTIAL_STATE = "core:OpenClosedPartialState"
 # io:DiscreteGateOpenerIOComponent
@@ -54,7 +53,6 @@ CORE_OPEN_CLOSED_STATE = "core:OpenClosedState"
 CORE_OPEN_CLOSED_UNKNOWN_STATE = "core:OpenClosedUnknownState"
 # io:DiscreteGateOpenerIOComponent
 CORE_PEDESTRIAN_POSITION_STATE = "core:PedestrianPositionState"
-CORE_PRIORITY_LOCK_TIMER_STATE = "core:PriorityLockTimerState"
 CORE_SLATS_OPEN_CLOSED_STATE = "core:SlatsOpenClosedState"
 CORE_SLATE_ORIENTATION_STATE = "core:SlateOrientationState"
 CORE_SLATS_ORIENTATION_STATE = "core:SlatsOrientationState"
@@ -62,10 +60,6 @@ CORE_TARGET_CLOSURE_STATE = "core:TargetClosureState"
 MYFOX_SHUTTER_STATUS_STATE = "myfox:ShutterStatusState"
 
 IO_PRIORITY_LOCK_LEVEL_STATE = "io:PriorityLockLevelState"
-IO_PRIORITY_LOCK_ORIGINATOR_STATE = "io:PriorityLockOriginatorState"
-
-ICON_LOCK_ALERT = "mdi:lock-alert"
-ICON_WEATHER_WINDY = "mdi:weather-windy"
 
 STATE_CLOSED = "closed"
 
@@ -76,7 +70,7 @@ SUPPORT_MY = 512
 SUPPORT_COVER_POSITION_LOW_SPEED = 1024
 
 
-class TahomaGenericCover(OverkizEntity, CoverEntity):
+class OverkizGenericCover(OverkizEntity, CoverEntity):
     """Representation of a TaHoma Cover."""
 
     @property
@@ -109,6 +103,9 @@ class TahomaGenericCover(OverkizEntity, CoverEntity):
     def is_closed(self):
         """Return if the cover is closed."""
 
+        if self.current_cover_position is not None:
+            return self.current_cover_position == 0
+
         state = self.executor.select_state(
             CORE_OPEN_CLOSED_STATE,
             CORE_SLATS_OPEN_CLOSED_STATE,
@@ -120,24 +117,8 @@ class TahomaGenericCover(OverkizEntity, CoverEntity):
         if state is not None:
             return state == STATE_CLOSED
 
-        if self.current_cover_position is not None:
-            return self.current_cover_position == 0
-
         if self.current_cover_tilt_position is not None:
             return self.current_cover_tilt_position == 0
-
-        return None
-
-    @property
-    def icon(self):
-        """Return the icon to use in the frontend, if any."""
-        if (
-            self.executor.has_state(CORE_PRIORITY_LOCK_TIMER_STATE)
-            and self.executor.select_state(CORE_PRIORITY_LOCK_TIMER_STATE) > 0
-        ):
-            if self.executor.select_state(IO_PRIORITY_LOCK_ORIGINATOR_STATE) == "wind":
-                return ICON_WEATHER_WINDY
-            return ICON_LOCK_ALERT
 
         return None
 
@@ -176,7 +157,7 @@ class TahomaGenericCover(OverkizEntity, CoverEntity):
                 exec_id
                 # Reverse dictionary to cancel the last added execution
                 for exec_id, execution in reversed(self.coordinator.executions.items())
-                if execution.get("deviceurl") == self.device.deviceurl
+                if execution.get("device_url") == self.device.device_url
                 and execution.get("command_name") in cancel_commands
             ),
             None,
@@ -194,7 +175,7 @@ class TahomaGenericCover(OverkizEntity, CoverEntity):
                 # Reverse dictionary to cancel the last added execution
                 for action in reversed(execution.action_group.get("actions"))
                 for command in action.get("commands")
-                if action.get("deviceurl") == self.device.deviceurl
+                if action.get("device_url") == self.device.device_url
                 and command.get("name") in cancel_commands
             ),
             None,
@@ -221,7 +202,7 @@ class TahomaGenericCover(OverkizEntity, CoverEntity):
             return None
 
         if any(
-            execution.get("deviceurl") == self.device.deviceurl
+            execution.get("device_url") == self.device.device_url
             and execution.get("command_name") in COMMANDS_OPEN + COMMANDS_OPEN_TILT
             for execution in self.coordinator.executions.values()
         ):
@@ -246,7 +227,7 @@ class TahomaGenericCover(OverkizEntity, CoverEntity):
             return None
 
         if any(
-            execution.get("deviceurl") == self.device.deviceurl
+            execution.get("device_url") == self.device.device_url
             and execution.get("command_name") in COMMANDS_CLOSE + COMMANDS_CLOSE_TILT
             for execution in self.coordinator.executions.values()
         ):

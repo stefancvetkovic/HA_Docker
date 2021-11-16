@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<html lang="cir">
+<head>
+    <!-- Google Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-57172643-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+    <!-- End Google Analytics -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://www.parking-servis.co.rs/favicon.png">
+    
+
+<title>eDnevna parking karta  |  </title>
+<meta name="title" content="eDnevna parking karta | ">
+<meta name="description" content="">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.parking-servis.co.rs/edpk">
+<meta property="og:title" content=" | eDnevna parking karta">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://www.parking-servis.co.rs/images/og-image.jpg">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/images/front/favicon.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="/css/style.css?id=e106ddd5a15f7a105b6b" rel="stylesheet">
+        <script src="https://www.parking-servis.co.rs/js/front/cyrlatconverter.min.js"></script>
+    </head>
+
+<body>
+    <header class="site-header">
+    <div class="top-bar">
+        <div class="container">
+        <a href="https://www.youtube.com/user/parkingservis/featured" target="_blank" class="youtube-link"><img src="/images/front/youtube.svg" alt="youtube"></a>
+        
+            <ul class="top-menu">
+                                <li><a href="/o-nama"><img src="/images/front/o-nama.svg" alt="О НАМА" />О НАМА</a></li>
+                <li><a href="https://www.parking-servis.co.rs/vesti"><img src="/images/front/vesti.svg" alt="ВЕСТИ" />ВЕСТИ</a></li>
+            </ul>
+
+            <div class="lang-switcher CyrLatIgnore">
+                <span class="current-lang">
+                    <img src="/images/front/flag-sr.png" alt="" />српски <i>
+                        <img src="/images/front/dropdown.svg" alt="" /></i>
+                </span>
+                <ul class="lang-dropdown">
+                                                            <li><a href="https://www.parking-servis.co.rs/lat/edpk"><img src="/images/front/flag-sr.png" alt="" />Srpski</a></li>
+                                                            <li><a href="https://www.parking-servis.co.rs/eng"><img src="/images/front/flag-en.png" alt="" />English</a></li>
+                                    </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="inner-header">
+        <div class="container">
+            <div class="site-branding">
+                <a href="https://www.parking-servis.co.rs"><img src="https://www.parking-servis.co.rs/images/front/logo.svg" class="logo" alt="Parking servis"></a>
+            </div>
+            <nav class="main-navigation">
+                <div class="main-menu">
+                    <ul class="menu">
+                                                <li class="menu-item-has-children">
+                            <a href="https://www.parking-servis.co.rs/zonski-sistem-parkiranja">Зонско паркирање
+                                 <span class="submenu-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M441.9 167.3l-19.8-19.8c-4.7-4.7-12.3-4.7-17 0L224 328.2 42.9 147.5c-4.7-4.7-12.3-4.7-17 0L6.1 167.3c-4.7 4.7-4.7 12.3 0 17l209.4 209.4c4.7 4.7 12.3 4.7 17 0l209.4-209.4c4.7-4.7 4.7-12.3 0-17z"/></svg></span></a>
+                                                        <ul class="sub-menu">
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/zonski-sistem-parkiranja#2-zonski-sistem-parkiranja"  target="_self" >Зонски систем</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/placanje-po-satu" >Плаћање по сату</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/edpk" >е-Дневна паркинг карта</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/mesecna-pretplata-u-zonama" >Месечна претплата</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/pretraga-ulica"  target="_self" >Претрага улица по зонама</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/mape-podzona" >Мапе подзона</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/zonski-sistem-parkiranja#6-sms-parkiralista"  target="_self" >SMS паркиралишта</a>
+                                </li>
+                                                            </ul>
+                                                    </li>
+                                                <li class="menu-item-has-children">
+                            <a href="https://www.parking-servis.co.rs/garaze-i-parkiralista">Гараже и паркиралишта
+                                 <span class="submenu-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M441.9 167.3l-19.8-19.8c-4.7-4.7-12.3-4.7-17 0L224 328.2 42.9 147.5c-4.7-4.7-12.3-4.7-17 0L6.1 167.3c-4.7 4.7-4.7 12.3 0 17l209.4 209.4c4.7 4.7 12.3 4.7 17 0l209.4-209.4c4.7-4.7 4.7-12.3 0-17z"/></svg></span></a>
+                                                        <ul class="sub-menu">
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/garaze-i-parkiralista#2-garaze-i-parkiralista"  target="_self" >Паркинг објекти</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/mesecna-pretplata-u-garazama"  target="_self" >Месечна претплата</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/pripejd-kartica" >Припејд картица</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/parking-pass" >Parking Pass</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/garaze-i-parkiralista#6-slobodna-parking-mesta"  target="_self" >Слободна паркинг места</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/parkiraj-bicikliraj"  target="_self" >Паркирај и бициклирај</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/aplikacija"  target="_self" >Moбилна апликација</a>
+                                </li>
+                                                            </ul>
+                                                    </li>
+                                                <li class="menu-item-has-children">
+                            <a href="https://www.parking-servis.co.rs/ostale-delatnosti">Остале делатности
+                                 <span class="submenu-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M441.9 167.3l-19.8-19.8c-4.7-4.7-12.3-4.7-17 0L224 328.2 42.9 147.5c-4.7-4.7-12.3-4.7-17 0L6.1 167.3c-4.7 4.7-4.7 12.3 0 17l209.4 209.4c4.7 4.7 12.3 4.7 17 0l209.4-209.4c4.7-4.7 4.7-12.3 0-17z"/></svg></span></a>
+                                                        <ul class="sub-menu">
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/ostale-delatnosti#2-medjunarodni-terminal"  target="_self" >Међународни терминал</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/pesacke-zone"  target="_self" >Пешачке зоне</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/ostale-delatnosti#5-prenos-vozila"  target="_self" >Пренос возила</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/blokada-vozila"  target="_self" >Блокада возила</a>
+                                </li>
+                                                            </ul>
+                                                    </li>
+                                                <li class="">
+                            <a href="https://www.parking-servis.co.rs/drustvena-odgovornost">Друштвена одговорност
+                                </a>
+                                                    </li>
+                                                <li class="menu-item-has-children">
+                            <a href="https://www.parking-servis.co.rs/korisnicki-servis">Кориснички сервис
+                                 <span class="submenu-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M441.9 167.3l-19.8-19.8c-4.7-4.7-12.3-4.7-17 0L224 328.2 42.9 147.5c-4.7-4.7-12.3-4.7-17 0L6.1 167.3c-4.7 4.7-4.7 12.3 0 17l209.4 209.4c4.7 4.7 12.3 4.7 17 0l209.4-209.4c4.7-4.7 4.7-12.3 0-17z"/></svg></span></a>
+                                                        <ul class="sub-menu">
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/korisnicki-servis#1-kontakt"  target="_self" >Контакт</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/korisnicki-servis#2-onlajn-zahtevi"  target="_self" >Онлајн захтеви</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/korisnicki-servis#3-cenovnik"  target="_self" >Ценовник</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://www.parking-servis.co.rs/korisnicki-servis#4-cesta-pitanja"  target="_self" >Честа питања</a>
+                                </li>
+                                                            </ul>
+                                                    </li>
+                                            </ul>
+                </div>
+            </nav>
+            <button class="menu-toggle"><span></span><span></span><span></span></button>
+        </div>
+    </div><!-- .inner-header -->
+</header>
+    <main class="main">
+                <section class="page-hero section" id="1-e-dnevna-parking-karta">
+    <div class="bg-image default" style="background-image:url(/storage/6653/Rover_02c.jpg);"></div>
+
+        <div class="intro-text">
+        <h1>e-Дневна паркинг карта</h1>
+        <p></p>
+    </div>
+    </section>        <section id="edpk" class="edpk-section section">
+        <div class="container">
+            <div class="edpk-form">
+                <form>
+                    <input type="hidden" name="_token" value="y2h6H6sl0MFDa1unG0LXGqf8wPAz3SYR6En2wUJQ">                    <div class="form-wrap">
+                        <div class="input-wrap">
+                            <input type="text" name="fine" :class="{'field-error': error}" v-model="plate" :placeholder="lang.enter" required />
+                        </div>
+                        <div class="submit-wrap">
+                            <button class="button blue" type="submit" @click.prevent="findTicket()">{{ lang.search }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="loading-results" v-if="loading"></div>
+            <div class="entry-text no-edpk-message" v-if="errorMessage">{{ lang.servisError }}</div>
+            <div class="edpk-fines" v-if="payload.fines.length">
+                <div class="edpk-fine" v-for="fine in payload.fines">
+                    <div class="fine-title-bar">{{ lang.fine.info }}</div>
+                    <div class="fine-info">
+                        <div class="fine-row"><span>{{ lang.fine.no }}</span><span>{{ fine.id }}</span></div>
+                        <div class="fine-row"><span>{{ lang.fine.plate }}</span><span>{{ fine.plate }}</span></div>
+                        <div class="fine-row"><span>{{ lang.fine.zone }}</span><span>{{ fine.zone }}</span></div>
+                        <div class="fine-row"><span>{{ lang.fine.address }}</span><span>{{ fine.street }}<br>{{ fine.streetNumber }}</span></div>
+                        <div class="fine-row"><span>{{ lang.fine.why }}</span><span>{{ fine.violation }}</span></div>
+                        <div class="fine-row"><span>{{ lang.fine.price }}</span><span>{{ fine.price }}</span></div>
+                        <div class="fine-row">
+                            <p>{{ fine.discountDescription }}</p>
+                        </div>
+                        <div class="fine-row"><span>{{ lang.fine.time }}</span><span>{{ fine.paymentDeadline }}</span></div>
+                        <div class="fine-row"><span>{{ lang.fine.call }}</span><span>{{ fine.paymentReferenceNumber }}</span></div>
+                        <div class="fine-row"><span>{{ lang.fine.from }}</span><span>{{ fine.issuedAt }}<br>{{ fine.validTo }}</span></div>
+                    </div>
+                    <div class="fine-code entry-text">
+                        <p>{{ lang.fine.ips }}</p>
+                        <div class="f-code"><img :src="fine.paymentIpsUrl" /></div>
+                        <p class="border-separators">{{ lang.fine.account }}</p>
+                        <p><a href="https://www.parking-servis.co.rs/Opsti-uslovi-eDPK-platna-kartica-potpisan-dokument.pdf" target="_blank">{{ lang.fine.terms }}</a><br></p>
+                        <div class="checkbox-wrap">
+                            <label><input type="checkbox" name="accept" value="1" v-model="accept" /><span></span>{{ lang.fine.agree }}</label>
+                        </div>
+                        <p v-if="!accept">{{ lang.fine.card }}</p>
+                        <a :href="fine.paymentCcUrl" target="_blank" v-else>{{ lang.fine.card }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-text no-edpk-message" v-else-if="payload.paymentAccountNumber">
+                <span v-if="cLang == 'cyr'" v-html="lang.info_cyr"></span>
+                <span v-else-if="cLang == 'lat'" v-html="lang.info_lat"></span>
+                <span v-else v-html="lang.info"></span>
+            </div>
+
+        </div>
+    </section>
+        <section class="text-section section gray" id="3-sekcija">
+
+    <div class="container">
+        <div class="entry-text"><p style="text-align: center;"><strong>ЕЛЕКТРОНСКИ НАЛОГ ЗА ПЛАЋАЊЕ ЕЛЕКТРОНСКЕ ДНЕВНЕ ПАРКИНГ КАРТЕ (ЕДПК) &ndash; ПРЕДРАЧУН</strong></p>
+<ol style="text-align: justify;">
+<li style="font-weight: 400;"><span style="font-weight: 400;">Контрола паркирања на општим паркиралиштима (зонирано и ванзонирано подручје), као и на посебним паркиралиштима која су у режиму општих (&bdquo;Сава променада&ldquo; и &bdquo;Видин капија&ldquo;), врши се у складу са Одлуком о јавним паркиралиштима (&bdquo;Сл. лист града Београда&ldquo; бр. 12/2010, 37/2011, 42/2011, 11/2014, 30/2014, 34/2014, 89/2014, 96/2016, 36/2017, 118/2018, 26/2019, 52/2019, 65/2020, 152/2020 и 9/2021) &ndash; Одлука.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Електронски налог за плаћање еДПК издаје се кориснику сагласно чл. 18а ст. 2. Одлуке, који на општем паркиралишту у зонираном подручју и ван зонираног подручја, као и на посебним паркиралиштима &bdquo;Сава променада&ldquo; и &bdquo;Видин капија&ldquo;, није унапред платио услугу паркирања (нема паркинг карту), а сагласно чл. 18а ст. 3. Одлуке &ndash; кориснику општег паркиралишта у зонираном подручју коме је истекло ограничено (продужено) време паркирања.</span></li>
+<li style="font-weight: 400;"><strong>еДПК важи од момента издавања до истог времена у првом следећем дану у коме се врши наплата паркирања и само у зони за коју је издата</strong><span style="font-weight: 400;">. </span><span style="font-weight: 400;"> еДПК се плаћа накнадно по издатом електронском налогу за услугу паркирања возила у дневном трајању.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Корисник паркиралишта (возач или последњи регистровани власник возила ако возач није идентификован) је дужан да поступи по електронском налогу за плаћање еДПК и исти плати у року од 8 (осам) дана од дана истека важења еДПК, путем опште уплатнице, на пошти/банци или благајнама предузећа или електронским путем.</span><strong> Корисник има право на 50% попуста на цену еДПК, уколико исту плати у року од 8 (осам) дана од дана истека важења еДПК. </strong>Ако корисник паркиралишта не изврши плаћање у прописаном року, предузеће ће покренути поступак наплате потраживања, а трошкови принудне наплате, законска затезна камата и други трошкови падају на његов терет, сходно закону.</li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Корисник који користи услугу паркирања у дневном трајању, обавезан је да се информише о издатој еДПК. Обавештење о издатој еДПК доступно је на сајту предузећа, преко Kорисничког сервиса (телефоном, електронском поштом или непосредно на шалтерима), као и слањем СМС поруке корисницима којима је истекло ограничено (продужено) време паркирања или су након издавања еДПК покушали да плате услугу паркирања (када за то постоје техничке могућности). </span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Ако је електронски налог за плаћање еДПК издат за возило за које је контролом утврђено да постоје доспела, а ненаплаћена потраживања по основу најмање два (2) издата налога, да није могуће идентификовати возача, односно власника возила преко евиденције надлежног државног органа РС и да није могуће покренути поступак за наплату потраживања, предузеће је овлашћено да задржи возило уклањањем возила са општег или посебног паркиралишта, на место које је за то одређено или постављањем уређаја којима се спречава одвожење возила до наплате доспелих потраживања и трошкова сагласно члану 18г Одлуке.</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Корисник може поднети рекламацију путем телефона, поштом, електронском поштом или непосредно на шалтерима Корисничког сервиса предузећа. </span></li>
+</ol>
+<p style="text-align: justify;">&nbsp;</p>
+<p style="text-align: justify;"><strong>Предузеће: </strong><span style="font-weight: 400;">ЈКП &bdquo;Паркинг сервис&ldquo; Београд, Кнеза Вишеслава бр. 27</span></p>
+<p style="text-align: justify;"><strong>Радно време Kорисничког сервиса:</strong><span style="font-weight: 400;"> понедељак-петак од 07.00 до 21.00 час, суботом од 07.00 до 14.00 часова.</span></p>
+<p style="text-align: justify;"><span style="font-weight: 400;"><strong>Кориснички сервис (благајна)</strong>: Ул. Милешевска бр. 51 и Таковска бр. 31</span></p>
+<p style="text-align: justify;"><span style="font-weight: 400;"><strong>Инфо телефон</strong>: +381 11 3035 400</span></p>
+<p class="CyrLatIgnore" style="text-align: justify;"><span style="font-weight: 400;"><strong>е-mail</strong>:<strong> </strong></span><strong><a href="mailto:info@parking-servis.co.rs">info@parking-servis.co.rs</a></strong></p>
+<p class="CyrLatIgnore" style="text-align: justify;"><span style="font-weight: 400;"><strong>Web</strong>: </span><strong><a href="http://www.parking-servis.co.rs">www.parking-servis.co.rs</a></strong></p>
+<h5 style="text-align: justify;">&nbsp;</h5>
+<h5 style="text-align: justify;"><span style="font-weight: 400;"><strong>*</strong><span style="text-decoration: underline;"><strong>Напомена</strong></span><strong>: </strong>На сајту се приказују еДневне паркинг карте издате у последњих 60 дана.</span></h5></div>
+    </div>
+</section>
+        </main>
+    <footer class="site-footer">
+    <div class="container">
+        <div class="widgets">
+            <div class="row">
+
+                <div class="widget">
+                    <div class="search-wrap">
+                        <form class="search-form" method="POST" action="https://www.parking-servis.co.rs/search">
+                            <input type="hidden" name="_token" value="y2h6H6sl0MFDa1unG0LXGqf8wPAz3SYR6En2wUJQ">                            <input type="hidden" name="segment" value="edpk">
+                            <input type="text" name="term" required placeholder="Unesite ključnu reč" />
+                            <button class="button"><img src="/images/front/search.svg" alt="Search" /></button>
+                        </form>
+                    </div>
+
+                    <div class="footer-contact">
+                        <h3 class="widget-title">Kontakt podaci</h3>
+
+                        <p>Telefon: <a href="#">+381 11 3035400</a></p>
+                        <p class="CyrLatIgnore">Е-mail: <a href="#">info@parking-servis.co.rs</a></p>
+                        <p>Poslovnice:</p>
+                        <p>Takovska 31, Mileševska 51</p>
+                        <p>Beograd, Srbija</p>
+                    </div>
+
+                    <div class="footer-logos">
+                        <div class="footer-logo"><img src="/images/front/footer/footer-logo-1.png" alt="" /></div>
+                        <div class="footer-logo"><img src="/images/front/footer/footer-logo-2.png" alt="" /></div>
+                        <div class="footer-logo"><img src="/images/front/footer/footer-logo-3.png" alt="" /></div>
+                        <div class="footer-logo"><img src="/images/front/footer/footer-logo-4.png" alt="" /></div>
+                    </div>
+                </div>
+
+                                <div class="widget">
+                    <h4 class="widget-title"><a href="https://www.parking-servis.co.rs/o-nama">О нама</a></h4>
+
+                    <ul class="menu">
+                                                <li><a href="https://www.parking-servis.co.rs/o-nama#2-delatnost">Делатност</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/istorijat">Историјат</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/o-nama#4-rukovodstvo-i-organizacija">Организација</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/standardi-i-priznanja">Стандарди и признања</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/o-nama#6-dokumenta">Документа</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/razvojni-projekti">Развојни пројекти</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/drustvena-odgovornost">Друштвена одговорност</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/vesti">Вести</a></li>
+                                            </ul>
+                </div>
+                                <div class="widget">
+                    <h4 class="widget-title"><a href="https://www.parking-servis.co.rs/zonski-sistem-parkiranja">Зонско паркирање</a></h4>
+
+                    <ul class="menu">
+                                                <li><a href="https://www.parking-servis.co.rs/zonski-sistem-parkiranja#2-zonski-sistem-parkiranja">Зонски систем</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/placanje-po-satu">Плаћање по сату</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/edpk">еДневна карта</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/mesecna-pretplata-u-zonama">Месечна претплата</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/pretraga-ulica">Претрага улица</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/mape-podzona">Мапе подзона</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/parkiraj-i-vozi-se">Паркирај и вози се</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/zonski-sistem-parkiranja#6-sms-parkiralista">СМС паркиралишта</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/aplikacija">Мобилна апликација</a></li>
+                                            </ul>
+                </div>
+                                <div class="widget">
+                    <h4 class="widget-title"><a href="https://www.parking-servis.co.rs/garaze-i-parkiralista">Гараже/паркиралишта</a></h4>
+
+                    <ul class="menu">
+                                                <li><a href="https://www.parking-servis.co.rs/garaze-i-parkiralista#2-garaze-i-parkiralista">Паркинг објекти</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/mesecna-pretplata-u-garazama">Месечна претплата</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/pripejd-kartica">Припејд картица</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/parking-pass">Parking pass</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/pravila-ponasanja">Правила понашања</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/parkiraj-bicikliraj">Паркирај бициклирај</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/garaze-i-parkiralista#6-slobodna-parking-mesta">Слободна паркинг места</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/parkiranje-osoba-sa-invaliditetom">Паркирање особа са инвалидитетом</a></li>
+                                            </ul>
+                </div>
+                                <div class="widget">
+                    <h4 class="widget-title"><a href="https://www.parking-servis.co.rs/ostale-delatnosti">Остале делатности</a></h4>
+
+                    <ul class="menu">
+                                                <li><a href="https://www.parking-servis.co.rs/ostale-delatnosti#2-medjunarodni-terminal">Међународни терминал</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/pesacke-zone">Пешачке зоне</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/ostale-delatnosti#5-prenos-vozila">Пренос возила</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/blokada-vozila">Блокада возила</a></li>
+                                            </ul>
+                </div>
+                                <div class="widget">
+                    <h4 class="widget-title"><a href="https://www.parking-servis.co.rs/korisnicki-servis">Кориснички сервис</a></h4>
+
+                    <ul class="menu">
+                                                <li><a href="https://www.parking-servis.co.rs/korisnicki-servis#1-kontakt">Контакт</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/korisnicki-servis#2-onlajn-zahtevi">Онлајн захтеви</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/korisnicki-servis#3-cenovnik">Ценовник</a></li>
+                                                <li><a href="https://www.parking-servis.co.rs/korisnicki-servis#4-cesta-pitanja">Честа питања</a></li>
+                                            </ul>
+                </div>
+                            </div>
+            <div class="payment-wrap">
+                <div class="payment-logo"><img src="/images/front/footer/visa.png" alt="" /></div>
+                <div class="payment-logo"><img src="/images/front/footer/pay-logo-2.png" alt="" /></div>
+                <div class="payment-logo"><img src="/images/front/footer/maestro.png" alt="" /></div>
+                <div class="payment-logo"><img src="/images/front/footer/mastercard.png" alt="" /></div>
+                <div class="payment-logo"><img src="/images/front/footer/pay-logo-1.png" alt="" /></div>
+                <div class="payment-logo"><img src="/images/front/footer/bancaintesa.png" alt="" /></div>
+                <div class="payment-logo"><img src="/images/front/footer/pay-logo-5.jpg" alt="" /></div>
+                <div class="payment-logo"><a href="https://www.mastercard.rs/sr-rs/consumers/find-card-products/credit-cards.html" target="_blank"><img src="/images/front/footer/pay-logo-3.gif" alt="" /></a></div>
+                <div class="payment-logo"><a href="https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html" target="_blank"><img src="/images/front/footer/pay-logo-4.jpg" alt="" /></a></div>
+            </div>
+        </div><!-- .widgets -->
+    </div><!-- .container -->
+
+    <div class="footer-bottom">
+        <div class="copyright">
+            <p>Parking Servis <span class="CyrLatIgnore">© Copyright 2021 | All Rights Reserved</span></p>
+        </div>
+    </div><!-- .footer-bottom -->
+</footer>
+                                <script src="/js/front/edpk.js?id=ccd56219e0d766238fdc"></script>
+                        <script>
+        var LatCyr = new CyrLatConverter('body').init();
+        window.LatCyr = LatCyr;
+                    LatCyr.L2C();
+            </script>
+    <script src="/js/front/index.js?id=1179e7dc6043402e1888"></script>
+</body>
+
+</html>

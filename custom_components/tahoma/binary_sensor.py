@@ -1,5 +1,4 @@
-"""Support for TaHoma binary sensors."""
-
+"""Support for Overkiz binary sensors."""
 from __future__ import annotations
 
 from homeassistant.components import binary_sensor
@@ -74,6 +73,13 @@ BINARY_SENSOR_DESCRIPTIONS = [
         device_class=binary_sensor.DEVICE_CLASS_VIBRATION,
         is_on=lambda state: state == STATE_DETECTED,
     ),
+    # DomesticHotWaterProduction/WaterHeatingSystem
+    OverkizBinarySensorDescription(
+        key="io:OperatingModeCapabilitiesState",
+        name="Energy Demand Status",
+        device_class=binary_sensor.DEVICE_CLASS_HEAT,
+        is_on=lambda state: state.get("energyDemandStatus") == 1,
+    ),
 ]
 
 
@@ -82,7 +88,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Set up the TaHoma sensors from a config entry."""
+    """Set up the Overkiz sensors from a config entry."""
     data = hass.data[DOMAIN][entry.entry_id]
     coordinator = data["coordinator"]
     entities = []
@@ -92,13 +98,11 @@ async def async_setup_entry(
     }
 
     for device in coordinator.data.values():
-        for state in device.states:
-            description = key_supported_states.get(state.name)
-
-            if description:
+        for state in device.definition.states:
+            if description := key_supported_states.get(state.qualified_name):
                 entities.append(
-                    TahomaBinarySensor(
-                        device.deviceurl,
+                    OverkizBinarySensor(
+                        device.device_url,
                         coordinator,
                         description,
                     )
@@ -107,11 +111,15 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class TahomaBinarySensor(OverkizDescriptiveEntity, BinarySensorEntity):
-    """Representation of a TaHoma Binary Sensor."""
+class OverkizBinarySensor(OverkizDescriptiveEntity, BinarySensorEntity):
+    """Representation of an Overkiz Binary Sensor."""
 
     @property
     def is_on(self):
         """Return the state of the sensor."""
-        state = self.device.states[self.entity_description.key]
+        state = self.device.states.get(self.entity_description.key)
+
+        if not state:
+            return None
+
         return self.entity_description.is_on(state.value)

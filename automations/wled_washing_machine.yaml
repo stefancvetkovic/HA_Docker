@@ -9,6 +9,7 @@
       after: "07:00:00"
       before: "00:00:00"
   action:
+    - delay: 00:00:05
     - service: script.turn_on
       entity_id: script.play_notification
       data:
@@ -29,8 +30,8 @@
   description: 'Notify when washing laundry is finished'
   trigger:
     - platform: state
-      entity_id: binary_sensor.washer_wash_completed
-      to: 'on'
+      entity_id: sensor.washer
+      to: 'off'
   action:
     - choose:
       - conditions:
@@ -44,11 +45,13 @@
               variables:
                 speaker: "media_player.bathroom_ceiling_speaker"
                 source: "Primary Chromecast"
-                volume: "0.4"
+                volume: "0.3"
                 custom_message: "Attention! Washing machine has finished washing the laundry."
                 platform: "tts.google_translate_say"
                 delay: "00:00:03"
                 chromecast_device: "media_player.system_chromecast"
+          - service: light.turn_off
+            entity_id: light.bathroom_wled
 
     - service: input_boolean.turn_on
       entity_id: input_boolean.pickup_laundry

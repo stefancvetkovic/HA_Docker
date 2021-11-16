@@ -1,0 +1,10 @@
+- platform: group
+  name: Warning Lights
+  entities:
+    - light.wled_br_wd_l_segment_0
+    - light.bathroom_wled
+    - light.hallway_wled
+    - light.livingroom_wled_below_tv
+    - light.livingroom_wled_above_tv
+    - light.kitchen_wled
+    - light.bedroom_wall_wled

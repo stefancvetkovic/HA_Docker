@@ -15,4 +15,6 @@ data:
 notifiers:
   - mobile_app_stefans_iphone
   - mobile_app_anjas_iphone
+  # - bedroom_tv
+  # - livingroom_tv
   # - persistent_notification

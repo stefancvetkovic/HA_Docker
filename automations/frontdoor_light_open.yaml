@@ -1,15 +1,12 @@
 - alias: "Hallway LED Light Effect Frontdoor"
   trigger:
       platform: state
-      entity_id: binary_sensor.nuki_door_state
-      to:
-        - "on"
-        - "off"   
+      entity_id: binary_sensor.front_door
   action:
     choose:
       - conditions:
           - condition: template
-            value_template: "{{trigger.to_state.state == 'on'}}"
+            value_template: "{{trigger.to_state.state == 'on' and is_state('input_boolean.warning', 'off')}}"
         sequence:
           - service: scene.create
             data:
@@ -22,13 +19,19 @@
               effect: Chase
               #speed: 169
               #intensity: 38
-              #brightness: 150
+              brightness: 150
             target:
               entity_id: light.hallway_wled
+          - service: wled.effect
+            entity_id: light.hallway_wled
+            data:
+              speed: 169
+              intensity: 38
+              
       - conditions:
           - condition: template
-            value_template: "{{trigger.to_state.state == 'off'}}"
+            value_template: "{{trigger.to_state.state == 'off' and is_state('input_boolean.warning', 'off')}}"
         sequence:
           - service: scene.turn_on
             data:
-              entity_id: scene.hallway_led
+              entity_id: scene.hallway_led  

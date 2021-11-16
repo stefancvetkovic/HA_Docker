@@ -8,7 +8,7 @@
       below: 50  
   action:
     - service_template: >
-        {% if states('sensor.bathroom_thp_humidity') | float >= 60 %}
+        {% if states('sensor.bathroom_thp_humidity') | float >= 60 and states('light.bathroom_main_light') == 'on' %}
           switch.turn_on
         {% else %}
           switch.turn_off

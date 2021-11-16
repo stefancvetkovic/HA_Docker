@@ -51,6 +51,14 @@ FEAT_STEAM = "steam"
 FEAT_STEAMSOFTENER = "steam_softener"
 FEAT_TURBOWASH = "turbo_wash"
 
+# SPECIALS GTI
+FEAT_ANTICREASE = "anti_crease"
+FEAT_DAMPDRYBEEP = "damp_dry_beep"
+FEAT_ECOHYBRID = "eco_hybrid"
+FEAT_HANDIRON = "hand_iron"
+FEAT_RESERVATION = "reservation"
+FEAT_SELFCLEAN = "self_clean"
+
 # refrigerator device features
 FEAT_ECOFRIENDLY = "eco_friendly"
 FEAT_EXPRESSMODE = "express_mode"
@@ -72,6 +80,9 @@ FEAT_OVEN_LOWER_STATE = "oven_lower_state"
 FEAT_OVEN_UPPER_CURRENT_TEMP = "oven_upper_current_temp"
 FEAT_OVEN_UPPER_STATE = "oven_upper_state"
 
+# air purifier device features
+FEAT_LOWER_FILTER_LIFE = "lower_filter_life"
+FEAT_UPPER_FILTER_LIFE = "upper_filter_life"
 
 # request ciphers settings
 CIPHERS = ":HIGH:!DH:!aNULL"

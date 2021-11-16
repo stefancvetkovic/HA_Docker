@@ -11,16 +11,16 @@
     - service: light.toggle
       entity_id: light.livingroom_ceiling_led_1
 
-# - alias: Livingroom Entrance Controller LED Above TV
-#   id: livingroom_entrance_led_above_tv_short_click
-#   trigger:
-#     platform: event
-#     event_type: esphome.livingroom_entrance_2
-#     event_data:
-#       type: single_short_click_1
-#   action:
-#     - service: light.toggle
-#       entity_id: group.livingroom_led_above_tv_all_channels
+- alias: Livingroom Entrance Controller LED Above TV
+  id: livingroom_entrance_led_above_tv_short_click
+  trigger:
+    platform: event
+    event_type: esphome.livingroom_entrance_1
+    event_data:
+      type: single_short_click_4
+  action:
+    - service: light.toggle
+      entity_id: light.livingroom_wled_above_tv
 
 - alias: Livingroom Entrance Controller LED Below TV
   id: livingroom_entrance_led_below_tv_short_click
@@ -101,14 +101,13 @@
   id: livingroom_entrance_led_above_tv_single_long_click
   trigger:
     platform: event
-    event_type: esphome.livingroom_entrance_2
+    event_type: esphome.livingroom_entrance_1
     event_data:
-      type: single_long_click_1
+      type: single_long_click_4
   action:
     - service: light.turn_off
-      entity_id: 
-        - light.livingroom_go_temp_abovetv
-        - light.livingroom_go_color_abovetv
+      entity_id: light.livingroom_wled_above_tv
+
 
 - alias: Livingroom Entrance BelowTv Ledstrip Single Long Click
   id: livingroom_entrance_led_below_tv_single_long_click
@@ -132,17 +131,15 @@
   id: livingroom_entrance_abovetv_ledstrip_double_click
   trigger:
     platform: event
-    event_type: esphome.livingroom_entrance_2
+    event_type: esphome.livingroom_entrance_1
     event_data:
-      type: double_click_1
+      type: double_click_4
   action:
-    - service: light.turn_off
-      entity_id: light.livingroom_go_temp_abovetv       
-
-    - service: light.turn_on
-      entity_id: light.livingroom_go_color_abovetv
+    - service: script.turn_on
+      entity_id: script.wled_random
       data:
-        rgb_color: ["{{range(256)|random}}","{{range(256)|random}}","{{range(256)|random}}"]
+        variables:
+          wled: light.livingroom_wled_above_tv
 
 - alias: Livingroom Entrance BelowTv Ledstrip Double Click
   id: livingroom_entrance_belowtv_ledstrip_double_click

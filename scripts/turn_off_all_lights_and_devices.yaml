@@ -20,6 +20,12 @@ sequence:
   - service: light.turn_off
     entity_id: all
 
+  - service: switch.turn_off
+    entity_id: switch.bedroom_led_light_trafo
+
+  - service: light.turn_on
+    entity_id: light.wled_br_quad_master
+
   #Turn off all media players
   - service: media_player.turn_off
     entity_id: all

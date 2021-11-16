@@ -1,8 +1,0 @@
-- alias: "Office Led Strip Movement On"
-  description: "Turns on or off when detected movement in front of closet"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_sensor_livingroom
-  action:
-    - service: light.turn_{{trigger.to_state.state}}
-      entity_id: light.office_closet_lights

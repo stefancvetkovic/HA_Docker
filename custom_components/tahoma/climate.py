@@ -1,4 +1,4 @@
-"""Support for TaHoma climate devices."""
+"""Support for Overkiz climate devices."""
 from homeassistant.components.climate import DOMAIN as CLIMATE
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -49,14 +49,14 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Set up the TaHoma climate from a config entry."""
+    """Set up the Overkiz climate from a config entry."""
     data = hass.data[DOMAIN][entry.entry_id]
     coordinator = data["coordinator"]
 
     climate_devices = [device for device in data["platforms"][CLIMATE]]
 
     entities = [
-        TYPE[device.widget](device.deviceurl, coordinator)
+        TYPE[device.widget](device.device_url, coordinator)
         for device in climate_devices
         if device.widget in TYPE
     ]

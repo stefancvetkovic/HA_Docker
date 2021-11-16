@@ -30,6 +30,11 @@
     event_data:
       type: single_short_click_3
   action:
+    - service: wled.effect
+      data:
+        entity_id: light.kitchen_wled
+        palette: "Default"
+        effect: "Solid"
     - service: light.toggle
       entity_id: light.kitchen_wled
 

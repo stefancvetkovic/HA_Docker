@@ -3,6 +3,6 @@ description: unlocks bottom door
 sequence:
   - service: rest_command.nuki_lock_action
     data:
-      nuki_id: !secret nuki_opener_id
-      dev_type: 0
+      dev_type: 2
+      nuki_id: 685954282
       action: 2
