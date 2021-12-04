@@ -1,0 +1,21 @@
+- alias: "Bedroom Covers Down When Main Light On"
+  description: "Left covers go down if main light is turned on after sunset +1 hour"
+  trigger:
+    - platform: state
+      entity_id: switch.bedroom_main_light
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.night
+      to: 'on'  
+  condition:
+    - condition: state
+      entity_id: binary_sensor.night
+      state: 'on'
+    - condition: template
+      value_template: "{{ state_attr('cover.ss_l', 'current_position') | int > 25 }}"
+  action:
+    - service: cover.set_cover_position
+      data: 
+        entity_id: cover.ss_l
+        position: 24
+

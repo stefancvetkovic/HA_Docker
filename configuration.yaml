@@ -9,6 +9,18 @@ http:
     - 172.17.0.11
     - 172.17.0.10
 alert: !include_dir_named alerts/
+alarm_control_panel:
+  - platform: manual
+    name: Home Alarm
+    code: "6712"
+    arming_time: 30
+    delay_time: 20
+    trigger_time: 4
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      arming_time: 0
+      delay_time: 0
 frontend:
   themes: !include_dir_merge_named themes
 switch: !include switches.yaml
@@ -16,6 +28,10 @@ homeassistant:
   packages: !include_dir_named packages/
   media_dirs:
     local: /media
+
+stream:
+camera: !include_dir_merge_list cameras
+
 
 
 influxdb:
@@ -81,3 +97,14 @@ webostv:
       # - Chromecast
 
 media_player: !include_dir_merge_list media_player/
+
+# rest:
+#   - scan_interval: 60
+#     resource: https://www.parking-servis.co.rs/edpk
+#     sensor:
+#       - name: "parking service cookie"
+#         json_attributes_path: "$.response.system"
+#         value_template: "{{$.response}}"
+#         json_attributes:
+#           - "fines"
+#           - "paymentAccountNumber"

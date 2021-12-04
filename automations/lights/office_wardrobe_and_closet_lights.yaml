@@ -3,18 +3,18 @@
   trigger:
     - platform: state
       entity_id: 
-        - binary_sensor.office_closet_left_door
-        - binary_sensor.office_closet_right_door
         - binary_sensor.office_wardrobe_left_door
         - binary_sensor.office_wardrobe_right_door
   action:
     - service_template: >
-          light.turn_{{trigger.to_state.state}}
+        {% if states('binary_sensor.office_wardrobe_left_door') == "on" or states('binary_sensor.office_wardrobe_right_door') == "on" %}
+          light.turn_on
+        {% else %}
+          light.turn_off
+        {% endif %}  
       data_template:
         entity_id: >
-          {% if trigger.to_state.entity_id == 'binary_sensor.office_closet_left_door' or trigger.to_state.entity_id == 'binary_sensor.office_closet_right_door' %}
-            light.office_closet_left, light.office_closet_right
-          {% elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_left_door' %}
+          {% if trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_left_door' %}
             light.office_wardrobe_left_left, light.office_wardrobe_left_right
           {% elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_right_door' %}
             light.office_wardrobe_right_right, light.office_wardrobe_right_left

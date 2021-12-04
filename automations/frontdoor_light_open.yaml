@@ -1,37 +1,47 @@
-- alias: "Hallway LED Light Effect Frontdoor"
-  trigger:
-      platform: state
-      entity_id: binary_sensor.front_door
-  action:
-    choose:
-      - conditions:
-          - condition: template
-            value_template: "{{trigger.to_state.state == 'on' and is_state('input_boolean.warning', 'off')}}"
-        sequence:
-          - service: scene.create
-            data:
-              scene_id: hallway_led
-              snapshot_entities: light.hallway_wled
-          - service: light.turn_on
-            data:
-              color_name: Red
-              #pallete: Breeze
-              effect: Chase
-              #speed: 169
-              #intensity: 38
-              brightness: 150
-            target:
-              entity_id: light.hallway_wled
-          - service: wled.effect
-            entity_id: light.hallway_wled
-            data:
-              speed: 169
-              intensity: 38
+# - alias: "Hallway LED Light Effect Frontdoor"
+#   trigger:
+#       platform: state
+#       entity_id: binary_sensor.front_door
+#   action:
+#     choose:
+#       - conditions:
+#           - condition: template
+#             value_template: "{{trigger.to_state.state == 'off' and is_state('input_boolean.warning', 'off')}}"
+#         sequence:
+#           - service: scene.create
+#             data:
+#               scene_id: hallway_led
+#               snapshot_entities: light.hallway_wled
+#           - service: light.turn_on
+#             data:
+#               color_name: Red
+#               #pallete: Breeze
+#               effect: Chase
+#               #speed: 169
+#               #intensity: 38
+#               brightness: 150
+#             target:
+#               entity_id: light.hallway_wled
+#           - service: wled.effect
+#             entity_id: light.hallway_wled
+#             data:
+#               speed: 169
+#               intensity: 38
+#           # - service: persistent_notification.create
+#           #   data:
+#           #     title: 'This is a test on'
+#           #     message: > 
+#           #       {{trigger.to_state.state}}
               
-      - conditions:
-          - condition: template
-            value_template: "{{trigger.to_state.state == 'off' and is_state('input_boolean.warning', 'off')}}"
-        sequence:
-          - service: scene.turn_on
-            data:
-              entity_id: scene.hallway_led  
+#       - conditions:
+#           - condition: template
+#             value_template: "{{trigger.to_state.state == 'on' and is_state('input_boolean.warning', 'off')}}"
+#         sequence:
+#           - service: scene.turn_on
+#             data:
+#               entity_id: scene.hallway_led  
+          # - service: persistent_notification.create
+          #   data:
+          #     title: 'This is a test off'
+          #     message: > 
+          #       {{trigger.to_state.state}}

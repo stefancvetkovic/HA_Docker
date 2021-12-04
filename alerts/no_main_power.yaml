@@ -1,0 +1,13 @@
+name: "Warning! There is no main power in the home!"
+entity_id: input_boolean.main_power
+done_message: "Ok"
+state: "on"
+repeat: 
+- 1
+- 5
+- 10
+can_acknowledge: true
+skip_first: false
+notifiers:
+  - mobile_app_stefans_iphone
+  - mobile_app_anjas_iphone

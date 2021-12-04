@@ -1,0 +1,71 @@
+  - platform: ffmpeg
+    name: Brankov most
+    input: https://streamer.devnet.rs/hls/brankov.m3u8
+
+  - platform: ffmpeg
+    name: Most Gazela
+    input: https://streamer.devnet.rs/hls/gazela.m3u8
+
+  - platform: ffmpeg
+    name: Jurija Gagarina
+    input: https://streamer.devnet.rs/hls/gagarina.m3u8
+
+  - platform: ffmpeg
+    name: Mostarska petlja
+    input: https://streamer.devnet.rs/hls/mostar.m3u8
+    
+  - platform: ffmpeg
+    name: Autokomanda
+    input: https://streamer.devnet.rs/hls/autokomanda.m3u8
+
+  - platform: ffmpeg
+    name: Bul Mihaila Pupina
+    input: https://streamer.devnet.rs/hls/pupina.m3u8
+    
+  - platform: ffmpeg
+    name: Slavija
+    input: https://streamer.devnet.rs/hls/slavija.m3u8
+
+  - platform: ffmpeg
+    name: Genex
+    input: https://streamer.devnet.rs/hls/genex.m3u8
+    
+  - platform: ffmpeg
+    name: Opstina Novi Beograd
+    input: https://streamer.devnet.rs/hls/opstinannbg.m3u8
+
+  - platform: ffmpeg
+    name: Takovska
+    input: https://streamer.devnet.rs/hls/takovska.m3u8
+
+  - platform: ffmpeg
+    name: Vukov spomenik
+    input: https://streamer.devnet.rs/hls/vuk.m3u8
+
+  - platform: ffmpeg
+    name: Trg Republike
+    input: https://streamer.devnet.rs/hls/trgrepublike.m3u8
+
+  - platform: ffmpeg
+    name: Zeleznicka
+    input: https://streamer.devnet.rs/hls/zeleznicka.m3u8
+
+  - platform: ffmpeg
+    name: Trg Nikole Pašića
+    input: https://streamer.devnet.rs/hls/trgnikole.m3u8
+  
+  - platform: ffmpeg
+    name: Ada
+    input: https://streamer.devnet.rs/hls/ada.m3u8
+
+  - platform: ffmpeg
+    name: Despota Stefana
+    input: https://streamer.devnet.rs/hls/despotastefana.m3u8
+
+  - platform: ffmpeg
+    name: Pancevac
+    input: https://streamer.devnet.rs/hls/pancevac.m3u8
+
+  - platform: ffmpeg
+    name: Bogoslovija
+    input: https://streamer.devnet.rs/hls/bogoslovija.m3u8

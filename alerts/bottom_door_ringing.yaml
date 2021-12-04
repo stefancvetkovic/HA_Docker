@@ -1,8 +1,8 @@
 name: "Neko zvoni na interfon"
-#done_message: "Popravljeno"
+done_message: "Zanemari"
 entity_id: binary_sensor.nuki_opener_ring_action_state
 state: "on"
-can_acknowledge: true
+repeat: 10
 skip_first: false
 notifiers:
   - mobile_app_stefans_iphone

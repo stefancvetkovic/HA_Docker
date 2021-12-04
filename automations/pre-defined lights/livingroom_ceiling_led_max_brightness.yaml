@@ -1,0 +1,14 @@
+# - alias: 'Set max brightness for ceiling LED'
+#   trigger:
+#     - platform: state
+#       entity_id: light.livingroom_ceiling_led_1, light.livingroom_ceiling_led_2
+#       to: 'on'
+#   action:
+#     service: >
+#       light.turn_on
+#     data:
+#       brightness_pct: 50
+
+        
+#     entity_id: >
+#       {{trigger.to_state.entity_id}}

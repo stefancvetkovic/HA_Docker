@@ -106,6 +106,44 @@
             - binary_sensor.bedroom_wardrobe_right_door
             state: 'off'
 
+- alias: 'Office Wardrobe Notification Based On Door Sensor'
+  id: office_wardrobe_notification_based_on_door_sensor
+  trigger:
+    - platform: state
+      entity_id: 
+        - binary_sensor.office_wardrobe_left_door
+        - binary_sensor.office_wardrobe_right_door
+      to: 'on'
+      for: "00:05:00"
+  action:
+    - alias: Repeat the sequence UNTIL the conditions are true
+      repeat:
+        sequence:
+          - service: script.turn_off
+            entity_id: script.play_notification
+
+          - service: script.turn_on
+            entity_id: script.play_notification
+            data:
+              variables:
+                speaker: "media_player.office_shelf_speakers"
+                source: "Primary Chromecast"
+                custom_message: "Please, close the wardrobe."
+                volume: "0.4"
+                platform: "tts.google_translate_say"
+                delay: "00:00:03"
+                chromecast_device: "media_player.system_chromecast"
+
+            #wait 3 minutes 
+          - delay: 00:03:00
+        until:
+          # Did it work?
+          - condition: state
+            entity_id: 
+            - binary_sensor.bedroom_wardrobe_left_door
+            - binary_sensor.bedroom_wardrobe_right_door
+            state: 'off'
+
 - alias: 'Bathroom Notification Based On Humidity'
   id: bathroom_notification_clear_glass
   trigger:

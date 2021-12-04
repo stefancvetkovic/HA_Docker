@@ -1,0 +1,63 @@
+- alias: 'No Main Power'
+  description: 'If no main power, then we are on UPS, and we need quickly lift covers, turn on hallway main lights and send notification to everybody'
+  trigger:
+    - platform: state
+      entity_id: light.livingroom_main_light
+      to: 'unavailable'
+    - platform: state
+      entity_id: light.office_main_light
+      to: 'unavailable'
+    - platform: state
+      entity_id: light.bedroom_main_light
+      to: 'unavailable'
+    - platform: state
+      entity_id: light.terace_main_light
+      to: 'unavailable'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.livingroom_main_light
+        state: 'unavailable'
+      - condition: state
+        entity_id: light.office_main_light
+        state: 'unavailable'
+      - condition: state
+        entity_id: light.bedroom_main_light
+        state: 'unavailable'
+      - condition: state
+        entity_id: light.terace_main_light
+        state: 'unavailable'
+  action:
+   # if night, turn on hallwat main lights if someone in the house
+    - choose:
+      - conditions:
+          - condition: state
+            entity_id: binary_sensor.night
+            state: 'on'
+        sequence:
+          - service: light.turn_on
+            entity_id: light.hallway_bedroom_main_light
+          - service: switch.turn_on
+            entity_id: switch.livingroom_coridor_main_light  
+    #lift covers, some covers pull down
+    - service: cover.open_cover
+      entity_id:
+        - cover.ds_s
+        - cover.ss_d
+        - cover.rs_d
+    - service: cover.set_cover_position
+      data:
+        entity_id:
+          - cover.ds_d
+          - cover.ds_l
+          - cover.ss_l
+          - cover.rs_l
+        position: 30
+     
+     #send notification
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.main_power
+
+    - service: script.turn_off
+      entity_id: script.livingroom_tv_set
