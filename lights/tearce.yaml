@@ -1,13 +1,3 @@
-- platform: switch
-  name: Terace Main Light
-  entity_id:
-    - switch.terace_main_light
-
-- platform: switch
-  name: Terace Wall Light
-  entity_id:
-    - switch.terace_wall_light
-
 - platform: group
   name: Terace All Lights
   entities:

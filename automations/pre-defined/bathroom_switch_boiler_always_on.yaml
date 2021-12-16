@@ -1,0 +1,9 @@
+- alias: Bethroom boiler switch always on
+  description: 'Because we have smart wifi ariston boiler, theres no need to turn off the boiler from AC source on bathroom switch'
+  trigger:
+  - platform: state
+    entity_id: switch.bathroom_boiler
+    to: 'off'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.bathroom_boiler

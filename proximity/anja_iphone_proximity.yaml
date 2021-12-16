@@ -1,0 +1,3 @@
+devices:
+  - device_tracker.anjas_iphone
+tolerance: 50

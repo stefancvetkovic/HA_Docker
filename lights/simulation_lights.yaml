@@ -1,6 +1,6 @@
   simulation_lights:
     name: Simulation lights
     entities:
-      - switch.livingroom_coridor_main_light
-      - switch.bedroom_main_light
-      - switch.office_main_light
+      - light.hallway_livingroom_main_light
+      - light.bedroom_main_light
+      - light.office_main_light

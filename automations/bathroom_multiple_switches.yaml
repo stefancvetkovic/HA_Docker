@@ -3,14 +3,14 @@
   trigger:
     - platform: state
       entity_id:
-        - switch.bathroom_main_light
+        - light.bathroom_main_light
         - switch.bathroom_fan
   action:
       - choose:
         - conditions:
             - condition: template
               value_template: >
-                {% set bathroom_main_light_last_changed = as_timestamp(states.switch.bathroom_main_light.last_changed) %}
+                {% set bathroom_main_light_last_changed = as_timestamp(states.light.bathroom_main_light.last_changed) %}
                 {% set bathroom_fan_last_changed = as_timestamp(states.switch.bathroom_fan.last_changed) %}
                 {% set time_diff = (bathroom_main_light_last_changed - bathroom_fan_last_changed) | abs %}
                 {{ 3 > time_diff > 0 }}

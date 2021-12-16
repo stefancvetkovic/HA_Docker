@@ -5,8 +5,8 @@
   action:
     - service_template: >
         {% if states('binary_sensor.rack_door') == "on" %}
-          switch.turn_on
+          light.turn_on
         {% else %}
-          switch.turn_off
+          light.turn_off
         {% endif %}
-      entity_id: switch.rack_light
+      entity_id: light.rack_light

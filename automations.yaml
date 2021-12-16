@@ -1,44 +1,3 @@
-- id: '1592771497607'
-  alias: TestWledBedroomWardrobe
-  description: ''
-  trigger:
-  - entity_id: binary_sensor.toilet_door
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - data: {}
-    entity_id: light.bedroom_wled_wardrobe_left_master, light.bedroom_wled_wardrobe_left_segment_0,
-      light.bedroom_wled_wardrobe_left_segment_1
-    service: light.turn_on
-- id: '1592771689208'
-  alias: TestWledWardrobeBedroomOff
-  description: ''
-  trigger:
-  - entity_id: binary_sensor.toilet_door
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data: {}
-    entity_id: light.bedroom_wled_wardrobe_left_master, light.bedroom_wled_wardrobe_left_segment_0,
-      light.bedroom_wled_wardrobe_left_segment_1
-    service: light.turn_off
-- id: '1592936518874'
-  alias: TurnOnLedStripGO
-  description: ''
-  trigger:
-  - entity_id: light.livingroom_ac_ledstrip_greywall
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - data: {}
-    entity_id: light.livingroom_go_color_greywall
-    service: light.turn_on
 - id: '1592937215382'
   alias: Bedroom Sensor Detected
   description: If its triggers between 23.00 - 08.00, it turns bed led strip on
@@ -55,10 +14,6 @@
   - data: {}
     entity_id: switch.bedroom_led_light_trafo
     service: switch.turn_on
-  - delay: 0:05
-  - data: {}
-    entity_id: light.bedroom_go_color_bed, light.bedroom_go_temp_bed
-    service: light.turn_on
 - id: '1592938524703'
   alias: Bedroom Turn Off Bed Lights
   description: Turning bed ledstrip lights and trafo when no movement is detected
@@ -201,34 +156,6 @@
     data: {}
     entity_id: switch.kitchen_pre_trafo_working_desk_light
   mode: single
-- id: '1612222652712'
-  alias: deCONZ - IKEA SYMFONISK remote
-  description: ''
-  use_blueprint:
-    path: L-Carslake/deconz-ikea-symfonisk.yaml
-    input:
-      remote: 90447a3ed72fb898704f80ae2b5d4b1c
-      rotate_clockwise_start:
-      - service: media_player.volume_up
-        data: {}
-        entity_id: media_player.bedroom_ceiling_speaker
-      rotate_anticlockwise_start:
-      - service: media_player.volume_down
-        data: {}
-        entity_id: media_player.bedroom_ceiling_speaker
-      button_single_press:
-      - service: media_player.toggle
-        entity_id: media_player.bedroom_tv
-      button_double_press:
-      - service: webostv.button
-        data:
-          entity_id: media_player.bedroom_tv
-          button: CHANNELUP
-      button_triple_press:
-      - service: webostv.button
-        data:
-          entity_id: media_player.bedroom_tv
-          button: CHANNELDOWN
 - id: '1623164801824'
   alias: Plex light control
   description: ''
@@ -279,33 +206,265 @@
         - cover.ds_d
         - cover.ds_s
         - cover.ds_l
-
-- id: '1633195328880'
-  alias: Bathroom Button Actions
-  description: ''
+- id: '1638978737664'
+  alias: Livingroom Cube
+  description: Operations with aqara cube in livingroom
   use_blueprint:
-    path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
+    path: luckypoppy/z2m-xiaomi-cube-controller.yaml
     input:
-      action_sensor: sensor.bathroom_button
-      single_action:
-        - service: script.turn_on
-          data:
-            entity_id: "{% if is_state('media_player.bathroom_ceiling_speaker', 'on')\
-              \ %}\n  script.stop_showering\n{%- else -%}\n  script.start_showering\n\
-              {%- endif %}\n"
-      double_action:
-        - service: script.turn_on
-          data:
-            entity_id: "{% if is_state('media_player.bathroom_ceiling_speaker', 'on')\
-              \ %}\n  script.stop_showering\n{%- else -%}\n  script.start_showering\n\
-              {%- endif %}\n"
-      tripple_action:
-        - service: persistent_notification.create
-          data:
-            title: This is a test
-            message: Tripple clicked.
-      quadruple_action:
-        - service: persistent_notification.create
-          data:
-            title: This is a test
-            message: Quadruple clicked.
+      remote: sensor.livingroom_cube_action
+      doubletap_face_0:
+      - service: persistent_notification.create
+        data:
+          message: Double tap
+          title: Double tap
+          notification_id: Double tap
+      flipped90_face_0:
+      - service: script.turn_on
+        target:
+          entity_id: script.livingroom_romantic_scene
+      flipped180_face_0:
+      - service: persistent_notification.create
+        data:
+          message: FLip the cube 180
+          title: FLip the cube 180
+          notification_id: FLip the cube 180
+      rotate_cw_face_0:
+      - service: persistent_notification.create
+        data:
+          message: Roatate clockwise
+          title: Roatate clockwise
+          notification_id: Roatate clockwise
+      rotate_ccw_face_0:
+      - service: persistent_notification.create
+        data:
+          message: Roatate counter clockwise
+          title: Roatate counter clockwise
+          notification_id: Roatate counter clockwise
+      slide_face_1:
+      - service: persistent_notification.create
+        data:
+          message: Slide the cube with face 1 up
+          title: Slide the cube with face 1 up
+          notification_id: Slide the cube with face 1 up
+      doubletap_face_1:
+      - service: persistent_notification.create
+        data:
+          message: Double tap the cube with face 1 up
+          title: Double tap the cube with face 1 up
+          notification_id: Double tap the cube with face 1 up
+      flipped90_face_1:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 90 degrees to face 1
+          title: Flip the cube 90 degrees to face 1
+          notification_id: Flip the cube 90 degrees to face 1
+      flipped180_face_1:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 180 degrees to face 1
+          title: Flip the cube 180 degrees to face 1
+          notification_id: Flip the cube 180 degrees to face 1
+      rotate_cw_face_1:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube clockwise with face 1 up
+          title: Rotate cube clockwise with face 1 up
+          notification_id: Rotate cube clockwise with face 1 up
+      rotate_ccw_face_1:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube counter clockwise with face 1 up
+          title: Rotate cube counter clockwise with face 1 up
+          notification_id: Rotate cube counter clockwise with face 1 up
+      slide_face_2:
+      - service: persistent_notification.create
+        data:
+          message: Slide the cube with face 2 up
+          title: Slide the cube with face 2 up
+          notification_id: Slide the cube with face 2 up
+      doubletap_face_2:
+      - service: persistent_notification.create
+        data:
+          message: Double tap the cube with face 2 up
+          title: Double tap the cube with face 2 up
+          notification_id: Double tap the cube with face 2 up
+      flipped90_face_2:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 90 degrees to face 2
+          title: Flip the cube 90 degrees to face 2
+          notification_id: Flip the cube 90 degrees to face 2
+      flipped180_face_2:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 180 degrees to face 2
+          title: Flip the cube 180 degrees to face 2
+          notification_id: Flip the cube 180 degrees to face 2
+      rotate_cw_face_2:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube clockwise with face 2 up
+          title: Rotate cube clockwise with face 2 up
+          notification_id: Rotate cube clockwise with face 2 up
+      rotate_ccw_face_2:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube counter clockwise with face 2 up
+          title: Rotate cube counter clockwise with face 2 up
+          notification_id: Rotate cube counter clockwise with face 2 up
+      slide_face_3:
+      - service: persistent_notification.create
+        data:
+          message: Slide the cube with face 3 up
+          title: Slide the cube with face 3 up
+          notification_id: Slide the cube with face 3 up
+      doubletap_face_3:
+      - service: persistent_notification.create
+        data:
+          message: Double tap the cube with face 3 up
+          title: Double tap the cube with face 3 up
+          notification_id: Double tap the cube with face 3 up
+      flipped90_face_3:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 90 degrees to face 3
+          title: Flip the cube 90 degrees to face 3
+          notification_id: Flip the cube 90 degrees to face 3
+      flipped180_face_3:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 180 degrees to face 3
+          title: Flip the cube 180 degrees to face 3
+          notification_id: Flip the cube 180 degrees to face 3
+      rotate_cw_face_3:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube clockwise with face 3 up
+          title: Rotate cube clockwise with face 3 up
+          notification_id: Rotate cube clockwise with face 3 up
+      rotate_ccw_face_3:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube counter clockwise with face 3 up
+          title: Rotate cube counter clockwise with face 3 up
+          notification_id: Rotate cube counter clockwise with face 3 up
+      slide_face_4:
+      - service: persistent_notification.create
+        data:
+          message: Slide the cube with face 4 up
+          title: Slide the cube with face 4 up
+          notification_id: Slide the cube with face 4 up
+      doubletap_face_4:
+      - service: persistent_notification.create
+        data:
+          message: Double tap the cube with face 4 up
+          title: Double tap the cube with face 4 up
+          notification_id: Double tap the cube with face 4 up
+      flipped90_face_4:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 90 degrees to face 4
+          title: Flip the cube 90 degrees to face 4
+          notification_id: Flip the cube 90 degrees to face 4
+      flipped180_face_4:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 180 degrees to face 4
+          title: Flip the cube 180 degrees to face 4
+          notification_id: Flip the cube 180 degrees to face 4
+      rotate_cw_face_4:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube clockwise with face 4 up
+          title: Rotate cube clockwise with face 4 up
+          notification_id: Rotate cube clockwise with face 4 up
+      rotate_ccw_face_4:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube counter clockwise with face 4 up
+          title: Rotate cube counter clockwise with face 4 up
+          notification_id: Rotate cube counter clockwise with face 4 up
+      slide_face_5:
+      - service: persistent_notification.create
+        data:
+          message: Slide the cube with face 5 up
+          title: Slide the cube with face 5 up
+          notification_id: Slide the cube with face 5 up
+      doubletap_face_5:
+      - service: persistent_notification.create
+        data:
+          message: Double tap the cube with face 5 up
+          title: Double tap the cube with face 5 up
+          notification_id: Double tap the cube with face 5 up
+      flipped90_face_5:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 90 degrees to face 5
+          title: Flip the cube 90 degrees to face 5
+          notification_id: Flip the cube 90 degrees to face 5
+      flipped180_face_5:
+      - service: persistent_notification.create
+        data:
+          message: Flip the cube 180 degrees to face 5
+          title: Flip the cube 180 degrees to face 5
+          notification_id: Flip the cube 180 degrees to face 5
+      rotate_cw_face_5:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube clockwise with face 5 up
+          title: Rotate cube clockwise with face 5 up
+          notification_id: Rotate cube clockwise with face 5 up
+      rotate_ccw_face_5:
+      - service: persistent_notification.create
+        data:
+          message: Rotate cube counter clockwise with face 5 up
+          title: Rotate cube counter clockwise with face 5 up
+          notification_id: Rotate cube counter clockwise with face 5 up
+      shake:
+      - service: braviatv_psk.bravia_command
+        data:
+          entity_id: media_player.livingroom_bravia
+          command_id: ChannelUp
+      fall:
+      - service: persistent_notification.create
+        data:
+          message: Drop the cube
+          title: Drop the cube
+          notification_id: Drop the cube
+- id: '1639521064597'
+  alias: IKEA Symfonisk Black Hallway Controler
+  description: Sets different lights, and double, tripple tap actions
+  use_blueprint:
+    path: EPMatt/ikea_e1744.yaml
+    input:
+      integration: Zigbee2MQTT
+      helper_last_controller_event: input_text.ikea_symfonisk_blueprint_helper
+      controller_entity: sensor.ikea_symfonisk_action
+      action_rotate_left:
+      - device_id: 45d0465cd0dc95de3e6d426130ae4104
+        domain: light
+        entity_id: light.livingroom_ceiling_led_1
+        type: brightness_decrease
+      - type: turn_off
+        device_id: 45d0465cd0dc95de3e6d426130ae4104
+        entity_id: light.terace_spot_1
+        domain: light
+      action_rotate_right:
+      - device_id: 45d0465cd0dc95de3e6d426130ae4104
+        domain: light
+        entity_id: light.livingroom_ceiling_led_2
+        type: brightness_increase
+      - device_id: 45d0465cd0dc95de3e6d426130ae4104
+        domain: light
+        entity_id: light.livingroom_ceiling_led_1
+        type: brightness_increase
+      action_click_double:
+      - service: icloud.play_sound
+        data:
+          account: stefan.cv5@gmail.com
+          device_name: stefansiphone
+      - service: icloud.play_sound
+        data:
+          account: permanentnosiva@icloud.com
+          device_name: anjasiphone

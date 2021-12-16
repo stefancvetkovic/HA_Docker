@@ -1,0 +1,15 @@
+- alias: 'Livingroom Main Light Replace to ceiling LED'
+  trigger:
+    - platform: state
+      entity_id: light.livingroom_main_light
+      to: 'on'
+  action:
+    - delay: 00:00:05
+    - service: light.turn_off
+      data:
+        entity_id: light.livingroom_main_light
+    
+    - service: light.turn_on
+      entity_id: light.livingroom_ceiling_led
+      data:
+        brightness: 200

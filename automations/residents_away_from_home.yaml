@@ -16,19 +16,3 @@
   action:
     - service: script.turn_on
       entity_id: script.turn_off_all_lights_and_devices
-
-    - choose:
-        - conditions:
-          - condition: and
-            conditions:
-              - condition: template
-                value_template: "{{ states('input_boolean.pet_mode') == 'on' }}"
-              - condition: template
-                value_template: "{{ states('binary_sensor.night') == 'on' }}"
-              - condition: or
-                conditions:
-              - condition: template
-                value_template: "{{ state_attr('cover.ds_s','current_position') < 50 and state_attr('cover.ds_l','current_position') < 50 and state_attr('cover.ds_d','current_position') < 50}}"
-          sequence:
-            - service: light.turn_on
-              entity_id: light.hallway_bedroom_wall_light, light.livingroom_wled_above_tv, light.bedroom_left_lamp

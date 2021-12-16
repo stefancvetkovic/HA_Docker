@@ -38,8 +38,8 @@
         sequence:
           - service: light.turn_on
             entity_id: light.hallway_bedroom_main_light
-          - service: switch.turn_on
-            entity_id: switch.livingroom_coridor_main_light  
+          - service: light.turn_on
+            entity_id: lioght.hallway_livingroom_main_light  
     #lift covers, some covers pull down
     - service: cover.open_cover
       entity_id:

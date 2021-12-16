@@ -12,7 +12,7 @@ alert: !include_dir_named alerts/
 alarm_control_panel:
   - platform: manual
     name: Home Alarm
-    code: "6712"
+    code: !secret alarm_code 
     arming_time: 30
     delay_time: 20
     trigger_time: 4
@@ -32,19 +32,19 @@ homeassistant:
 stream:
 camera: !include_dir_merge_list cameras
 
-
+proximity: !include_dir_named proximity
 
 influxdb:
   host: !secret unraid_ip
-  port: 8088
-  username: homeassistant
+  port: !secret influxdb_port
+  username: !secret influxdb_username
   password: !secret influxdb_token
-  database: homeassistant
+  database: !secret influxdb_database
 
 # Text to speech
 tts:
   - platform: google_translate
-    base_url: http://192.168.1.79:8123
+    base_url: !secret base_local_ha_uri
     cache: true
 
 notify: !include_dir_merge_list notify/
@@ -54,7 +54,6 @@ scene: !include_dir_merge_list scenes
 spotcast:
   sp_dc: !secret spotcast_sp_dc
   sp_key: !secret spotcast_sp_key
-
 
 spotify:
   client_id: !secret spotify_client_id
@@ -98,6 +97,40 @@ webostv:
 
 media_player: !include_dir_merge_list media_player/
 
+aquaariston:
+  username: !secret ariston_username
+  password: !secret ariston_password
+  polling: 1.0
+  type: "velis"
+  switches:
+    - eco                             # switches ECO mode
+    - power                           # switches power
+  binary_sensors:
+    - antilegionella                  # indicates antilegionella status
+    - changing_data                   # indicates ongoing configuration on server by the API
+    - eco                             # indicates ECO mode status
+    - heating                         # indicates ongoing heating
+    - online                          # indicates API online status
+    - power                           # indicates power status
+    - update                          # indicates API update
+  sensors:
+    - antilegionella_set_temperature  # antilegionella temperature
+    - current_temperature             # current temperature
+    - energy_use_in_day               # energy use in last day
+    - energy_use_in_month             # energy use in last week
+    - energy_use_in_week              # energy use in last month
+    - energy_use_in_year              # energy use in last year
+    - errors                          # errors
+    - mode                            # manual or time program mode
+    - remaining_time                  # remaining time for heating
+    - required_showers                # required amount of showers (might not work on all models)
+    - required_temperature            # required temperature (simulated by API itself for some models)
+    - showers                         # estimated amount of average showers
+    - temperature_mode                # indicates if required temeparture is based on required temperature or required showers
+    - time_program                    # time program schedule
+  selector:
+    - mode                            # boiler mode selector
+    
 # rest:
 #   - scan_interval: 60
 #     resource: https://www.parking-servis.co.rs/edpk

@@ -1,0 +1,33 @@
+- alias: Hallway livingroom reset wled on multiple switches
+  description: 'This automation will reset wled (pre-trafo switch) if it almost simultaniosly is pressed rotary encoder and main ligth switch'
+  trigger:
+    - platform: state
+      entity_id:
+        - light.hallway_livingroom_main_light
+  action:
+      - choose:
+        - conditions:
+            - condition: template
+              value_template: >
+                {% set hallway_livingroom_main_light_last_changed = as_timestamp(states.light.hallway_livingroom_main_light.last_changed) %}
+                {% set rotary_encoder_last_changed = as_timestamp(states.binary_sensor.hallway_actuator_button.last_changed) %}
+                {% set time_diff = (hallway_livingroom_main_light_last_changed - rotary_encoder_last_changed) | abs %}
+                {{ 0.5 > time_diff > 0 }}
+          sequence:
+
+            - service: persistent_notification.create
+              data:
+                title: 'Resetting Hallway WLED'
+                message: "In progress..."
+                
+            - service: switch.turn_off
+              entity_id: switch.hallway_led_pre_trafo
+            - delay: "00:00:04"
+            - service: switch.turn_on
+              entity_id: switch.hallway_led_pre_trafo            
+            - service: persistent_notification.create
+              data:
+                title: 'Resetting Hallway WLED'
+                message: "Done."
+            # - service: light.toggle
+            #   entity_id: light.bathroom_wled

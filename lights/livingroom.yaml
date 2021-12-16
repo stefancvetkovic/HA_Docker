@@ -1,11 +1,3 @@
-  - platform: switch
-    name: Livingroom Main Light
-    entity_id: switch.livingroom_main_light
-  
-  - platform: switch
-    name: Livingroom Mini Spotlights
-    entity_id: switch.livingroom_mini_led_above_tv
-
   - platform: group
     name: Livingroom spotlights 1
     entities:
@@ -48,3 +40,4 @@
       - light.livingroom_spotlights_2
       - light.livingroom_ceiling_led
       - light.livingroom_wled_below_tv
+      - light.livingroom_wled_above_tv

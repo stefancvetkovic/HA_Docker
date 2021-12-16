@@ -9,8 +9,8 @@
 #       unique_id: "00:15:8d:00:03:d4:d7:42"
 #       event: 1002
 #   action:
-#     - service: switch.toggle
-#       entity_id: switch.terace_main_light
+#     - service: light.toggle
+#       entity_id: light.terace_main_light
 
 # #Single Long click
 # - alias: 'Terace Button Long Click'
@@ -40,8 +40,8 @@
 #       unique_id: "00:15:8d:00:03:d4:d7:42"
 #       event: 1004
 #   action:
-#     - service: switch.toggle
-#       entity_id: switch.terace_wall_light
+#     - service: light.toggle
+#       entity_id: light.terace_wall_light
 
 # #   #Triple Click
 # # - alias: 'Terace Button triple Click'

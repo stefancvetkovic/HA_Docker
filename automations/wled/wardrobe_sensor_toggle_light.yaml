@@ -6,6 +6,7 @@
         - binary_sensor.bedroom_wardrobe_right_door
       to: 'on'
   action:
+
     - service: wled.effect
       data:
         entity_id: >
@@ -114,7 +115,7 @@
             255
           {% endif %}
 
-        intesity: >
+        intensity: >
           {% if state_attr('weather.home_hourly', 'forecast')[0].condition == 'sunny' %}
             125
           {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy-rainy' %}
@@ -137,8 +138,33 @@
             150
           {% else %}
             #DoNOthing
-          {% endif %}        
-    - delay: 00:00:15
+          {% endif %}  
+
+    - delay: 00:00:10
+    - service: light.turn_on
+      data:
+        entity_id: >
+          {% if trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_left_door' %}
+            light.wled_br_wd_l_segment_0
+          {% elif trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_right_door' %}
+            light.wled_br_wd_r
+          {% else %}
+            #DoNothing
+          {% endif %}
+        brightness: >
+          255     
+    - service: wled.effect
+      data:
+        entity_id: >
+          {% if trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_left_door' %}
+            light.wled_br_wd_l_segment_0
+          {% elif trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_right_door' %}
+            light.wled_br_wd_r
+          {% else %}
+            #DoNothing
+          {% endif %}
+        effect: "Solid"
+        palette: "Default"    
     - service: light.turn_on
       data:
         enitity_id: >
@@ -150,6 +176,8 @@
             #DoNothing
           {% endif %}
      
+
+
 - alias: 'bedroom wardrobe closed lights by wardrobe door sensor'
   trigger:
     - platform: state

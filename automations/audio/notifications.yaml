@@ -3,7 +3,7 @@
  # mode: single
   trigger:
     - platform: state
-      entity_id: switch.bathroom_main_light
+      entity_id: light.bathroom_main_light
       from:  'off'
       to:  'on'
   condition:
@@ -60,7 +60,7 @@
   alias: Turn off bathroom ceiling when nobody in the bathroom
   trigger:
     - platform: state
-      entity_id: switch.bathroom_main_light
+      entity_id: light.bathroom_main_light
       from:  'on'
       to:  'off'
   action:

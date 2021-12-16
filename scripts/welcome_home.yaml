@@ -7,11 +7,11 @@ sequence:
         - light.livingroom_ac_ledstrip_greywall
         - light.livingroom_go_temp_abovetv
 
-  - service: switch.turn_on
+  - service: light.turn_on
     data:
       entity_id:
-        - switch.coridor_bedroom_main_light
-        - switch.terace_wall_light
+        - light.coridor_bedroom_main_light
+        - light.terace_wall_light
 
   - service: media_player.turn_on
     entity_id: media_player.livingroom_tv

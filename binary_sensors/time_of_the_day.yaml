@@ -28,3 +28,15 @@
     name: Night
     after: sunset
     before: sunrise
+    before_offset: "-01:00"
+
+  - platform: template
+    sensors:
+      night_reworked:
+        friendly_name: 'Night (reworked)'
+        icon_template: mdi:power-sleep
+        value_template: "{% if is_state('sun.sun', 'above_horizon') -%}
+                         {{ 'off' }}
+                         {%- else -%}
+                         {{ 'on' }}
+                         {%- endif %}"

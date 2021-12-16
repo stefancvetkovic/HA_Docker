@@ -2,7 +2,7 @@
   description: "Left covers go down if main light is turned on after sunset +1 hour"
   trigger:
     - platform: state
-      entity_id: switch.bedroom_main_light
+      entity_id: light.bedroom_main_light
       to: 'on'
     - platform: state
       entity_id: binary_sensor.night

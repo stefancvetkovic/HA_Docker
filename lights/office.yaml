@@ -1,11 +1,12 @@
-- platform: switch
-  name:  Office Main Light
-  entity_id:
-    - switch.office_main_light
-
 - platform: group
   name:  Office All Lights
   entities:
     - light.office_main_light
     - light.office_desk_lamp
+    - light.office_closet_left
+    - light.office_closet_right
+    - light.office_wardrobe_left_left
+    - light.office_wardrobe_left_right
+    - light.office_wardrobe_right_left
+    - light.office_wardrobe_right_right
     
