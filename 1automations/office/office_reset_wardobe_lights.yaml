@@ -1,0 +1,31 @@
+- alias: Office reset wardrobe lights on multiple switches
+  description: 'This automation will reset office wardrobe lights (pre-trafo switch) if it almost simultaniosly is pressed rotary encoder and main ligth switch'
+  trigger:
+    - platform: state
+      entity_id:
+        - light.office_main_light
+  action:
+      - choose:
+        - conditions:
+            - condition: template
+              value_template: >
+                {% set office_main_light_last_changed = as_timestamp(states.light.office_main_light.last_changed) %}
+                {% set rotary_encoder_last_changed = as_timestamp(states.binary_sensor.office_desk_lamp_switc.last_changed) %}
+                {% set time_diff = (office_main_light_last_changed - rotary_encoder_last_changed) | abs %}
+                {{ 0.5 > time_diff > 0 }}
+          sequence:
+
+            - service: persistent_notification.create
+              data:
+                title: 'Resetting Office Wardrobe lights'
+                message: "In progress..."
+                
+            - service: switch.turn_off
+              entity_id: switch.office_pre_trafo_wardrobe_2
+            - delay: "00:00:04"
+            - service: switch.turn_on
+              entity_id: switch.office_pre_trafo_wardrobe_2            
+            - service: persistent_notification.create
+              data:
+                title: 'Resetting Office Wardrobe lights'
+                message: "Done."

@@ -1,0 +1,24 @@
+- id: vacation detection notification
+  alias: "[Notification] Possible vacation detection"
+  description: "Sending residents an actionable notification for turning on a vacation mode"
+  initial_state: 'on'
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - proximity.stefan_iphone_proximity
+        - proximity.anja_iphone_proximity
+      above: 10
+      for:
+        hours: 4
+        minutes: 0
+        seconds: 0
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'off'
+  action:
+    - service: notify.mobile_app_stefans_iphone
+      data:
+        actions:
+          - action: "VACATION_MODE_ON" # The key you are sending for the event
+            title: "Turn on vacation mode" # The button title

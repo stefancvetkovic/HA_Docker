@@ -1,3 +1,4 @@
+start_time:
 default_config:
 my:
 ios: !include ios_settings.yaml
@@ -11,11 +12,10 @@ http:
 alert: !include_dir_named alerts/
 alarm_control_panel:
   - platform: manual
-    name: Home Alarm
     code: !secret alarm_code 
-    arming_time: 30
-    delay_time: 20
-    trigger_time: 4
+    arming_time: 5
+    delay_time: 5
+    trigger_time: 5
     disarmed:
       trigger_time: 0
     armed_home:
@@ -23,7 +23,7 @@ alarm_control_panel:
       delay_time: 0
 frontend:
   themes: !include_dir_merge_named themes
-switch: !include switches.yaml
+
 homeassistant:
   packages: !include_dir_named packages/
   media_dirs:
@@ -61,16 +61,16 @@ spotify:
   
 binary_sensor: !include_dir_merge_list binary_sensors/
 sensor: !include_dir_merge_list sensors/
-input_boolean: !include_dir_named input_boolean/
-input_number: !include_dir_named input_number/
-input_select: !include_dir_named input_select/
-input_text: !include_dir_named  input_text/
+input_boolean: !include_dir_named helpers/input_boolean/
+input_number: !include_dir_named helpers/input_number/
+input_select: !include_dir_named helpers/input_select/
+input_text: !include_dir_named  helpers/input_text/
 input_datetime: !include_dir_named input_datetime/
 light: !include_dir_merge_list lights 
-timer: !include_dir_named timers/
-script: !include_dir_named scripts/
+
+script: !include_dir_named 1scripts/
 automation: !include automations.yaml
-automation old: !include_dir_merge_list automations
+automation old: !include_dir_merge_list 1automations
 
 #Google calendar
 # google:
@@ -78,6 +78,18 @@ automation old: !include_dir_merge_list automations
 #   client_secret: !secret google_calendar_client_secret
 #   track_new_calendar: true
 
+# alexa_media:
+#   accounts:
+#     email: !secret amazon_user
+#     password: !secret amazon_password
+#     url: "amazon.com"
+
+alexa:
+  smart_home:
+
+air_quality:
+  - platform: opensensemap
+    station_id: 5c424b321b7ca800199ad862
 wake_on_lan:
 webostv:
   host: !secret office_tv_ip
@@ -86,6 +98,7 @@ webostv:
     service: wake_on_lan.send_magic_packet
     data:
       mac: !secret office_tv_mac_address
+      broadcast_address: !secret unraid_ip
   customize:
     sources:
       - youtube
@@ -100,8 +113,11 @@ media_player: !include_dir_merge_list media_player/
 aquaariston:
   username: !secret ariston_username
   password: !secret ariston_password
-  polling: 1.0
   type: "velis"
+  logging: "WARNING"                  # indicates logging level ("CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG", "NOTSET"). Default is "DEBUG"
+  #path: "/home/homeassistant/.homeassistant/aqua_http_data" # Forces new path for storing files. SET NEW VALUES IF "/config" IS NOT CORRECT
+  polling: 1.2                        # indicates relative time for requests waiting. Increase in case of timeouts. Default is 1.0
+  store_config_files: true            # indicates if to store API data in a folder
   switches:
     - eco                             # switches ECO mode
     - power                           # switches power
@@ -130,14 +146,3 @@ aquaariston:
     - time_program                    # time program schedule
   selector:
     - mode                            # boiler mode selector
-    
-# rest:
-#   - scan_interval: 60
-#     resource: https://www.parking-servis.co.rs/edpk
-#     sensor:
-#       - name: "parking service cookie"
-#         json_attributes_path: "$.response.system"
-#         value_template: "{{$.response}}"
-#         json_attributes:
-#           - "fines"
-#           - "paymentAccountNumber"

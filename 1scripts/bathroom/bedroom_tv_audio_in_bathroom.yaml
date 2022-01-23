@@ -1,0 +1,36 @@
+alias: Bedroom TV Audio In Bathroom
+description: 'turn on sound in bathroom'
+sequence:
+  - choose:
+      - conditions:
+            condition: template
+            value_template: "{{ is_state('media_player.bedroom_tv','off') }}"
+        sequence:
+            service: script.set_eon_channels_on_predefined_tv
+            data:
+              variables:
+                first_digit_channel: 0
+   
+  # - service: script.turn_on
+  #   entity_id: script.play_notification
+  #   data:
+  #     variables:
+  #       speaker: "media_player.bathroom_ceiling_speaker"
+  #       source: "Primary Chromecast"
+  #       volume: "0.4"
+  #       custom_message: "Audio casting TV from bedroom TV started"
+  #       platform: "tts.google_translate_say"
+  #       delay: "00:00:03"
+  #       chromecast_device: "media_player.system_chromecast"
+  # - wait_template: "{{ is_state('script.play_notification', 'off') }}"
+  #   timeout: '00:00:10'
+  #   continue_on_timeout: 'true'
+
+  # - delay: 00:00:03   
+  - service: script.turn_on
+    entity_id: script.set_speaker
+    data:
+      variables:
+        speaker: "media_player.bathroom_ceiling_speaker"
+        volume: "0.3"
+        source: "Bedroom TV"

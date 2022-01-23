@@ -1,0 +1,27 @@
+- alias: Kitchen extraction fan toggle by kitchen stove
+  description: 'Kitchen extraction fan toggle by kitchen stove only when somebody cooks, after cooking, extraction fan is shutting down'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_stove_state
+  action:
+    choose:
+    - conditions: "{{is_state('binary_sensor.kitchen_stove_state', 'on')}}"
+      sequence:
+        service: switch.turn_on
+        entity_id: switch.kitchen_extraction_fan
+    - conditions: "{{is_state('binary_sensor.kitchen_stove_state', 'off')}}"
+      sequence:
+        - delay: 00:00:10
+        - choose:
+          - conditions: "{{is_state('binary_sensor.kitchen_stove_state', 'off')}}"
+            sequence:
+              service: switch.turn_off
+              entity_id: switch.kitchen_extraction_fan
+
+    # - service_template: >
+    #     {% if is_state('binary_sensor.kitchen_stove_state', 'on') %}
+    #       switch.turn_on
+    #     {% else %}
+    #       switch.turn_off
+    #     {% endif %}
+    #   entity_id: switch.kitchen_extraction_fan

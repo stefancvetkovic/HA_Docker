@@ -1,0 +1,24 @@
+- alias: "Office Closet Lights Toggle By Door"
+  description: "Turns on or off when doors open or close"
+  mode: parallel
+  trigger:
+      platform: state
+      entity_id: binary_sensor.office_closet, binary_sensor.office_wardrobe_left_door, binary_sensor.office_wardrobe_right_door
+  action:
+    - service: light.turn_{{trigger.to_state.state}}
+        # {% if trigger.to_state.state == 'on' %}
+        #   light.turn_off
+        # {%elif trigger.to_state.state == 'off'%}
+        #   light.turn_on
+        # {%else%}
+        #   light.turn_off
+        # {% endif %}
+      target:
+        entity_id: >
+          {% if trigger.to_state.entity_id == 'binary_sensor.office_closet' %}
+            light.office_closet_lights
+          {%elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_left_door'%}
+            light.office_wardrobe_left_left,light.office_wardrobe_left_right
+          {%elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_right_door'%}
+            light.office_wardrobe_right_right, light.office_wardrobe_right_left
+          {% endif %}

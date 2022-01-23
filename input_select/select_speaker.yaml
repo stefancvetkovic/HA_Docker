@@ -1,7 +1,0 @@
-name: 'Select speaker'
-options:
-  - 'AVR'
-  - 'Livingroom TV Chromecast'
-  - 'Office TV ChromeCats'
-initial: 'AVR'
-icon: mdi:speaker-wireless

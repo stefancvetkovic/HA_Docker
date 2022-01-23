@@ -1,0 +1,18 @@
+- alias: Bedroom turn off lights from encoder
+  description: 'This automation will turn off all the lights in bedroom if it almost simultaniosly is pressed mainlight and first encoder'
+  trigger:
+    - platform: state
+      entity_id:
+        - light.bedroom_main_light
+  action:
+      - choose:
+        - conditions:
+            - condition: template
+              value_template: >
+                {% set bedroom_main_light_last_changed = as_timestamp(states.light.bedroom_main_light.last_changed) %}
+                {% set rotary_encoder_last_changed = as_timestamp(states.binary_sensor.bedroom_entrance_led_bed_switcher.last_changed) %}
+                {% set time_diff = (bedroom_main_light_last_changed - rotary_encoder_last_changed) | abs %}
+                {{ 0.5 > time_diff > 0 }}
+          sequence:
+            - service: light.turn_off
+              entity_id: light.bedroom_all_lights

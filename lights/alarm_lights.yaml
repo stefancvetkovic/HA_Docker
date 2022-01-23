@@ -1,0 +1,8 @@
+- platform: group
+  name:  Alarm Lights
+  entities:
+    - light.hallway_wled
+    - light.bedroom_wled
+    - light.livingroom_wled_above_tv
+    - light.livingroom_wled_below_tv
+    - light.bathroom_wled

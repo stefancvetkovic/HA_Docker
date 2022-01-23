@@ -1,0 +1,28 @@
+  - alias: 'Armed alarm'
+    trigger:
+      - platform: state
+        entity_id: alarm_control_panel.ha_alarm
+        to: "armed_away"
+        
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.alarm_lights
+          rgb_color: [255,0,0]
+          brightness_pct: 100
+          effect: "Solid"
+
+      - service: input_number.set_value
+        data:
+          entity_id: number.hallway_wled_speed
+          value: 146
+
+      - service: input_number.set_value
+        data:
+          entity_id: number.hallway_wled_intensity
+          value: 172
+
+      - delay: 00:00:10
+
+      - service: light.turn_off
+        entity_id: light.alarm_lights

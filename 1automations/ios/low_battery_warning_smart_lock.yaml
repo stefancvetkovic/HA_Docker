@@ -1,0 +1,23 @@
+- alias: "iOS low battery on reisdent phone"
+  initial_state: true
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.anjas_iphone_battery_level, sensor.stefans_iphone_battery_level
+      below: '1'
+  condition:
+    - condition: and
+      conditions:
+        - condition: template
+          value_template: > 
+            {{is_state('device_tracker.stefans_iphone', 'not_home') or is_state('device_tracker.anjas_iphone', 'not_home')}}
+        - condition: template
+          value_template: "{{is_state('binary_sensor.nuki_front_door_locked', 'off') }}"
+  action:
+    - service: notify.mobile_app_stefans_iphone
+      data:
+        title: 'POLJUBIĆU VRATA'
+        message: "Tebi ili tvom mućaćerosu je kritičan nivo baterije na telefonu. Jedno od vas je van kuće. Moguće gašenje telefona i nemogučnost ulaska u stan. "
+    - service: notify.mobile_app_anjas_iphone
+      data:
+        title: 'POLJUBIĆU VRATA'
+        message: "Tebi ili tvom cimeru je kritičan nivo baterije na telefonu. Jedno od vas je van kuće. Moguće gašenje telefona i nemogučnost ulaska u stan. "

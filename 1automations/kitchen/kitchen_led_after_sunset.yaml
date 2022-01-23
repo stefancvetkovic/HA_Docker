@@ -1,0 +1,15 @@
+- alias: Kitchen desk light after sunset
+  description: 'Kitchen desk light turns on after sunset if guest mode enabled'
+  trigger:
+    - event: sunset
+      platform: sun
+  condition:
+    condition: state
+    entity_id: input_boolean.guest_mode
+    state:  'on'
+  action:
+    service: light.turn_on
+    target:
+      entity_id: light.kitchen_wled
+    data:
+      brightness: 255

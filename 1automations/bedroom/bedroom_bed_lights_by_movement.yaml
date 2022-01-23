@@ -1,0 +1,54 @@
+- alias: "Bedroom Bed Led Strip Movement On"
+  mode: parallel
+  description: "Turns on when detected movement around bed"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bedroom_bed_right_motion,binary_sensor.bedroom_bed_left_motion
+  condition:
+    condition: numeric_state
+    entity_id: sensor.bedroom_illuminance_lux
+    below: 10
+  # condition:
+  #   condition: time
+  #   after: input_datetime.time_when_bed_motion_sensors_starts_to_trigger_light
+  #   before: input_datetime.time_when_bed_motion_sensors_ends_to_trigger_light
+  action:
+    - choose:
+      - conditions:
+          - condition: or
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.bedroom_bed_right_motion
+                state: 'on'
+              - condition: state
+                entity_id: binary_sensor.bedroom_bed_left_motion
+                state: 'on'
+        sequence:
+          - service: switch.turn_on
+            entity_id: switch.bedroom_led_light_trafo
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.bedroom_bed_right_motion
+                state: 'off'
+              - condition: state
+                entity_id: binary_sensor.bedroom_bed_left_motion
+                state: 'off'
+        sequence:
+          - delay: 00:00:30
+          # - choose:
+          #   - conditions:
+          #     - condition: or
+          #       conditions:
+          #         - condition: state
+          #           entity_id: binary_sensor.bedroom_bed_right_motion
+          #           state: 'on'
+          #         - condition: state
+          #           entity_id: binary_sensor.bedroom_bed_left_motion
+          #           state: 'on'
+          #       sequence:
+
+
+          #         - service: switch.turn_off
+          #           entity_id: switch.bedroom_led_light_trafo

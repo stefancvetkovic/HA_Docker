@@ -1,8 +1,0 @@
-alias: Unlock Bottom Door
-description: unlocks bottom door
-sequence:
-  - service: rest_command.nuki_lock_action
-    data:
-      dev_type: 2
-      nuki_id: 685954282
-      action: 2

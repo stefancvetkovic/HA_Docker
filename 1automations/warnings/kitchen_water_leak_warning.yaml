@@ -1,0 +1,93 @@
+- alias: 'Kitchen Water Leak Warning'
+  description: 'Sets led strips until water leak sensor is not dry'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_water_leak
+  action:
+    choose:
+    - conditions:
+        - condition: template
+          value_template: "{{trigger.to_state.state == 'on'}}"
+      sequence:
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.warning
+        - service: scene.create
+          data:
+            scene_id: all_lights
+            snapshot_entities: light.livingroom_all_lights, light.kitchen_all_lights, light.warning_lights
+
+        - service: light.turn_off
+          entity_id: light.livingroom_all_lights
+        - service: light.turn_off
+          entity_id: light.kitchen_all_lights
+        - service: light.turn_off
+          entity_id: light.main
+
+        - service: light.turn_on
+          entity_id: light.livingroom_spotlights_1
+          data:
+            brightness: 70      
+
+        - service: light.turn_on
+          entity_id: light.warning_lights
+          data:
+            rgb_color:
+              - 65
+              - 105
+              - 225
+
+        - service: light.turn_on
+          target:
+            entity_id:
+             - light.bathroom_wled
+             - light.hallway_wled
+             - light.livingroom_wled_below_tv
+             - light.livingroom_wled_above_tv
+             - light.bedroom_wardrobe_left
+             - light.kitchen_wled
+          data:
+            speed: 146
+            intensity: 172
+            palette: 0
+            effect: Blink
+
+    - conditions:
+        - condition: template
+          value_template: "{{trigger.to_state.state == 'off'}}"
+      sequence:
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.warning
+        - service: scene.turn_on
+          data:
+            entity_id: scene.warning_lights
+        - service: scene.turn_on
+          data:
+            entity_id: scene.all_lights
+
+- alias: 'Kitchen Water Leak Audio Notification'
+  id: kitchen_water_leak_audio_notification
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_water_leak
+      to: 'on'
+  action:
+    - alias: Repeat until sensor is dry
+      repeat:
+        sequence:
+          - service: script.turn_off
+            entity_id: script.play_notification
+          - service: script.turn_on
+            entity_id: script.play_notification_everywhere
+            data:
+              variables:
+                source: "Primary Chromecast"
+                custom_message: "Warning! Water leak detected in the kitchen!"
+                volume: "0.32"
+
+            #wait 2 minutes 
+          - delay: 00:02:00
+        until:
+          # Did it work?
+          - condition: state
+            entity_id: binary_sensor.kitchen_water_leak
+            state: 'off'

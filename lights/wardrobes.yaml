@@ -15,7 +15,5 @@
 - platform: group
   name: Bedroom Wardrobe Lights
   entities:
-    - light.wled_br_wd_r
-    - light.wled_br_wd_l
-    - light.wled_br_wd_l_segment_0
-    - light.wled_br_wd_l_segment_1
+    - light.bedroom_wardrobe_left
+    - light.bedroom_wardrobe_right

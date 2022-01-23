@@ -1,8 +1,0 @@
-alias: Lock Front Door
-description: locks front door
-sequence:
-  - service: rest_command.nuki_lock_action
-    data:
-      nuki_id: !secret nuki_smart_door_id
-      dev_type: 0
-      action: 2

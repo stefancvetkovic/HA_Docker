@@ -1,0 +1,11 @@
+alias: Find Iphone
+description: 'Find iPhones'
+icon: "mdi:cellphone"
+sequence:
+  - repeat:
+      count: "{{ phones | count }}"
+      sequence:
+        - service: icloud.play_sound
+          data:
+            account: "{{ phones[repeat.index -1].account }}"
+            device_name: "{{ phones[repeat.index -1].device_name }}"

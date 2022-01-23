@@ -42,8 +42,7 @@
   - data: {}
     entity_id: switch.terace_wall_light
     service: switch.turn_on
-- id: '1593093255568'
-  alias: Terace Turn Off Wall Lights
+- alias: Terace Turn Off Wall Lights
   description: Turn off wall light on terace when is dawn
   trigger:
   - event: sunrise
@@ -54,94 +53,7 @@
   - data: {}
     entity_id: switch.terace_wall_light
     service: switch.turn_off
-- id: '1593093721068'
-  alias: Livingroom AboveTV Keep on
-  description: Keeps trafo turned on whole time in order to see zigbee controller
-    for abovetv ledstrip
-  trigger:
-  - entity_id: switch.living_room_above_tv_led
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data: {}
-    entity_id: switch.living_room_above_tv_led
-    service: switch.turn_on
-- id: '1593629260708'
-  alias: Rotary Button AboveTv
-  description: ''
-  trigger:
-  - event_data:
-      action: double_click
-    event_type: esphome.above_tv_button
-    platform: event
-  condition: []
-  action:
-  - data: {}
-    entity_id: light.livingroom_go_temp_abovetv
-    service: light.turn_off
-  - data: {}
-    entity_id: light.livingroom_go_color_abovetv
-    service: light.turn_on
-- id: '1593960834082'
-  alias: Teraace heater set to off
-  description: If someone turns on the hater, automaticallz turn off
-  trigger:
-  - entity_id: switch.terace_heater
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - data:
-      entity_id: switch.terace_heater
-    service: switch.turn_off
-- id: '1595183286313'
-  alias: Bedroom AC turn On Color LedWall
-  description: ''
-  trigger:
-  - entity_id: light.bedroom_ac_ledstrip_wall
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition: []
-  action:
-  - data:
-      brightness: 254
-      rgb_color:
-      - 255
-      - 0
-      - 0
-    entity_id: light.bedroom_go_color_wall
-    service: light.turn_on
-- id: '1595183556064'
-  alias: Bedroom AC turn off Color LedWall
-  description: ''
-  trigger:
-  - entity_id: light.bedroom_ac_ledstrip_wall, light.bedroom_go_color_wall
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data: {}
-    entity_id: light.bedroom_go_color_wall
-    service: light.turn_off
-- id: '1604097341808'
-  alias: Livinngroom belowtv switch always on
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.living_room_below_tv_led
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: switch.turn_on
-    data: {}
-    entity_id: switch.living_room_below_tv_led
-  mode: single
+  id: 46c014c9acd343afb305bd1be8a0bce6
 - id: '1604097639894'
   alias: Kitchen Working Desk Pre-Trafo Always On
   description: ''
@@ -155,33 +67,6 @@
   - service: switch.turn_on
     data: {}
     entity_id: switch.kitchen_pre_trafo_working_desk_light
-  mode: single
-- id: '1623164801824'
-  alias: Plex light control
-  description: ''
-  use_blueprint:
-    path: rhl2401/plex_light_dimmer.yaml
-    input:
-      topic: tautulli
-      light: light.livingroom_wled_below_tv
-- id: '1624958902748'
-  alias: Turn Off All Lights VM
-  description: When vacation mode is turned on, turn off all lights at 01:00 am
-  trigger:
-  - platform: time
-    at: 01:00:00
-  condition:
-  - condition: state
-    entity_id: input_boolean.vacation_mode
-    state: 'on'
-  action:
-  - service: script.turn_on
-    target:
-      entity_id: script.turn_off_all_lights_and_devices
-  - service: persistent_notification.create
-    data:
-      message: 01:00 - All Lights turned off
-      title: Automation kicks in
   mode: single
 - id: '1632074139949'
   alias: Terace Button
@@ -468,3 +353,635 @@
         data:
           account: permanentnosiva@icloud.com
           device_name: anjasiphone
+- id: '1640977227133'
+  alias: '[Remote] Main'
+  description: Zigbee Main Remote
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_1_single
+    discovery_id: 0x00124b000e0a085a action_button_1_single
+    id: single1
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_1_double
+    discovery_id: 0x00124b000e0a085a action_button_1_double
+    id: double1
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_1_triple
+    discovery_id: 0x00124b000e0a085a action_button_1_triple
+    id: tripple1
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_2_single
+    discovery_id: 0x00124b000e0a085a action_button_2_single
+    id: single2
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_2_double
+    discovery_id: 0x00124b000e0a085a action_button_2_double
+    id: double2
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_2_tripple
+    discovery_id: 0x00124b000e0a085a action_button_2_tripple
+    id: tripple2
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_3_single
+    discovery_id: 0x00124b000e0a085a action_button_3_single
+    id: single3
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_3_double
+    discovery_id: 0x00124b000e0a085a action_button_3_double
+    id: double3
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_3_triple
+    discovery_id: 0x00124b000e0a085a action_button_3_triple
+    id: tripple3
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_4_single
+    discovery_id: 0x00124b000e0a085a action_button_4_single
+    id: single4
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_4_double
+    discovery_id: 0x00124b000e0a085a action_button_4_double
+    id: double4
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_4_triple
+    discovery_id: 0x00124b000e0a085a action_button_4_triple
+    id: tripple4
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_5_hold
+    discovery_id: 0x00124b000e0a085a action_button_5_hold
+    id: hold5
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_5_release
+    discovery_id: 0x00124b000e0a085a action_button_5_release
+    id: release5
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_6_hold
+    discovery_id: 0x00124b000e0a085a action_button_6_hold
+    id: hold6
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_6_release
+    discovery_id: 0x00124b000e0a085a action_button_6_release
+    id: release6
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_7_hold
+    discovery_id: 0x00124b000e0a085a action_button_7_hold
+    id: hold7
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_7_release
+    discovery_id: 0x00124b000e0a085a action_button_7_release
+    id: release7
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_8_single
+    discovery_id: 0x00124b000e0a085a action_button_8_single
+    id: single8
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_8_double
+    discovery_id: 0x00124b000e0a085a action_button_8_double
+    id: double8
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_9_hold
+    discovery_id: 0x00124b000e0a085a action_button_9_hold
+    id: hold9
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_9_release
+    discovery_id: 0x00124b000e0a085a action_button_9_release
+    id: release9
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_10_hold
+    discovery_id: 0x00124b000e0a085a action_button_10_hold
+    id: hold10
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_10_release
+    discovery_id: 0x00124b000e0a085a action_button_10_release
+    id: release10
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_11_hold
+    discovery_id: 0x00124b000e0a085a action_button_11_hold
+    id: hold11
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_11_release
+    discovery_id: 0x00124b000e0a085a action_button_11_release
+    id: release11
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_12_single
+    discovery_id: 0x00124b000e0a085a action_button_12_single
+    id: single12
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_12_double
+    discovery_id: 0x00124b000e0a085a action_button_12_double
+    id: double12
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_13_single
+    discovery_id: 0x00124b000e0a085a action_button_13_single
+    id: single13
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_13_double
+    discovery_id: 0x00124b000e0a085a action_button_13_double
+    id: double13
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_14_single
+    discovery_id: 0x00124b000e0a085a action_button_14_single
+    id: single14
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_14_double
+    discovery_id: 0x00124b000e0a085a action_button_14_double
+    id: double14
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_15_single
+    discovery_id: 0x00124b000e0a085a action_button_15_single
+    id: single15
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_15_double
+    discovery_id: 0x00124b000e0a085a action_button_15_double
+    id: double15
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_16_single
+    discovery_id: 0x00124b000e0a085a action_button_16_single
+    id: single16
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_17_single
+    discovery_id: 0x00124b000e0a085a action_button_17_single
+    id: single17
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_17_double
+    discovery_id: 0x00124b000e0a085a action_button_17_double
+    id: double17
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_17_triple
+    discovery_id: 0x00124b000e0a085a action_button_17_triple
+    id: triple17
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_17_quadraple
+    discovery_id: 0x00124b000e0a085a action_button_17_quadraple
+    id: quadraple17
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_18_single
+    discovery_id: 0x00124b000e0a085a action_button_18_single
+    id: single18
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_18_double
+    discovery_id: 0x00124b000e0a085a action_button_18_double
+    id: double18
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_19_single
+    discovery_id: 0x00124b000e0a085a action_button_19_single
+    id: single19
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_19_double
+    discovery_id: 0x00124b000e0a085a action_button_19_double
+    id: double19
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_20_single
+    discovery_id: 0x00124b000e0a085a action_button_20_single
+    id: single20
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: single3
+      sequence:
+      - service: script.office_set_scene
+        data:
+          action: first
+    - conditions:
+      - condition: trigger
+        id: double3
+      sequence:
+      - service: script.office_set_scene
+        data:
+          action: second
+    - conditions:
+      - condition: trigger
+        id: tripple3
+      sequence:
+      - service: script.office_set_scene
+        data:
+          action: third
+    - conditions:
+      - condition: trigger
+        id: single20
+      sequence:
+      - service: script.turn_off_all_lights_and_devices
+    - conditions:
+      - condition: trigger
+        id: hold5
+      sequence:
+      - service: cover.open_cover
+        target:
+          entity_id:
+          - cover.ds_l
+          - cover.ds_s
+          - cover.ds_d
+    - conditions:
+      - condition: trigger
+        id: release5
+      sequence:
+      - service: cover.stop_cover
+        target:
+          entity_id:
+          - cover.ds_l
+          - cover.ds_s
+          - cover.ds_d
+    - conditions:
+      - condition: trigger
+        id: hold6
+      sequence:
+      - service: cover.open_cover
+        target:
+          entity_id:
+          - cover.ss_l
+          - cover.ss_d
+    - conditions:
+      - condition: trigger
+        id: release6
+      sequence:
+      - service: cover.stop_cover
+        target:
+          entity_id:
+          - cover.ss_l
+          - cover.ss_d
+    - conditions:
+      - condition: trigger
+        id: hold7
+      sequence:
+      - service: cover.open_cover
+        target:
+          entity_id:
+          - cover.rs_l
+          - cover.rs_d
+    - conditions:
+      - condition: trigger
+        id: release7
+      sequence:
+      - service: cover.stop_cover
+        target:
+          entity_id:
+          - cover.rs_l
+          - cover.rs_d
+    - conditions:
+      - condition: trigger
+        id: hold9
+      sequence:
+      - service: cover.close_cover
+        target:
+          entity_id:
+          - cover.ds_l
+          - cover.ds_s
+          - cover.ds_d
+    - conditions:
+      - condition: trigger
+        id: release9
+      sequence:
+      - service: cover.stop_cover
+        target:
+          entity_id:
+          - cover.ds_l
+          - cover.ds_s
+          - cover.ds_d
+    - conditions:
+      - condition: trigger
+        id: hold10
+      sequence:
+      - service: cover.close_cover
+        target:
+          entity_id:
+          - cover.ss_l
+          - cover.ss_d
+    - conditions:
+      - condition: trigger
+        id: release10
+      sequence:
+      - service: cover.stop_cover
+        target:
+          entity_id:
+          - cover.ss_l
+          - cover.ss_d
+    - conditions:
+      - condition: trigger
+        id: hold11
+      sequence:
+      - service: cover.close_cover
+        target:
+          entity_id:
+          - cover.rs_l
+          - cover.rs_d
+    - conditions:
+      - condition: trigger
+        id: release11
+      sequence:
+      - service: cover.stop_cover
+        target:
+          entity_id:
+          - cover.rs_l
+          - cover.rs_d
+    - conditions:
+      - condition: trigger
+        id: single4
+      sequence:
+      - service: light.toggle
+        target:
+          entity_id: light.terace_main_light
+    - conditions:
+      - condition: trigger
+        id: double4
+      sequence:
+      - service: light.toggle
+        target:
+          entity_id: light.terace_wall_light
+    - conditions:
+      - condition: trigger
+        id: tripple4
+      sequence:
+      - service: switch.toggle
+        target:
+          entity_id: switch.terace_heater
+    - conditions:
+      - condition: trigger
+        id: single8
+      sequence:
+      - service: icloud.play_sound
+        data:
+          account: stefan.cv5@gmail.com
+          device_name: stefansiphone
+      - service: icloud.play_sound
+        data:
+          account: permanentnosiva@icloud.com
+          device_name: anjasiphone
+    - conditions:
+      - condition: trigger
+        id: single12
+      sequence:
+      - service: input_boolean.toggle
+        target:
+          entity_id: input_boolean.pet_mode
+    - conditions:
+      - condition: trigger
+        id: double12
+      sequence:
+      - service: input_boolean.toggle
+        target:
+          entity_id: input_boolean.guest_mode
+    - conditions:
+      - condition: trigger
+        id: single16
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: lock.nuki_front_door_lock
+            state: locked
+          sequence:
+          - service: lock.unlock
+            target:
+              entity_id: lock.nuki_front_door_lock
+        - conditions:
+          - condition: state
+            entity_id: lock.nuki_front_door_lock
+            state: unlocked
+          sequence:
+          - service: lock.lock
+            target:
+              entity_id: lock.nuki_front_door_lock
+        default: []
+    - conditions:
+      - condition: trigger
+        id: single1
+      sequence:
+      - service: script.livingroom_set_scene
+        data:
+          action: first
+    - conditions:
+      - condition: trigger
+        id: double1
+      sequence:
+      - service: script.livingroom_set_scene
+        data:
+          action: second
+    - conditions:
+      - condition: trigger
+        id: tripple1
+      sequence:
+      - service: script.livingroom_set_scene
+        data:
+          action: third
+    - conditions:
+      - condition: trigger
+        id: double17
+      sequence:
+      - service: script.play_spotify
+        data:
+          source_avr: media_player.avr_zone2
+          volume_avr: 0.4
+          speaker: media_player.bedroom_ceiling_speaker
+          volume_speaker: 0.4
+    - conditions:
+      - condition: trigger
+        id: triple17
+      sequence:
+      - service: script.play_spotify
+        data:
+          source_avr: media_player.avr_zone2
+          volume_avr: 0.4
+          speaker: media_player.bathroom_ceiling_speaker
+          volume_speaker: 0.4
+    default:
+    - choose:
+      - conditions:
+        - condition: trigger
+          id: single15
+        sequence:
+        - service: script.office_tv_set_input
+          data:
+            tv_source: YouTube
+      default:
+      - choose:
+        - conditions:
+          - condition: trigger
+            id: single19
+          sequence:
+          - service: icloud.play_sound
+            data:
+              account: stefan.cv5@gmail.com
+              device_name: stefansiphone
+          - service: icloud.play_sound
+            data:
+              account: permanentnosiva@icloud.com
+              device_name: anjasiphone
+        default: []
+  mode: single
+- id: '1641310513409'
+  alias: '[Alexa] First Automation'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.office_desk_lamp
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: script.activate_alexa_actionable_notification
+    data:
+      text: The lamp in office room is turned on, would you like me to turn it off?
+      event_id: actionable_notification_turn_off_lamp
+      alexa_device: media_player.bathroom_alexa
+  mode: single
+- id: '1641311733564'
+  alias: '[Alexa] Second automation'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ' alexa_actionable_notification'
+    event_data:
+      event_id: actionable_notification_turn_off_lamp
+      event_response_type: ResponseYes
+  condition: []
+  action:
+  - service: light.toggle
+    target:
+      entity_id: light.office_desk_lamp
+  mode: single
+- id: '1642744318079'
+  alias: Christmas Tree After Sunset
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: 01:00:00
+  condition: []
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.livingroom_christmas_tree
+  mode: single

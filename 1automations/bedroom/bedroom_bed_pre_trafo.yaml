@@ -1,0 +1,9 @@
+- alias: "Bedroom Bed Pre Trafo"
+  description: "When Bedroom pre trafo goes to off, toggle channels for gledopto also to off"
+  trigger:
+    - platform: state
+      entity_id: switch.bedroom_led_light_trafo
+      to: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.bedroom_below_bed

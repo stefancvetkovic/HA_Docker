@@ -1,0 +1,49 @@
+alias: Livingroom Set Scene
+fields:
+  action:
+    description: 'Action that is triggered (first, second,third)'
+    example: 'first'
+sequence:
+  #First, turn off all lights in livingroom and hallway that leads to a livingroom
+  - service: light.turn_off
+    entity_id: light.livingroom_all_lights, light.hallway_livingroom_all_lights, light.kitchen_all_lights
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'first' }}"
+      sequence:
+        - service: light.turn_on
+          target:
+            entity_id: light.livingroom_ceiling_led
+          data:
+            brightness: 100
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'second' }}"
+      sequence:
+        - service: light.turn_on
+          target:
+            entity_id: light.livingroom_spotlights
+          data:
+            brightness: 100
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'third' }}"
+      sequence:
+        - service: light.turn_on
+          target:
+            entity_id: light.livingroom_wled_above_tv,light.livingroom_wled_below_tv, light.kitchen_wled
+          data:
+            brightness: 100          
+        - service: light.turn_on
+          target:
+            entity_id: light.livingroom_wled_above_tv,light.livingroom_wled_below_tv
+          data:
+            #speed: 146
+            #intensity: 172
+            #palette: 0
+            effect: Blink
+            rgb_color:
+              - 65
+              - 105
+              - 225

@@ -1,0 +1,29 @@
+alias: Office TV set input
+fields:
+  tv_source:
+    description: 'Set appropriete source on tv (EON, Netflix, YouTube)'
+    example: YouTube
+sequence:
+  - choose:
+    - conditions:
+          condition: template
+          value_template: "{{states.media_player.office_tv.state != 'on'}}"
+      sequence:
+        - service: media_player.turn_on
+          target:
+            entity_id: media_player.office_tv
+        - delay: 00:00:03
+        - service: media_player.select_source
+          target: 
+            entity_id: media_player.office_tv
+          data:
+            source:  "{{ tv_source }}"
+    - conditions:
+          condition: template
+          value_template: "{{states.media_player.office_tv.state == 'on'}}"
+      sequence:
+        - service: media_player.select_source
+          target: 
+            entity_id: media_player.office_tv
+          data:
+            source:  "{{ tv_source }}"

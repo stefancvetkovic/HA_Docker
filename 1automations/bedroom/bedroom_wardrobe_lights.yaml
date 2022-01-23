@@ -1,0 +1,142 @@
+- alias: 'bedroom wardrobe light'
+  mode: restart
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bedroom_wardrobe_left_door,binary_sensor.bedroom_wardrobe_right_door
+  action:
+    - choose:
+      - conditions:
+            condition: template
+            value_template: "{{trigger.to_state.state == 'on'}}"
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id: > 
+                {% if trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_left_door' %}
+                  light.bedroom_wardrobe_left
+                {% elif trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_right_door' %}
+                  light.bedroom_wardrobe_right
+                {% endif %}
+              #white: 255
+              rgb_color: >-
+                {% if state_attr('weather.home_hourly', 'forecast')[0].condition == 'sunny' %}
+                  185,97,20
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy-rainy' %}
+                  102,102,255
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'windy-variant' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'windy' %}
+                  153,255,255
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'rainy' %}
+                  153,204,255
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'pouring' %}
+                  0,102,204
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'lightning' %}
+                  255,255,255
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'fog' %}
+                  255,255,255
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'hail' %}
+                  255,255,255
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'exceptional' %}
+                  255,255,50
+                {% else %}
+                  255,255,255
+                {% endif %}
+              effect: >
+                {% if state_attr('weather.home_hourly', 'forecast')[0].condition == 'sunny' %}
+                  Breathe
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy-rainy' %}
+                  Twinkle
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'windy-variant' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'windy' %}
+                  Saw
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'rainy' %}
+                  Rain
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'pouring' %}
+                  Ripple
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'lightning' %}
+                  Lightning
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'fog' %}
+                  Phased
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'clear-night' %}
+                  Solid
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'hail' %}
+                  Meteor
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'exceptional' %}
+                  Rainbow
+                {% else %}
+                  Solid
+                {% endif %}
+
+          - service: input_number.set_value
+            data_template:
+              entity_id: number.bedroom_wardrobe_left_speed
+              value: >
+                {% if state_attr('weather.home_hourly', 'forecast')[0].condition == 'sunny' %}
+                  20
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy-rainy' %}
+                  220
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'windy-variant' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'windy' %}
+                  240
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'rainy' %}
+                  35
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'pouring' %}
+                  130
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'lightning' %}
+                  240
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'fog' %}
+                  40
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'hail' %}
+                  220
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'exceptional' %}
+                  150
+                {% else %}
+                  255
+                {% endif %}
+
+          - service: input_number.set_value
+            data_template:
+              entity_id: number.bedroom_wardrobe_left_intensity
+              value: >
+                {% if state_attr('weather.home_hourly', 'forecast')[0].condition == 'sunny' %}
+                  125
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'snowy-rainy' %}
+                  130
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'windy-variant' or state_attr('weather.home_hourly', 'forecast')[0].condition == 'windy' %}
+                  20
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'rainy' %}
+                  215
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'pouring' %}
+                  240
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'lightning' %}
+                  240
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'fog' %}
+                  35
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'clear-night' %}
+                  255
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'hail' %}
+                  160
+                {% elif state_attr('weather.home_hourly', 'forecast')[0].condition == 'exceptional' %}
+                  150
+                {% endif %} 
+
+          - delay: 00:00:10
+
+          - service: light.turn_on
+            data:
+              entity_id: >
+                {% if trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_left_door' %}
+                  light.bedroom_wardrobe_left
+                {% elif trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_right_door' %}
+                {% endif %}
+              white: 255
+              effect: "Solid"  
+      - conditions:
+            condition: template
+            value_template: "{{trigger.to_state.state == 'off'}}"
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id: >
+                {% if trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_left_door' %}
+                  light.bedroom_wardrobe_left
+                {% elif trigger.to_state.entity_id == 'binary_sensor.bedroom_wardrobe_right_door' %}
+                  light.bedroom_wardrobe_right
+                {% endif %}

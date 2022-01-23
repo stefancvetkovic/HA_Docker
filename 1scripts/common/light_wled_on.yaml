@@ -1,0 +1,80 @@
+alias: Light Wled On
+description: 'sets wled light with parameters'
+icon: "mdi:cellphone"
+fields:
+  brightness:
+    description: 'Appropriete brightness for wled light'
+    example: '255'
+  intensity:
+    description: 'Appropriete intensity for wled light'
+    example: '255'
+  speed:
+    description: 'Appropriete speed for wled light'
+    example: '255'
+  palette:
+    description: 'Appropriete palette for wled light'
+    example: 'Default'
+  effect:
+    description: 'Appropriete effect for wled light'
+    example: 'Solid'
+
+  wled_light_entity:
+      description: 'Targeted light'
+      example: 'light.bedroom_ceiling_wled'
+
+  wled_color_palette_entity:
+      description: 'Targeted light'
+      example: 'select.bedroom_wall_wled_color_palette'
+
+  wled_intensity_entity:
+        description: 'Targeted intensity effect entity'
+        example: 'number.bedroom_ceiling_wled_intensity'
+
+  wled_speed_entity:
+      description: 'Targeted speed effect entity'
+      example: 'number.bedroom_ceiling_wled_speed'
+
+  rgb_random:
+      description: 'If true, sets wled light to random color'
+      example: 'True' 
+      default: 'True'
+  rgb:
+      description: 'If rgb random is False, sets wled light to provided rgb color'
+      example: '[0,255,0]' 
+
+sequence:
+  - choose:
+    - conditions: "{{ rgb_random == 'True' }}"
+      sequence:
+        - service: light.turn_on
+          target:
+            entity_id: "{{wled_light_entity}}"
+          data:
+            effect: "{{effect}}"
+            brightness: "{{brightness}}"
+            rgb_color: ["{{range(256)|random}}","{{range(256)|random}}","{{range(256)|random}}"]
+    - conditions: "{{ rgb_random != 'True' }}"
+      sequence:
+        - service: light.turn_on
+          target:
+            entity_id: "{{wled_light_entity}}"
+          data:
+            effect: "{{effect}}"
+            brightness: "{{brightness}}"
+            rgb_color: "{{rgb}}"
+
+  - service: select.select_option
+    target:
+      entity_id: "{{wled_color_palette_entity}}"
+    data:
+      option: "{{palette}}"
+  - service: number.set_value
+    target:
+      entity_id: "{{wled_intensity_entity}}"
+    data:
+      value: "{{intensity}}"
+  - service: number.set_value
+    target:
+      entity_id: "{{wled_speed_entity}}"
+    data:
+      value: "{{speed}}"
