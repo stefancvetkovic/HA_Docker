@@ -1,0 +1,6 @@
+- platform: group
+  name: Bedroom Bed Motion Sensors
+  device_class: motion
+  entities:
+    - binary_sensor.bedroom_bed_right_motion
+    - binary_sensor.bedroom_bed_left_motion

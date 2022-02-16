@@ -1,0 +1,16 @@
+# - alias: 'Night Awaken Baby'
+#   trigger: 
+#     - platform: state
+#       entity_id: input_boolean.baby_mode_button
+#   condition:
+#       condition: template
+#       value_template: >
+#         {% set bedroom_right_lamp_last_changed = as_timestamp(states.light.bedroom_right_lamp.last_changed) | abs %}
+#         {% set now = as_timestamp(now()) %}
+#         {% set time_diff = (now - bedroom_right_lamp_last_changed) | abs %}
+#         {{ time_diff > 0.9 }}
+#   action:
+#     service: >
+#       light.turn_{{trigger.to_state.state}}
+#     target:
+#       entity_id: light.bedroom_wall_wled, light.bathroom_main_light, light.hallway_bedroom_wall_light, light.hallway_wled, light.kitchen_wled

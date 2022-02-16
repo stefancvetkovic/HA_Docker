@@ -1,0 +1,21 @@
+- alias: Hallway Bedroom Wall Light Set By Sun
+  description: 'This automation will turn on wall lights in hallway when its sunset, and turn it off when its sunrise'
+  trigger:
+    - event: sunset
+      offset: -00:59:00
+      platform: sun
+    - event: sunrise
+      offset: +00:59:00
+      platform: sun
+  action:
+    service: >
+      {% if trigger.event == 'sunset' %}
+        light.turn_on
+      {% elif trigger.event == 'sunrise' %}
+          light.turn_off
+      {% endif %}
+    target:
+      entity_id: light.hallway_bedroom_wall_light
+    data: {}
+
+  

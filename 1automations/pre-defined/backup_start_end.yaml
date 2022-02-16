@@ -1,0 +1,42 @@
+- alias: Homeassistant Backup Started
+  description: 'Each night at some time homeassistant backups and therefore is unavailable. Some led lights will indicate that HA is unavailable till not started again'
+  trigger:
+    - platform: time
+      at: input_datetime.homeassistant_backup_start
+  action:
+    - choose:
+      - conditions: "{{is_state('input_boolean.guest_mode', 'on') }}"
+        sequence:
+          service: light.turn_on
+          target:
+            entity_id: light.hallway_wled
+          data:
+            effect: Twinkle
+            brightness: 60
+      - conditions: "{{is_state('input_boolean.guest_mode', 'off') }}"
+        sequence:
+          service: light.turn_on
+          target:
+            entity_id: light.hallway_wled, light.kitchen_wled
+          data:
+            effect: Twinkle
+            brightness: 60
+    #- service: homeassistant.stop
+
+- alias: Homeassistant Backup Started
+  description: "Starting up HA after backup"
+  trigger: 
+    platform: event
+    event_type: homeassistant_start
+  condition:
+    condition: time
+    after: input_datetime.homeassistant_backup_start
+    before: input_datetime.homeassistant_backup_end
+  action:
+     - service: persistent_notification.create
+       data:
+         title: "HA Started"
+         message: "Home is up & running"
+     - service: light.turn_off
+       target:
+         entity_id: light.hallway_wled, light.kitchen_wled

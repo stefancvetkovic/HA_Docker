@@ -1,0 +1,15 @@
+- alias: "Bedroom Baby Light Toggle"
+  description: "When BabyMode is ON set the baby light in bedroom to ON at midnight, and turn it off in sunrise"
+  trigger:
+    - platform: time
+      at: "00:00:00"
+      id: "on"
+    - platform: sun
+      event: sunrise
+      id: "off"
+  action:
+    - service: > 
+        light.turn_{{trigger.id}}
+      entity_id: light.bedroom_wall_wled
+      data: >
+        {{ {} if trigger.id == 'off' else { 'brightness': 1 } }}

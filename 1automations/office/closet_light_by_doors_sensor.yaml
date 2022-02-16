@@ -3,19 +3,12 @@
   mode: parallel
   trigger:
       platform: state
-      entity_id: binary_sensor.office_closet, binary_sensor.office_wardrobe_left_door, binary_sensor.office_wardrobe_right_door
+      entity_id: binary_sensor.office_closet_left_contact, binary_sensor.office_closet_right_contact, binary_sensor.office_wardrobe_left_door, binary_sensor.office_wardrobe_right_door
   action:
     - service: light.turn_{{trigger.to_state.state}}
-        # {% if trigger.to_state.state == 'on' %}
-        #   light.turn_off
-        # {%elif trigger.to_state.state == 'off'%}
-        #   light.turn_on
-        # {%else%}
-        #   light.turn_off
-        # {% endif %}
       target:
         entity_id: >
-          {% if trigger.to_state.entity_id == 'binary_sensor.office_closet' %}
+          {% if trigger.to_state.entity_id == 'binary_sensor.office_closet_left_contact' or trigger.to_state.entity_id == 'binary_sensor.office_closet_right_contact'  %}
             light.office_closet_lights
           {%elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_left_door'%}
             light.office_wardrobe_left_left,light.office_wardrobe_left_right

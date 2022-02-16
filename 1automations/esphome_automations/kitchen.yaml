@@ -30,13 +30,23 @@
     event_data:
       type: single_short_click_3
   action:
-    - service: wled.effect
-      data:
-        entity_id: light.kitchen_wled
-        palette: "Default"
-        effect: "Solid"
-    - service: light.toggle
-      entity_id: light.kitchen_wled
+      choose:
+      - conditions: "{{ is_state('light.wled_kitchen_segment_1', 'off') and is_state('light.wled_kitchen_segment_2', 'off') and is_state('light.wled_kitchen_segment_3', 'off')}}"
+        sequence:
+          service: light.turn_on
+          entity_id: light.wled_kitchen_segment_1
+      - conditions:  "{{ is_state('light.wled_kitchen_segment_1', 'on') and is_state('light.wled_kitchen_segment_2', 'off') and is_state('light.wled_kitchen_segment_3', 'off')}}"
+        sequence:
+          service: light.turn_on
+          entity_id: light.wled_kitchen_segment_2
+      - conditions:  "{{ is_state('light.wled_kitchen_segment_1', 'on') and is_state('light.wled_kitchen_segment_2', 'on') and is_state('light.wled_kitchen_segment_3', 'off')}}"
+        sequence:
+          service: light.turn_on
+          entity_id: light.wled_kitchen_segment_3
+      - conditions:  "{{ is_state('light.wled_kitchen_segment_1', 'on') and is_state('light.wled_kitchen_segment_2', 'on') and is_state('light.wled_kitchen_segment_3', 'on')}}"
+        sequence:
+          service: light.turn_off
+          entity_id: light.wled_kitchen_segment_1,light.wled_kitchen_segment_2,light.wled_kitchen_segment_3
 
 - alias: Kitchen Actuator via encoder
   id: kitchen_actuator_click
@@ -178,10 +188,40 @@
     event_data:
       type: double_click_3
   action:
-    - service: light.turn_on
-      entity_id: light.kitchen_wled
-      data:
-        rgb_color: ["{{range(256)|random}}","{{range(256)|random}}","{{range(256)|random}}"]
+      choose:
+      - conditions: "{{ is_state('light.wled_kitchen_segment_1', 'off') and is_state('light.wled_kitchen_segment_2', 'off') and is_state('light.wled_kitchen_segment_3', 'off')}}"
+        sequence:
+          - service: light.turn_on
+            entity_id: light.wled_kitchen_segment_1
+            data:
+              effect: "Solid"
+          - delay: 00:00:01
+          - service: light.turn_on
+            entity_id: light.wled_kitchen_segment_2
+            data:
+              effect: "Solid"
+          - delay: 00:00:01
+          - service: light.turn_on
+            entity_id: light.wled_kitchen_segment_3
+            data:
+              effect: "Solid"
+      - conditions: "{{ is_state('light.wled_kitchen_segment_1', 'on') and is_state('light.wled_kitchen_segment_2', 'on') and is_state('light.wled_kitchen_segment_3', 'on')}}"
+        sequence:
+          - service: light.turn_off
+            entity_id: light.wled_kitchen_segment_1
+            data:
+              effect: "Solid"
+          - delay: 00:00:01
+          - service: light.turn_on
+            entity_id: light.wled_kitchen_segment_2
+            data:
+              effect: "Solid"
+          - delay: 00:00:01
+          - service: light.turn_on
+            entity_id: light.wled_kitchen_segment_3
+            data:
+              effect: "Solid"
+
 
 - alias: Kitchen Actuator Double Click
   id: kitchen_actuator_double_click

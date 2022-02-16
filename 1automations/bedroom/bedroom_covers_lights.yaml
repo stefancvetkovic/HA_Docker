@@ -4,9 +4,9 @@
     - platform: state
       entity_id: light.bedroom_main_light
       to: 'on'
-    - platform: state
-      entity_id: binary_sensor.night
-      to: 'on'  
+    # - platform: state
+    #   entity_id: binary_sensor.night
+    #   to: 'on'  
   condition:
     - condition: state
       entity_id: binary_sensor.night

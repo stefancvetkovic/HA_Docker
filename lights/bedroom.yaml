@@ -27,3 +27,9 @@
     - light.bedroom_ceiling_wled
     - light.bedroom_wall_wled
     - light.bedroom_below_bed
+
+- platform: group
+  name: Bedroom Digital Lights
+  entities:
+    - light.bedroom_ceiling_wled
+    - light.bedroom_wall_wled

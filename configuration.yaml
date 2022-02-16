@@ -1,4 +1,4 @@
-start_time:
+#start_time:
 default_config:
 my:
 ios: !include ios_settings.yaml
@@ -34,30 +34,16 @@ camera: !include_dir_merge_list cameras
 
 proximity: !include_dir_named proximity
 
-influxdb:
-  host: !secret unraid_ip
-  port: !secret influxdb_port
-  username: !secret influxdb_username
-  password: !secret influxdb_token
-  database: !secret influxdb_database
-
-# Text to speech
-tts:
-  - platform: google_translate
-    base_url: !secret base_local_ha_uri
-    cache: true
+# influxdb:
+#   host: !secret unraid_ip
+#   port: !secret influxdb_port
+#   username: !secret influxdb_username
+#   password: !secret influxdb_token
+#   database: !secret influxdb_database
 
 notify: !include_dir_merge_list notify/
 group: !include groups.yaml
 scene: !include_dir_merge_list scenes 
-
-spotcast:
-  sp_dc: !secret spotcast_sp_dc
-  sp_key: !secret spotcast_sp_key
-
-spotify:
-  client_id: !secret spotify_client_id
-  client_secret: !secret spotify_secret_id
   
 binary_sensor: !include_dir_merge_list binary_sensors/
 sensor: !include_dir_merge_list sensors/
@@ -87,62 +73,44 @@ automation old: !include_dir_merge_list 1automations
 alexa:
   smart_home:
 
-air_quality:
-  - platform: opensensemap
-    station_id: 5c424b321b7ca800199ad862
+# air_quality:
+#   - platform: opensensemap
+#     station_id: 5c424b321b7ca800199ad862
 wake_on_lan:
-webostv:
-  host: !secret office_tv_ip
-  name: Office TV
-  turn_on_action:
-    service: wake_on_lan.send_magic_packet
-    data:
-      mac: !secret office_tv_mac_address
-      broadcast_address: !secret unraid_ip
-  customize:
-    sources:
-      - youtube
-      - netflix
-      - eon
-      # - Spotify
-      - plex
-      # - Chromecast
 
+# Text to speech
+tts:
+  - platform: google_translate
+    base_url: !secret base_local_ha_uri
+    cache: true
+#media devices
 media_player: !include_dir_merge_list media_player/
+# webostv:
+#   host: !secret office_tv_ip
+#   name: Office TV
+#   turn_on_action:
+#     service: wake_on_lan.send_magic_packet
+#     data:
+#       mac: !secret office_tv_mac_address
+#       broadcast_address: !secret unraid_ip
+#   customize:
+#     sources:
+#       - youtube
+#       - netflix
+#       - eon
+#       # - Spotify
+#       - plex
+#       # - Chromecast
+spotcast:
+  sp_dc: !secret spotcast_sp_dc
+  sp_key: !secret spotcast_sp_key
 
-aquaariston:
-  username: !secret ariston_username
-  password: !secret ariston_password
-  type: "velis"
-  logging: "WARNING"                  # indicates logging level ("CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG", "NOTSET"). Default is "DEBUG"
-  #path: "/home/homeassistant/.homeassistant/aqua_http_data" # Forces new path for storing files. SET NEW VALUES IF "/config" IS NOT CORRECT
-  polling: 1.2                        # indicates relative time for requests waiting. Increase in case of timeouts. Default is 1.0
-  store_config_files: true            # indicates if to store API data in a folder
-  switches:
-    - eco                             # switches ECO mode
-    - power                           # switches power
-  binary_sensors:
-    - antilegionella                  # indicates antilegionella status
-    - changing_data                   # indicates ongoing configuration on server by the API
-    - eco                             # indicates ECO mode status
-    - heating                         # indicates ongoing heating
-    - online                          # indicates API online status
-    - power                           # indicates power status
-    - update                          # indicates API update
-  sensors:
-    - antilegionella_set_temperature  # antilegionella temperature
-    - current_temperature             # current temperature
-    - energy_use_in_day               # energy use in last day
-    - energy_use_in_month             # energy use in last week
-    - energy_use_in_week              # energy use in last month
-    - energy_use_in_year              # energy use in last year
-    - errors                          # errors
-    - mode                            # manual or time program mode
-    - remaining_time                  # remaining time for heating
-    - required_showers                # required amount of showers (might not work on all models)
-    - required_temperature            # required temperature (simulated by API itself for some models)
-    - showers                         # estimated amount of average showers
-    - temperature_mode                # indicates if required temeparture is based on required temperature or required showers
-    - time_program                    # time program schedule
-  selector:
-    - mode                            # boiler mode selector
+spotify:
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_secret_id
+
+
+#devices
+aquaariston: !include aquaariston.yaml
+
+

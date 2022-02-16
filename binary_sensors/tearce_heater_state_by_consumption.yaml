@@ -1,0 +1,7 @@
+- platform: template
+  sensors:
+    terace_heater_state:
+      friendly_name: "Terace Heater Status"
+      #device_class: Power
+      value_template: >-
+        {{ states('sensor.terace_heater_energy_power') | float(0) > 5 }}

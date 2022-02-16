@@ -1,0 +1,7 @@
+- platform: mqtt_room
+  name: "Stefans Iphone BLE"
+  device_id: "apple:iphone10-5"
+  state_topic: "espresense/rooms"
+  timeout: 5
+  away_timeout: 120
+

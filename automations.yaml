@@ -74,17 +74,17 @@
   use_blueprint:
     path: Drafted/aqara-buttons-all-in-one-zigbee2mqtt.yaml
     input:
-      action_sensor: sensor.terace_button
+      action_sensor: sensor.terace_button_click
       single_action:
       - type: toggle
         device_id: 5e6ea5be8424961013949a7be4c98e3a
-        entity_id: switch.terace_main_light
-        domain: switch
+        entity_id: light.terace_main_light
+        domain: light
       double_action:
       - type: toggle
         device_id: 26a1f21e11749e64a3e7b4d3039477f7
-        entity_id: switch.terace_wall_light
-        domain: switch
+        entity_id: light.terace_wall_light
+        domain: light
       hold_action:
       - service: cover.open_cover
         entity_id:
@@ -939,7 +939,26 @@
             data:
               account: permanentnosiva@icloud.com
               device_name: anjasiphone
-        default: []
+        default:
+        - choose:
+          - conditions:
+            - condition: trigger
+              id: single2
+            sequence:
+            - service: script.light_wled_on
+              data:
+                brightness: 255
+                intensity: 255
+                speed: 255
+                palette: Default
+                effect: Solid
+                wled_light_entity: light.bedroom_ceiling_wled
+                wled_color_palette_entity: select.bedroom_wall_wled_color_palette
+                wled_intensity_entity: number.bedroom_ceiling_wled_intensity
+                wled_speed_entity: number.bedroom_ceiling_wled_speed
+                rgb_random: true
+                effect_random: true
+          default: []
   mode: single
 - id: '1641310513409'
   alias: '[Alexa] First Automation'

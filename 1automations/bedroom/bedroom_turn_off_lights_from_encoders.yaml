@@ -1,18 +1,53 @@
-- alias: Bedroom turn off lights from encoder
+- alias: Bedroom Entrance turn off lights from encoder
   description: 'This automation will turn off all the lights in bedroom if it almost simultaniosly is pressed mainlight and first encoder'
   trigger:
     - platform: state
       entity_id:
         - light.bedroom_main_light
+        - light.bedroom_wall_wled
   action:
       - choose:
         - conditions:
             - condition: template
               value_template: >
                 {% set bedroom_main_light_last_changed = as_timestamp(states.light.bedroom_main_light.last_changed) %}
-                {% set rotary_encoder_last_changed = as_timestamp(states.binary_sensor.bedroom_entrance_led_bed_switcher.last_changed) %}
+                {% set rotary_encoder_last_changed = as_timestamp(states.binary_sensor.bedroom_entrance_wall_light_switch.last_changed) %}
                 {% set time_diff = (bedroom_main_light_last_changed - rotary_encoder_last_changed) | abs %}
                 {{ 0.5 > time_diff > 0 }}
           sequence:
             - service: light.turn_off
               entity_id: light.bedroom_all_lights
+        - conditions:
+            - condition: template
+              value_template: >
+                {% set rotary_encoder_one_last_changed = as_timestamp(states.binary_sensor.bedroom_entrance_ceiling_light_switch.last_changed) %}
+                {% set rotary_encoder_two_last_changed = as_timestamp(states.binary_sensor.bedroom_entrance_wall_light_switch.last_changed) %}
+                {% set time_diff = (rotary_encoder_one_last_changed - rotary_encoder_two_last_changed) | abs %}
+                {{ 0.5 > time_diff > 0 }}
+          sequence:
+            service: light.toggle
+            entity_id: light.bedroom_bed_light_pre_trafo
+
+- alias: Bedroom Bed turn off lights from encoder
+  description: 'This automation will turn off all the lights in bedroom if it almost simultaniosly is pressed mainlight and first encoder'
+  trigger:
+    - platform: state
+      entity_id:
+        - light.bedroom_right_lamp
+  action:
+      - choose:
+        - conditions:
+            - condition: template
+              value_template: >
+                {% set bedroom_right_lamp_last_changed = as_timestamp(states.light.bedroom_right_lamp.last_changed) %}
+                {% set rotary_encoder_last_changed = as_timestamp(states.binary_sensor.bedroom_bed_right_rotary_button.last_changed) %}
+                {% set time_diff = (bedroom_right_lamp_last_changed - rotary_encoder_last_changed) | abs %}
+                {{ 0.5 > time_diff > 0 }}
+          sequence:
+            # - service: light.turn_off
+            #   entity_id: light.bedroom_all_lights
+            service: persistent_notification.create
+            data:
+              title: 'This is a test'
+              message: "{{ time_diff }}"
+

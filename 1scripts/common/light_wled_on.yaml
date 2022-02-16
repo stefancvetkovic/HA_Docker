@@ -5,12 +5,15 @@ fields:
   brightness:
     description: 'Appropriete brightness for wled light'
     example: '255'
+    default: '100'
   intensity:
     description: 'Appropriete intensity for wled light'
     example: '255'
+    default: '100'
   speed:
     description: 'Appropriete speed for wled light'
     example: '255'
+    default: '100'
   palette:
     description: 'Appropriete palette for wled light'
     example: 'Default'
@@ -38,6 +41,10 @@ fields:
       description: 'If true, sets wled light to random color'
       example: 'True' 
       default: 'True'
+  effect_random:
+      description: 'If true, sets random wled effect'
+      example: 'True' 
+      default: 'True' 
   rgb:
       description: 'If rgb random is False, sets wled light to provided rgb color'
       example: '[0,255,0]' 
@@ -50,9 +57,16 @@ sequence:
           target:
             entity_id: "{{wled_light_entity}}"
           data:
-            effect: "{{effect}}"
-            brightness: "{{brightness}}"
-            rgb_color: ["{{range(256)|random}}","{{range(256)|random}}","{{range(256)|random}}"]
+            effect: > 
+              {% if effect_random == 'True'%}
+                {{ state_attr('light.wled', 'effect_list') | random }}
+              {%else%}
+                {{effect}}
+              {% endif %} 
+            brightness: >
+             {{brightness}}
+            rgb_color: >
+             [{{range(256)|random}},{{range(256)|random}},{{range(256)|random}}]
     - conditions: "{{ rgb_random != 'True' }}"
       sequence:
         - service: light.turn_on
@@ -60,14 +74,16 @@ sequence:
             entity_id: "{{wled_light_entity}}"
           data:
             effect: "{{effect}}"
-            brightness: "{{brightness}}"
+            brightness: >
+             {{brightness}}
             rgb_color: "{{rgb}}"
 
   - service: select.select_option
     target:
       entity_id: "{{wled_color_palette_entity}}"
     data:
-      option: "{{palette}}"
+      option: > 
+        {{palette}}
   - service: number.set_value
     target:
       entity_id: "{{wled_intensity_entity}}"

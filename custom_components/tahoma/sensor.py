@@ -26,6 +26,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from pyoverkiz.enums import OverkizAttribute, OverkizState, UIWidget
 
+from . import HomeAssistantOverkizData
 from .const import DOMAIN, IGNORED_OVERKIZ_DEVICES
 from .coordinator import OverkizDataUpdateCoordinator
 from .entity import OverkizDescriptiveEntity, OverkizEntity, OverkizSensorDescription
@@ -328,6 +329,12 @@ SENSOR_DESCRIPTIONS = [
         key=OverkizState.IO_ELECTRIC_BOOSTER_OPERATING_TIME,
         name="Electric Booster Operating Time",
     ),
+    OverkizSensorDescription(
+        key=OverkizState.CORE_TARGET_CLOSURE,
+        name="Target Closure",
+        native_unit_of_measurement=PERCENTAGE,
+        entity_registry_enabled_default=False,
+    ),
 ]
 
 
@@ -337,8 +344,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ):
     """Set up the Overkiz sensors from a config entry."""
-    data = hass.data[DOMAIN][entry.entry_id]
-    coordinator = data["coordinator"]
+    data: HomeAssistantOverkizData = hass.data[DOMAIN][entry.entry_id]
 
     entities = []
 
@@ -346,7 +352,7 @@ async def async_setup_entry(
         description.key: description for description in SENSOR_DESCRIPTIONS
     }
 
-    for device in coordinator.data.values():
+    for device in data.coordinator.data.values():
         if (
             device.widget not in IGNORED_OVERKIZ_DEVICES
             and device.ui_class not in IGNORED_OVERKIZ_DEVICES
@@ -356,7 +362,7 @@ async def async_setup_entry(
                     entities.append(
                         OverkizStateSensor(
                             device.device_url,
-                            coordinator,
+                            data.coordinator,
                             description,
                         )
                     )
@@ -365,7 +371,7 @@ async def async_setup_entry(
                 entities.append(
                     OverkizHomeKitSetupCodeSensor(
                         device.device_url,
-                        coordinator,
+                        data.coordinator,
                     )
                 )
 

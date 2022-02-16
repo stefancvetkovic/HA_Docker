@@ -2,10 +2,10 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.bathroom_thp_humidity
-      above: 60  
+      above: 55  
     - platform: numeric_state
       entity_id: sensor.bathroom_thp_humidity
-      below: 50  
+      below: 45  
   action:
     - service_template: >
         {% if states('sensor.bathroom_thp_humidity') | float >= 60 and states('light.bathroom_main_light') == 'on' %}

@@ -3,3 +3,10 @@
   entities:
     - light.kitchen_gun
     - light.kitchen_wled
+
+- platform: group
+  name: Kitchen WLED 
+  entities:
+    - light.wled_kitchen_segment_1
+    - light.wled_kitchen_segment_2
+    - light.wled_kitchen_segment_3

@@ -19,7 +19,7 @@
   initial_state: 'on'
   trigger:
     - platform: state
-      entity_id: switch.terace_heater
+      entity_id: binary_sensor.terace_heater_state
       from: 'off'
       to: 'on'
   action:
