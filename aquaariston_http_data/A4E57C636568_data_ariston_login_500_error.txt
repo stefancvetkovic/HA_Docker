@@ -1,0 +1,69 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ERROR - Ariston NET</title>
+			<link rel="shortcut icon" type="image/ico" href="/Content/images/favicon.ico">
+
+	<link href="/Content/css-bootstrap?v=THER5XG4hyMnZIqomngRLKPhCGCEsfQ7qQirPcgby3U1" rel="stylesheet"/>
+
+	<link href="/Content/css-Ariston?v=DZoSS0UQJ_RU65O1nB8g_Vy2ld3g6cdr3ZeR-daSrB41" rel="stylesheet"/>
+
+	<script src="/bundles/libs?v=1Qhpvq4gql8iRuQ1C_XdIrGv-pSlbMutqTQt1PaF_Es1"></script>
+
+	<style>
+		div.row {
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="logo">
+		<a href="/" style="position: absolute">
+			<div style="width: 250px; height: 65px;">
+			</div>
+		</a>
+	</div>
+	<div id="contentWrapper" class="container-fluid">
+		<h4>AN ERROR OCCURRED PROCESSING YOUR REQUEST</h4>
+		<hr />
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-3">
+				Please report the following error to the system administrator
+			</div>
+		</div>
+		<div class="row"></div>
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-3">
+				ERROR TYPE:
+			</div>
+			<div class="col-sm-3">
+				System.Data.Entity.Core.EntityCommandExecutionException
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-3">
+				ERROR MESSAGE:
+			</div>
+			<div class="col-sm-3">
+				An error occurred while executing the command definition. See the inner exception for details.
+			</div>
+		</div>
+	</div>
+	<div id="footer"></div>
+	<script type="text/javascript">
+		$(function () {
+			$('#page').css("min-height", $(document).height());
+			$('body').css('visibility', 'visible');
+			var hideLogo = false;
+			if (hideLogo) {
+				$('.logo').hide();
+			}
+		});
+	</script>
+</body>
+</html>

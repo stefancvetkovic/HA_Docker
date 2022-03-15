@@ -6,5 +6,5 @@
     - light.hallway_wled
     - light.livingroom_wled_below_tv
     - light.livingroom_wled_above_tv
-    - light.kitchen_wled
+    - light.kitchen_desk
     - light.bedroom_wall_wled

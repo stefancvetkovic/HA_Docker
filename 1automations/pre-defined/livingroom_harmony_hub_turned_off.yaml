@@ -1,0 +1,15 @@
+- alias: Livingroom HarmonyHub State Change
+  description: 'Livingroom HarmonyHub State Change from WatchTV to Off, make sure that tv SONY bravia IS TURNED OFF'
+  trigger:
+  - platform: state
+    entity_id: select.harmony_hub_livingroom_activities
+    from: 'Watch TV'
+    to: 'PowerOff'
+  action:
+    - delay: 00:00:05
+    - choose:
+      - conditions: "{{ is_state('media_player.livingroom_tv', 'playing') }}"
+        sequence:
+          service: media_player.turn_off
+          target:
+            entity_id: media_player.livingroom_tv

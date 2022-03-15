@@ -1,0 +1,4 @@
+- platform: ping
+  host: google.com
+  name: online_ping
+  count: 3

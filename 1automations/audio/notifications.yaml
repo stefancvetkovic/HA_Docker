@@ -223,7 +223,7 @@
         speaker: "media_player.bedroom_ceiling_speaker"
         source: "Primary Chromecast"
         volume: "0.4"
-        custom_message: "Current tempereture in the bedroom is {{ states('sensor.bedroom_temperature')}} degrees."
+        custom_message: "Current temperature in the bedroom is {{ states('sensor.bedroom_thp_temperature')}} degrees."
         platform: "tts.google_translate_say"
         delay: "00:00:03"
         chromecast_device: "media_player.system_chromecast"

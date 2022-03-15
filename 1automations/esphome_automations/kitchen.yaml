@@ -35,18 +35,26 @@
         sequence:
           service: light.turn_on
           entity_id: light.wled_kitchen_segment_1
+          data:
+              effect: "Solid"
       - conditions:  "{{ is_state('light.wled_kitchen_segment_1', 'on') and is_state('light.wled_kitchen_segment_2', 'off') and is_state('light.wled_kitchen_segment_3', 'off')}}"
         sequence:
           service: light.turn_on
           entity_id: light.wled_kitchen_segment_2
+          data:
+              effect: "Solid"
       - conditions:  "{{ is_state('light.wled_kitchen_segment_1', 'on') and is_state('light.wled_kitchen_segment_2', 'on') and is_state('light.wled_kitchen_segment_3', 'off')}}"
         sequence:
           service: light.turn_on
           entity_id: light.wled_kitchen_segment_3
+          data:
+              effect: "Solid"
       - conditions:  "{{ is_state('light.wled_kitchen_segment_1', 'on') and is_state('light.wled_kitchen_segment_2', 'on') and is_state('light.wled_kitchen_segment_3', 'on')}}"
         sequence:
           service: light.turn_off
           entity_id: light.wled_kitchen_segment_1,light.wled_kitchen_segment_2,light.wled_kitchen_segment_3
+          data:
+              effect: "Solid"
 
 - alias: Kitchen Actuator via encoder
   id: kitchen_actuator_click
@@ -104,7 +112,7 @@
       type: single_long_click_3
   action:
     - service: light.turn_off
-      entity_id: light.kitchen_wled
+      entity_id: light.kitchen_desk
 
 - alias: Kitchen Actuator Long Click
   id: kitchen_actuator_long_click

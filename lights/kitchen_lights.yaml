@@ -2,10 +2,10 @@
   name: Kitchen all lights
   entities:
     - light.kitchen_gun
-    - light.kitchen_wled
+    - light.kitchen_desk
 
 - platform: group
-  name: Kitchen WLED 
+  name: Kitchen Desk
   entities:
     - light.wled_kitchen_segment_1
     - light.wled_kitchen_segment_2

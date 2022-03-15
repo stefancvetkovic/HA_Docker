@@ -1,0 +1,9 @@
+- alias: 'WLED Master Light Aways On'
+  trigger:
+    - platform: state
+      entity_id: light.bedroom_wled_master, light.kitchen_wled_master
+      to: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: "{{trigger.event.data.entity_id}}"

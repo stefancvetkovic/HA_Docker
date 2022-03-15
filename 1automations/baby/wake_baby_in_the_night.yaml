@@ -13,4 +13,4 @@
 #     service: >
 #       light.turn_{{trigger.to_state.state}}
 #     target:
-#       entity_id: light.bedroom_wall_wled, light.bathroom_main_light, light.hallway_bedroom_wall_light, light.hallway_wled, light.kitchen_wled
+#       entity_id: light.bedroom_wall_wled, light.bathroom_main_light, light.hallway_bedroom_wall_light, light.hallway_wled, light.kitchen_desk

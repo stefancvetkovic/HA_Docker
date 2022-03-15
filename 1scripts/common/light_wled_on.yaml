@@ -1,6 +1,7 @@
 alias: Light Wled On
 description: 'sets wled light with parameters'
 icon: "mdi:cellphone"
+mode: restart
 fields:
   brightness:
     description: 'Appropriete brightness for wled light'
@@ -50,47 +51,46 @@ fields:
       example: '[0,255,0]' 
 
 sequence:
-  - choose:
-    - conditions: "{{ rgb_random == 'True' }}"
-      sequence:
-        - service: light.turn_on
-          target:
-            entity_id: "{{wled_light_entity}}"
-          data:
-            effect: > 
-              {% if effect_random == 'True'%}
-                {{ state_attr('light.wled', 'effect_list') | random }}
-              {%else%}
-                {{effect}}
-              {% endif %} 
-            brightness: >
-             {{brightness}}
-            rgb_color: >
-             [{{range(256)|random}},{{range(256)|random}},{{range(256)|random}}]
-    - conditions: "{{ rgb_random != 'True' }}"
-      sequence:
-        - service: light.turn_on
-          target:
-            entity_id: "{{wled_light_entity}}"
-          data:
-            effect: "{{effect}}"
-            brightness: >
-             {{brightness}}
-            rgb_color: "{{rgb}}"
-
-  - service: select.select_option
+  # - service: persistent_notification.create
+  #   data:
+  #     title: "{{wled_light_entity}}"
+  #     message: "{{ state_attr('light.livingroom_wled_below_tv', 'effect_list') | random }}"
+  - service: light.turn_on
     target:
-      entity_id: "{{wled_color_palette_entity}}"
+      entity_id: "{{wled_light_entity}}"
     data:
-      option: > 
-        {{palette}}
+      effect: > 
+        {% if effect_random == 'True'%}
+          {{ state_attr('light.livingroom_wled_below_tv', 'effect_list') | random }}
+        {%else%}
+          {{effect}}
+        {% endif %} 
+      brightness: >
+        {{brightness}}
+      rgb_color: >
+        {% if rgb_random == 'True'%}
+          [{{range(256)|random}},{{range(256)|random}},{{range(256)|random}}]
+        {%else%}
+          {{rgb}}
+        {% endif %} 
+
+  # - service: select.select_option
+  #   target:
+  #     entity_id: "{{wled_color_palette_entity}}"
+  #   data:
+  #     option: > 
+  #       "Default"
+
   - service: number.set_value
     target:
       entity_id: "{{wled_intensity_entity}}"
     data:
-      value: "{{intensity}}"
+      value: "{{ range(10, 255) | random }}" 
+  
   - service: number.set_value
     target:
       entity_id: "{{wled_speed_entity}}"
     data:
-      value: "{{speed}}"
+      value: "{{ range(10, 255) | random }}"    
+      
+

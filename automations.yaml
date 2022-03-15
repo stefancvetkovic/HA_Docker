@@ -108,6 +108,7 @@
       - service: script.turn_on
         target:
           entity_id: script.livingroom_romantic_scene
+        data: {}
       flipped180_face_0:
       - service: persistent_notification.create
         data:
@@ -186,6 +187,13 @@
           message: Flip the cube 180 degrees to face 2
           title: Flip the cube 180 degrees to face 2
           notification_id: Flip the cube 180 degrees to face 2
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id:
+          - light.livingroom_wled_above_tv
+          - light.livingroom_wled_below_tv
+          - light.livingroom_ceiling_led
       rotate_cw_face_2:
       - service: persistent_notification.create
         data:
@@ -210,12 +218,31 @@
           message: Double tap the cube with face 3 up
           title: Double tap the cube with face 3 up
           notification_id: Double tap the cube with face 3 up
+      - service: light.turn_on
+        data:
+          rgb_color:
+          - '{{range(256)|random}}'
+          - '{{range(256)|random}}'
+          - '{{range(256)|random}}'
+          effect: "{% set effects = ['Solid','Twinkle','Sparkle+', 'Solid Pattern','Rain','Multi\
+            \ Comet']%} {{ effects | random}} \n"
+          brightness: 200
+        target:
+          entity_id:
+          - light.livingroom_wled_above_tv
+          - light.livingroom_wled_below_tv
       flipped90_face_3:
       - service: persistent_notification.create
         data:
           message: Flip the cube 90 degrees to face 3
           title: Flip the cube 90 degrees to face 3
           notification_id: Flip the cube 90 degrees to face 3
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id:
+          - light.livingroom_wled_above_tv
+          - light.livingroom_wled_below_tv
       flipped180_face_3:
       - service: persistent_notification.create
         data:
@@ -665,6 +692,27 @@
     subtype: button_20_single
     discovery_id: 0x00124b000e0a085a action_button_20_single
     id: single20
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_3_hold
+    discovery_id: 0x00124b000e0a085a action_button_3_hold
+    id: hold3
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_4_hold
+    discovery_id: 0x00124b000e0a085a action_button_4_hold
+    id: hold4
+  - platform: device
+    domain: mqtt
+    device_id: 0823f1935ec7ecf10a9e2e922c8a56ff
+    type: action
+    subtype: button_2_hold
+    discovery_id: 0x00124b000e0a085a action_button_2_hold
+    id: hold2
   condition: []
   action:
   - choose:
@@ -684,6 +732,41 @@
           action: second
     - conditions:
       - condition: trigger
+        id: hold3
+      sequence:
+      - service: script.office_set_scene
+        data:
+          action: hold3
+    - conditions:
+      - condition: trigger
+        id: single2
+      sequence:
+      - service: script.bedroom_set_scene
+        data:
+          action: single
+    - conditions:
+      - condition: trigger
+        id: double2
+      sequence:
+      - service: script.bedroom_set_scene
+        data:
+          action: double
+    - conditions:
+      - condition: trigger
+        id: tripple2
+      sequence:
+      - service: script.bedroom_set_scene
+        data:
+          action: tripple
+    - conditions:
+      - condition: trigger
+        id: hold2
+      sequence:
+      - service: script.bedroom_set_scene
+        data:
+          action: hold
+    - conditions:
+      - condition: trigger
         id: tripple3
       sequence:
       - service: script.office_set_scene
@@ -691,9 +774,17 @@
           action: third
     - conditions:
       - condition: trigger
+        id: hold4
+      sequence:
+      - service: light.turn_off
+        data:
+          entity_id: light.terace_all_lights
+    - conditions:
+      - condition: trigger
         id: single20
       sequence:
       - service: script.turn_off_all_lights_and_devices
+        data: {}
     - conditions:
       - condition: trigger
         id: hold5
@@ -704,6 +795,7 @@
           - cover.ds_l
           - cover.ds_s
           - cover.ds_d
+        data: {}
     - conditions:
       - condition: trigger
         id: release5
@@ -714,6 +806,7 @@
           - cover.ds_l
           - cover.ds_s
           - cover.ds_d
+        data: {}
     - conditions:
       - condition: trigger
         id: hold6
@@ -723,6 +816,7 @@
           entity_id:
           - cover.ss_l
           - cover.ss_d
+        data: {}
     - conditions:
       - condition: trigger
         id: release6
@@ -732,6 +826,7 @@
           entity_id:
           - cover.ss_l
           - cover.ss_d
+        data: {}
     - conditions:
       - condition: trigger
         id: hold7
@@ -741,6 +836,7 @@
           entity_id:
           - cover.rs_l
           - cover.rs_d
+        data: {}
     - conditions:
       - condition: trigger
         id: release7
@@ -750,6 +846,7 @@
           entity_id:
           - cover.rs_l
           - cover.rs_d
+        data: {}
     - conditions:
       - condition: trigger
         id: hold9
@@ -760,6 +857,7 @@
           - cover.ds_l
           - cover.ds_s
           - cover.ds_d
+        data: {}
     - conditions:
       - condition: trigger
         id: release9
@@ -770,6 +868,7 @@
           - cover.ds_l
           - cover.ds_s
           - cover.ds_d
+        data: {}
     - conditions:
       - condition: trigger
         id: hold10
@@ -779,6 +878,7 @@
           entity_id:
           - cover.ss_l
           - cover.ss_d
+        data: {}
     - conditions:
       - condition: trigger
         id: release10
@@ -788,6 +888,7 @@
           entity_id:
           - cover.ss_l
           - cover.ss_d
+        data: {}
     - conditions:
       - condition: trigger
         id: hold11
@@ -797,6 +898,7 @@
           entity_id:
           - cover.rs_l
           - cover.rs_d
+        data: {}
     - conditions:
       - condition: trigger
         id: release11
@@ -806,6 +908,7 @@
           entity_id:
           - cover.rs_l
           - cover.rs_d
+        data: {}
     - conditions:
       - condition: trigger
         id: single4
@@ -813,6 +916,7 @@
       - service: light.toggle
         target:
           entity_id: light.terace_main_light
+        data: {}
     - conditions:
       - condition: trigger
         id: double4
@@ -820,6 +924,7 @@
       - service: light.toggle
         target:
           entity_id: light.terace_wall_light
+        data: {}
     - conditions:
       - condition: trigger
         id: tripple4
@@ -827,6 +932,7 @@
       - service: switch.toggle
         target:
           entity_id: switch.terace_heater
+        data: {}
     - conditions:
       - condition: trigger
         id: single8
@@ -846,6 +952,7 @@
       - service: input_boolean.toggle
         target:
           entity_id: input_boolean.pet_mode
+        data: {}
     - conditions:
       - condition: trigger
         id: double12
@@ -853,6 +960,7 @@
       - service: input_boolean.toggle
         target:
           entity_id: input_boolean.guest_mode
+        data: {}
     - conditions:
       - condition: trigger
         id: single16
@@ -866,6 +974,7 @@
           - service: lock.unlock
             target:
               entity_id: lock.nuki_front_door_lock
+            data: {}
         - conditions:
           - condition: state
             entity_id: lock.nuki_front_door_lock
@@ -874,6 +983,7 @@
           - service: lock.lock
             target:
               entity_id: lock.nuki_front_door_lock
+            data: {}
         default: []
     - conditions:
       - condition: trigger
@@ -939,26 +1049,14 @@
             data:
               account: permanentnosiva@icloud.com
               device_name: anjasiphone
-        default:
-        - choose:
-          - conditions:
-            - condition: trigger
-              id: single2
-            sequence:
-            - service: script.light_wled_on
-              data:
-                brightness: 255
-                intensity: 255
-                speed: 255
-                palette: Default
-                effect: Solid
-                wled_light_entity: light.bedroom_ceiling_wled
-                wled_color_palette_entity: select.bedroom_wall_wled_color_palette
-                wled_intensity_entity: number.bedroom_ceiling_wled_intensity
-                wled_speed_entity: number.bedroom_ceiling_wled_speed
-                rgb_random: true
-                effect_random: true
-          default: []
+        - conditions:
+          - condition: trigger
+            id: single18
+          sequence:
+          - service: script.bedroom_set_scene
+            data:
+              action: romantic
+        default: []
   mode: single
 - id: '1641310513409'
   alias: '[Alexa] First Automation'
@@ -1004,3 +1102,11 @@
     target:
       entity_id: light.livingroom_christmas_tree
   mode: single
+- id: '1646145870632'
+  alias: Office TV Turn On
+  description: Turn On Office TV
+  use_blueprint:
+    path: cvroque/webostv_turn_on.yaml
+    input:
+      webostv_mac: 64-95-6C-8A-3F-0A
+      webostv: media_player.lg_webos_smart_tv

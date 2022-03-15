@@ -7,16 +7,37 @@
     choose:
     - conditions: "{{is_state('binary_sensor.kitchen_stove_state', 'on')}}"
       sequence:
-        service: switch.turn_on
-        entity_id: switch.kitchen_extraction_fan
+        - service: switch.turn_on
+          entity_id: switch.kitchen_extraction_fan
+        - service: light.turn_on
+          target:
+            entity_id: light.kitchen_desk
+          data:
+            brightness: 255
+            effect: Solid
     - conditions: "{{is_state('binary_sensor.kitchen_stove_state', 'off')}}"
       sequence:
-        - delay: 00:00:10
+        #- delay: 00:00:10
         - choose:
-          - conditions: "{{is_state('binary_sensor.kitchen_stove_state', 'off')}}"
+          - conditions: #"{{is_state('binary_sensor.kitchen_stove_state', 'off')}}"
+              condition: state
+              entity_id: binary_sensor.kitchen_stove_state
+              state: 'off'
+              for: "00:00:10"
             sequence:
-              service: switch.turn_off
-              entity_id: switch.kitchen_extraction_fan
+              - service: switch.turn_off
+                entity_id: switch.kitchen_extraction_fan
+              - service: light.turn_off
+                entity_id: light.wled_kitchen_segment_3
+              - delay: 00:00:01
+              - service: light.turn_off
+                entity_id: light.wled_kitchen_segment_2
+              - delay: 00:00:01
+              - choose: 
+                - conditions: "{{is_state('binary_sensor.night', 'off') and state_attr('cover.ds_d', 'current_position') > 30}}"
+                  sequence:
+                    service: light.turn_off
+                    entity_id: light.wled_kitchen_segment_1
 
     # - service_template: >
     #     {% if is_state('binary_sensor.kitchen_stove_state', 'on') %}

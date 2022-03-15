@@ -36,19 +36,16 @@
                 position: 40 
                 
             - service: light.turn_off
-              entity_id: 
-                - light.kitchen_gun
-                - light.kitchen_wled
-                - light.livingroom_wled_below_tv
+              entity_id: light.kitchen_gun, light.kitchen_desk, light.livingroom_wled_below_tv
       - conditions:
           - condition: template
             value_template: "{{ trigger.to_state.state not in ['unavailable','unknown'] and trigger.to_state.state in ['paused'] }}"
         sequence:
-          - service: light.turn_on
-            entity_id: light.livingroom_wled_below_tv
-            data:
-              brightness_pct: 40
-              effect: 'breathe' 
+          service: light.turn_on
+          entity_id: light.livingroom_wled_below_tv
+          data:
+            brightness_pct: 40
+            effect: 'breathe' 
 
 
   # - service: media_player.volume_set

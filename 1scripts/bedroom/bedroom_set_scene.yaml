@@ -1,0 +1,95 @@
+alias: Bedroom Set Scene
+fields:
+  action:
+    description: 'Action that is triggered (single, double, tripple, hold, release)'
+    example: 'single'
+sequence:
+
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'single' }}"
+      sequence:
+        - service: light.turn_on
+          target:
+            entity_id: light.bedroom_ceiling_wled
+          data:
+            brightness: 200
+            effect: >
+              {% if is_state('light.bedroom_wall_wled', 'on')%}
+                {{state_attr('light.bedroom_wall_wled','effect')}}
+              {% else %}
+                {% set effects = ['Solid','Twinkle','Sparkle+', 'Solid Pattern','Rain','Multi Comet']%}
+                {{ effects | random}}                
+              {% endif %}
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'double' }}"
+      sequence:
+        - service: light.turn_on
+          target:
+            entity_id: light.bedroom_wall_wled
+          data:
+            brightness: 200
+            effect: >
+              {% if is_state('light.bedroom_ceiling_wled', 'on')%}
+                {{state_attr('light.bedroom_ceiling_wled','effect')}}
+              {% else %}
+                {% set effects = ['Solid','Twinkle','Sparkle+', 'Solid Pattern','Rain','Multi Comet']%}
+                {{ effects | random}}                
+              {% endif %}
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'tripple' }}"
+      sequence:
+        - service: light.turn_on
+          target:
+            entity_id: light.bedroom_right_lamp
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'hold' }}"
+      sequence:
+        - service: light.turn_off
+          target:
+            entity_id: light.bedroom_all_lights
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'spaceship' }}"
+      sequence:
+        - service: light.turn_off
+          entity_id: light.bedroom_all_lights
+        - service: switch.turn_on
+          entity_id: switch.bedroom_led_light_trafo
+    - conditions:
+      - condition: template
+        value_template: "{{  action == 'romantic' }}"
+      sequence:
+        - service: light.turn_off
+          entity_id: light.bedroom_all_lights
+        - service: switch.turn_on
+          entity_id: switch.bedroom_led_light_trafo
+        - service: light.turn_on
+          target:
+            entity_id: light.bedroom_wall_wled, light.bedroom_ceiling_wled
+          data:
+            rgb_color: [255,0,0]
+            brightness: 255
+            effect: 'Solid'
+        - service: cover.set_cover_position
+          data:
+            position: 10
+            entity_id: cover.ss_l
+        - service: cover.set_cover_position
+          data:
+            position: 30
+            entity_id: cover.ss_d
+        - choose:
+          - conditions: "{{is_state('light.bedroom_below_bed_cct', 'on') and is_state('light.bedroom_below_bed_rgb', 'on')}}"
+            sequence:
+              - service: light.turn_off
+                entity_id: light.bedroom_below_bed_cct
+              - service: light.turn_on
+                entity_id: light.bedroom_below_bed_rgb
+    
+
+              

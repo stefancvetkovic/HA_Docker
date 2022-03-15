@@ -10,6 +10,6 @@
   action:
     service: light.turn_on
     target:
-      entity_id: light.kitchen_wled
+      entity_id: light.kitchen_wled_all
     data:
       brightness: 255

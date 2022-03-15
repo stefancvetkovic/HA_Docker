@@ -22,6 +22,7 @@
       entity_id: binary_sensor.terace_heater_state
       from: 'off'
       to: 'on'
+      for: 00:00:10
   action:
     service: notify.mobile_app_stefans_iphone
     data:

@@ -1,10 +1,10 @@
 # - alias: 'Bedroom toggle AC by temperature'
 #   trigger:
 #     - platform: numeric_state
-#       entity_id: sensor.bedroom_temperature
+#       entity_id: sensor.bedroom_thp_temperature
 #       above: 25  
 #     - platform: numeric_state
-#       entity_id: sensor.bedroom_temperature
+#       entity_id: sensor.bedroom_thp_temperature
 #       below: 23  
 #   action:
 

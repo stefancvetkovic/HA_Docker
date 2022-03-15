@@ -25,8 +25,8 @@
                 {% set time_diff = (rotary_encoder_one_last_changed - rotary_encoder_two_last_changed) | abs %}
                 {{ 0.5 > time_diff > 0 }}
           sequence:
-            service: light.toggle
-            entity_id: light.bedroom_bed_light_pre_trafo
+            service: switch.toggle
+            entity_id: switch.bedroom_bed_light_pre_trafo
 
 - alias: Bedroom Bed turn off lights from encoder
   description: 'This automation will turn off all the lights in bedroom if it almost simultaniosly is pressed mainlight and first encoder'

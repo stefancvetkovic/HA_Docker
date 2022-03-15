@@ -44,7 +44,7 @@
              - light.livingroom_wled_below_tv
              - light.livingroom_wled_above_tv
              - light.bedroom_wardrobe_left
-             - light.kitchen_wled
+             - light.kitchen_desk
           data:
             speed: 146
             intensity: 172

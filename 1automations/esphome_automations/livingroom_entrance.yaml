@@ -9,7 +9,8 @@
       type: single_short_click_1
   action:
     - service: light.toggle
-      entity_id: light.livingroom_ceiling_led_1
+      entity_id: light.livingroom_spotlights_2
+                 
 
 - alias: Livingroom Entrance Controller LED Above TV
   id: livingroom_entrance_led_above_tv_short_click
@@ -53,7 +54,7 @@
       type: single_short_click_2
   action:
     - service: light.toggle
-      entity_id: light.livingroom_ceiling_led_2
+      entity_id: light.livingroom_ceiling_2
 
 #SINGLE LONG CLICK
 
@@ -129,6 +130,7 @@
 
 - alias: Livingroom Entrance AboveTv Ledstrip Double Click
   id: livingroom_entrance_abovetv_ledstrip_double_click
+  mode: restart
   trigger:
     platform: event
     event_type: esphome.livingroom_entrance_1
@@ -136,10 +138,18 @@
       type: double_click_4
   action:
     - service: script.turn_on
-      entity_id: script.wled_random
+      entity_id: script.light_wled_on
       data:
         variables:
-          wled: light.livingroom_wled_above_tv
+          brightness: 255
+          intensity: 255
+          speed: 255
+          wled_light_entity: light.livingroom_wled_above_tv
+          wled_color_palette_entity: select.livingroom_wled_above_tv_color_palette_2
+          wled_intensity_entity: number.wled_lr_above_tv_intensity
+          wled_speed_entity: number.wled_lr_above_tv_speed
+          rgb_random: 'True'
+          effect_random: 'True'
 
 - alias: Livingroom Entrance BelowTv Ledstrip Double Click
   id: livingroom_entrance_belowtv_ledstrip_double_click
@@ -150,10 +160,19 @@
       type: double_click_3
   action:
     - service: script.turn_on
-      entity_id: script.wled_random
+      entity_id: script.light_wled_on
       data:
         variables:
-          wled: light.livingroom_wled_below_tv
+          brightness: 255
+          intensity: 255
+          speed: 255
+          wled_light_entity: light.livingroom_wled_below_tv
+          wled_color_palette_entity: select.wled_lr_below_tv_color_palette
+          wled_intensity_entity: number.wled_lr_below_tv_intensity
+          wled_speed_entity: number.wled_lr_below_tv_speed
+          rgb_random: 'True'
+          effect_random: 'True'
+
     # - service: light.turn_on
     #   entity_id: light.livingroom_wled_below_tv
     #   data:

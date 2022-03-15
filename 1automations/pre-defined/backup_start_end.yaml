@@ -17,7 +17,7 @@
         sequence:
           service: light.turn_on
           target:
-            entity_id: light.hallway_wled, light.kitchen_wled
+            entity_id: light.hallway_wled, light.kitchen_desk
           data:
             effect: Twinkle
             brightness: 60
@@ -25,18 +25,30 @@
 
 - alias: Homeassistant Backup Started
   description: "Starting up HA after backup"
-  trigger: 
+  trigger:
     platform: event
     event_type: homeassistant_start
-  condition:
-    condition: time
-    after: input_datetime.homeassistant_backup_start
-    before: input_datetime.homeassistant_backup_end
+  # condition:
+  #   condition: time
+  #   after: input_datetime.homeassistant_backup_start
+  #   before: input_datetime.homeassistant_backup_end
   action:
+     - delay: 00:00:10
      - service: persistent_notification.create
        data:
-         title: "HA Started"
-         message: "Home is up & running"
-     - service: light.turn_off
-       target:
-         entity_id: light.hallway_wled, light.kitchen_wled
+         title: "{{ state_attr('light.hallway_wled', 'effect')}}"
+         message: "{{ state_attr('light.hallway_wled', 'state')}}"
+     - choose:
+       - conditions: >
+          {{is_state ('light.hallway_wled','on') and states.light.hallway_wled.attributes.effect == "Twinkle"}}           
+         sequence:
+           service: light.turn_off
+           target:
+            entity_id: light.hallway_wled
+     - choose:
+       - conditions: >
+          {{is_state ('light.kitchen_desk','on') and states.light.kitchen_desk.attributes.effect == "Twinkle"}}           
+         sequence:
+           service: light.turn_off
+           target:
+            entity_id: light.kitchen_desk  

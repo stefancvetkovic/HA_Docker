@@ -1,0 +1,10 @@
+- alias: Online Ping
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.online_ping
+      to: 'off'
+  action:
+    service: persistent_notification.create
+    data:
+      title: 'No internet access.'
+      message: "Apparently there is no internet access. Doing some automations for optimal usage in house."

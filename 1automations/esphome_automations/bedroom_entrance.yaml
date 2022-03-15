@@ -85,21 +85,33 @@
     event_data:
       type: double_click_1
   action:
-    service: script.turn_on
-    target:
-      entity_id: script.light_wled_on
-    data:
-      variables:
-        brightness: '100'
-        intensity: '100'
-        speed: '100'
-        palette: Default
-        wled_light_entity: light.bedroom_ceiling_wled
-        wled_color_palette_entity: select.bedroom_wall_wled_color_palette
-        wled_intensity_entity: number.bedroom_ceiling_wled_intensity
-        wled_speed_entity: number.bedroom_ceiling_wled_speed
-        rgb_random: 'True'
-        effect_random: 'True'
+    - choose:
+      - conditions: "{{is_state ('light.bedroom_ceiling_wled','on')}}"
+        sequence:
+          service: light.turn_on
+          target:
+            entity_id: light.bedroom_wall_wled
+          data:
+            brightness: "{{ state_attr('light.bedroom_ceiling_wled', 'brightness')}}"
+            effect: "{{ state_attr('light.bedroom_ceiling_wled', 'effect')}}"
+            rgb_color: "{{state_attr('light.bedroom_ceiling_wled', 'rgb_color')}}"
+      - conditions: "{{is_state ('light.bedroom_ceiling_wled','off')}}"
+        sequence:
+          service: script.turn_on
+          target:
+            entity_id: script.light_wled_on
+          data:
+            variables:
+              brightness: '100'
+              intensity: '100'
+              speed: '100'
+              palette: Default
+              wled_light_entity: light.bedroom_wall_wled
+              wled_color_palette_entity: select.bedroom_wall_wled_color_palette
+              wled_intensity_entity: number.bedroom_ceiling_wled_intensity
+              wled_speed_entity: number.bedroom_ceiling_wled_speed
+              rgb_random: 'True'
+              effect_random: 'True'
 
 - alias: Bedroom Entrance Ceiling Double Click
   id: bedroom_entrance_ceiling_double_click
@@ -113,16 +125,17 @@
     target:
       entity_id: script.light_wled_on
     data:
-      brightness: 255
-      intensity: 255
-      speed: 255
-      palette: Default
-      wled_light_entity: light.bedroom_ceiling_wled
-      wled_color_palette_entity: select.bedroom_wall_wled_color_palette
-      wled_intensity_entity: number.bedroom_ceiling_wled_intensity
-      wled_speed_entity: number.bedroom_ceiling_wled_speed
-      rgb_random: 'True'
-      effect_random: 'True'
+      variables:
+        brightness: 255
+        intensity: 255
+        speed: 255
+        palette: Default
+        wled_light_entity: light.bedroom_ceiling_wled
+        wled_color_palette_entity: select.bedroom_wall_wled_color_palette
+        wled_intensity_entity: number.bedroom_ceiling_wled_intensity
+        wled_speed_entity: number.bedroom_ceiling_wled_speed
+        rgb_random: 'True'
+        effect_random: 'True'
 
 - alias: Bedroom Entrance TV Double Click
   id: bedroom_entrance_tv_double_click
