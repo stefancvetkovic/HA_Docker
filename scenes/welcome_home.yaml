@@ -14,6 +14,7 @@
     light.livingroom_wled_below_tv:
       state: "on"
       brightness: 200
+      effect: "Solid"
       rgb_color:
         - 212
         - 143

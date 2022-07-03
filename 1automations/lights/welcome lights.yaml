@@ -10,6 +10,11 @@
         - condition: state
           entity_id: sun.sun
           state: 'below_horizon'
+        - condition: state
+          entity_id: input_boolean.guest_mode
+          state: 'off'
+        # - condition: template
+        #   value_template: "{{ as_timestamp(now()) -  as_timestamp(states.binary_sensor.frontdoor_motion.last_changed) <= 50 }}"
         - condition: template
           value_template: > 
             {{is_state('light.hallway_bedroom_wall_light', 'off') 
@@ -17,6 +22,5 @@
             and is_state('light.hallway_livingroom_main_light', 'off')
             }}
   action:
-
-    - service: scene.turn_on
-      entity_id: scene.welcome_home
+    service: scene.turn_on
+    entity_id: scene.welcome_home

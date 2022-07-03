@@ -1,43 +1,22 @@
-- alias: "iOS Unlock Front Door"
+- alias: "notification lock frontdoor"
   initial_state: true
   trigger:
     - platform: event
-      event_type: ios.action_fired
+      event_type: mobile_app_notification_action
       event_data:
-        actionName: 'Unlock Front Door'
-  action:
-    service: script.turn_on
-    entity_id: script.unlock_front_door
-
-- alias: "iOS Lock Front Door"
-  initial_state: true
-  trigger:
+        action: 'LOCK_FRONTDOOR'
     - platform: event
-      event_type: ios.action_fired
+      event_type: mobile_app_notification_action
       event_data:
-        actionName: 'Lock Front Door'
+        action: 'UNLOCK_FRONTDOOR'
   action:
-    service: script.turn_on
-    entity_id: script.lock_front_door
-
-- alias: "iOS Open Front Door"
-  initial_state: true
-  trigger:
-    - platform: event
-      event_type: ios.action_fired
-      event_data:
-        actionName: 'Open Front Door'
-  action:
-    service: script.turn_on
-    entity_id: script.open_front_door
-
-- alias: "iOS Unlock Bottom Door"
-  initial_state: true
-  trigger:
-    - platform: event
-      event_type: ios.action_fired
-      event_data:
-        actionName: 'Unlock Bottom Door'
-  action:
-    service: script.turn_on
-    entity_id: script.unlock_bottom_door
+    service: >
+      {% if trigger.event.data.action == 'UNLOCK_FRONTDOOR' %}
+        lock.unlock
+      {% elif  trigger.event.data.action == 'LOCK_FRONTDOOR'%}
+        lock.lock
+      {% endif %}
+    target:
+      entity_id: lock.nuki_front_door_lock
+    data:
+      code: !secret nuki_code

@@ -1,0 +1,9 @@
+- platform: template
+  sensors:
+    frontdoor_last_movement_time:
+      value_template: "{{as_timestamp(states.binary_sensor.frontdoor_motion.last_changed) | timestamp_custom('%A %d-%b-%y, %H:%M:%S')}}"
+
+- platform: template
+  sensors:
+    frontdoor_last_open_time:
+      value_template: "{{as_timestamp(states.binary_sensor.front_door.last_changed) | timestamp_custom('%A %d-%b-%y, %H:%M:%S')}}"

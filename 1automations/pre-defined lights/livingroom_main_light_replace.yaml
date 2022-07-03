@@ -10,6 +10,6 @@
         entity_id: light.livingroom_main_light
     
     - service: light.turn_on
-      entity_id: light.livingroom_ceiling_led
+      entity_id: light.livingroom_spotlights
       data:
         brightness: 200

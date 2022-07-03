@@ -4,14 +4,18 @@
   trigger:
       platform: state
       entity_id: binary_sensor.office_closet_left_contact, binary_sensor.office_closet_right_contact, binary_sensor.office_wardrobe_left_door, binary_sensor.office_wardrobe_right_door
+  condition: "{{ not is_state(trigger.from_state.state, 'unknown') }}"
   action:
-    - service: light.turn_{{trigger.to_state.state}}
-      target:
-        entity_id: >
-          {% if trigger.to_state.entity_id == 'binary_sensor.office_closet_left_contact' or trigger.to_state.entity_id == 'binary_sensor.office_closet_right_contact'  %}
-            light.office_closet_lights
-          {%elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_left_door'%}
-            light.office_wardrobe_left_left,light.office_wardrobe_left_right
-          {%elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_right_door'%}
-            light.office_wardrobe_right_right, light.office_wardrobe_right_left
-          {% endif %}
+    - if: "{{ not is_state(trigger.from_state.state,'unknown') }}"
+      then:
+       - alias: "Setup light to office closet"
+         service: light.turn_{{trigger.to_state.state}}
+         target:
+          entity_id: >
+            {% if trigger.to_state.entity_id == 'binary_sensor.office_closet_left_contact' or trigger.to_state.entity_id == 'binary_sensor.office_closet_right_contact'  %}
+              light.office_closet_lights
+            {%elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_left_door'%}
+              light.office_wardrobe_left_left,light.office_wardrobe_left_right
+            {%elif trigger.to_state.entity_id == 'binary_sensor.office_wardrobe_right_door'%}
+              light.office_wardrobe_right_right, light.office_wardrobe_right_left
+            {% endif %}

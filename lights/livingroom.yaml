@@ -22,8 +22,8 @@
   - platform: group
     name: Livingroom Ceiling LED
     entities:
-      - light.livingroom_ceiling_1
-      - light.livingroom_ceiling_2
+      - light.livingroom_ceiling_led_1
+      - light.livingroom_ceiling_led_2
 
   - platform: group
     name: Livingroom Spotlights

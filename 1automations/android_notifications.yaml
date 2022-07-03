@@ -1,0 +1,79 @@
+- alias: Livingroom TV and Bedroom TV notifications
+  description: "Fire notification on the TV's if they are on"
+  trigger:
+  #Laundry notification
+    - platform: state
+      entity_id: input_boolean.pickup_laundry
+      to: 'on'
+      id: "laundry"
+  #Covers warning
+    - platform: state
+      entity_id: automation.covers_set_for_bedtime
+      to: 'on'
+      id: "covers_night"
+  #Warning
+    - platform: state
+      entity_id: automation.kitchen_water_leak_warning
+      to: 'on'
+      id: "water_leak"
+
+    - platform: time
+      at: input_datetime.homeassistant_backup_start
+      id: "backup_start"
+
+  action:
+      choose:
+      - conditions: "{{is_state('media_player.livingroom_tv', 'playing')}}"
+        sequence:
+          service: notify.livingroom_tv
+          data:
+            title: "Attention!"
+            message: > 
+                {% if trigger.id == 'laundry' %}
+                  Apparently, there are some laundry in washing machine.
+                {% elif trigger.id == 'covers_night' %}
+                  Covers are shutting down for bedtime mode.
+                {% elif trigger.id == 'water_leak' %}
+                  WARNING! Water leak detected in above the sink in the kitchen!
+                {% elif trigger.id == 'backup_start' %}
+                  Backup of IRIS has started. Some functionalities of the apartment temporarily (approx. 15-20min) will be suspanded.
+                {% endif %}
+            data:
+              duration: 4
+              position: "bottom-left"
+              fontsize: "medium"
+              transparency: "80%"
+              color: >
+                {% if trigger.id != 'water_leak' %}
+                  red
+                {% else %}
+                  teal
+                {% endif %}              
+              interrupt: 0
+      - conditions: "{{is_state('media_player.bedroom_tv', 'playing')}}"
+        sequence:
+          service: notify.bedroom_tv
+          data:
+            title: "Attention!"
+            message: > 
+                {% if trigger.id == 'laundry' %}
+                  Apparently, there are some laundry in washing machine.
+                {% elif trigger.id == 'covers_night' %}
+                  Covers are shutting down for bedtime mode.
+                {% elif trigger.id == 'water_leak' %}
+                  WARNING! Water leak detected in above the sink in the kitchen!
+                {% elif trigger.id == 'backup_start' %}
+                  Backup of IRIS has started. Some functionalities of the apartment temporarily (approx. 15-20min) will be suspanded.
+                {% endif %}
+            data:
+              duration: 4
+              position: "bottom-left"
+              fontsize: "medium"
+              transparency: "80%"
+              color: >
+                {% if trigger.id != 'water_leak' %}
+                  red
+                {% else %}
+                  teal
+                {% endif %}              
+              interrupt: 0

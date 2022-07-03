@@ -23,14 +23,14 @@ sequence:
     data:
       source: 'Spotify'
 
-  - service: spotcast.start
-    data:
-      device_name: 'LSONY KD-65XG8596'
-      uri: 'spotify:playlist:37i9dQZF1DX9loJQLuEvap'
-      force_playback: true
-      random_song: true
-      shuffle: true
-      offset: 1
+  # - service: spotcast.start
+  #   data:
+  #     device_name: 'LSONY KD-65XG8596'
+  #     uri: 'spotify:playlist:37i9dQZF1DX9loJQLuEvap'
+  #     force_playback: true
+  #     random_song: true
+  #     shuffle: true
+  #     offset: 1
 
   - service: script.turn_on
     entity_id: script.set_avr

@@ -1110,3 +1110,68 @@
     input:
       webostv_mac: 64-95-6C-8A-3F-0A
       webostv: media_player.lg_webos_smart_tv
+- id: '1650727379263'
+  alias: Tag Elevator Tag is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 28836806-cb69-46e0-ac02-5862f20b9264
+  - platform: tag
+    tag_id: dec35c1a-d373-4baf-9612-f2dffd51147b
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: lock.nuki_front_door_lock
+        state: locked
+      sequence:
+      - service: lock.unlock
+        data:
+          code: '1234'
+        target:
+          entity_id: lock.nuki_front_door_lock
+      - service: notify.mobile_app_stefans_iphone
+        data:
+          message: Ulazna vrata od stana su otključana.
+          data:
+            push:
+              sound:
+                name: default
+                critical: 1
+                volume: 1
+          actions:
+          - action: LOCK_FRONTDOOR
+            title: Zaključaj vrata
+            icon: 'sfsymbols: lock'
+          - action: OK
+            title: U redu
+            icon: 'sfsymbols: checkmark'
+    - conditions:
+      - condition: state
+        entity_id: lock.nuki_front_door_lock
+        state: unlocked
+      sequence:
+      - service: lock.lock
+        data:
+          code: '1234'
+        target:
+          entity_id: lock.nuki_front_door_lock
+      - service: notify.mobile_app_stefans_iphone
+        data:
+          message: Ulazna vrata od stana su zaključana.
+          data:
+            push:
+              sound:
+                name: default
+                critical: 1
+                volume: 1
+          actions:
+          - action: UNLOCK_FRONTDOOR
+            title: Otključaj vrata
+            icon: 'sfsymbols: lock'
+          - action: OK
+            title: U redu
+            icon: 'sfsymbols: checkmark'
+    default: []
+  mode: single

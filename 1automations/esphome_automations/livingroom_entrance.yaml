@@ -9,8 +9,7 @@
       type: single_short_click_1
   action:
     - service: light.toggle
-      entity_id: light.livingroom_spotlights_2
-                 
+      entity_id: light.livingroom_ceiling_led_1
 
 - alias: Livingroom Entrance Controller LED Above TV
   id: livingroom_entrance_led_above_tv_short_click
@@ -54,7 +53,8 @@
       type: single_short_click_2
   action:
     - service: light.toggle
-      entity_id: light.livingroom_ceiling_2
+      entity_id: light.livingroom_ceiling_led_2           
+
 
 #SINGLE LONG CLICK
 

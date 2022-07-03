@@ -10,12 +10,12 @@ fields:
     example: '0.4'
 
 sequence:
-  - service: spotcast.start
-    data:
-      entity_id: media_player.livingroom_tv
-      uri: 'spotify:playlist:37i9dQZF1DX9loJQLuEvap'
-      force_playback: true
-      random_song: true
-      repeat: track
-      shuffle: true
-      offset: 1
+  # - service: spotcast.start
+  #   data:
+  #     entity_id: media_player.livingroom_tv
+  #     uri: 'spotify:playlist:37i9dQZF1DX9loJQLuEvap'
+  #     force_playback: true
+  #     random_song: true
+  #     repeat: track
+  #     shuffle: true
+  #     offset: 1

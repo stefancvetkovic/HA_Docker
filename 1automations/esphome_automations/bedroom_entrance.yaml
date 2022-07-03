@@ -34,7 +34,7 @@
   action:
     - service: braviatv_psk.bravia_open_app
       data:
-        entity_id: media_player.bedroom_bravia
+        entity_id: media_player.bedroom_tv
         uri: >-
           com.sony.dtv.com.ug.eon.android.tv.com.ug.eon.android.tv.TvActivity
 

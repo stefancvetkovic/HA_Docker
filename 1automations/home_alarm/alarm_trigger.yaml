@@ -1,36 +1,66 @@
-- alias: 'Trigger alarm while armed away'
-  trigger:
-    - platform: state 
-      entity_id: 
-        - light.hallway_bedroom_all_lights
-        - light.livingroom_all_lights
-        - light.office_all_lights
-        - light.bedroom_all_lights
-        - light.bathroom_all_lights
-        - light.terace_all_lights
-      to: "on"
-
-    - platform: state
-      entity_id: 
-        - binary_sensor.front_door
-        - binary_sensor.bedroom_bed_right_motion
-        - binary_sensor.bedroom_bed_left_motion
-        - binary_sensor.office_wardrobe_left_door
-        - binary_sensor.office_wardrobe_right_door
-        - binary_sensor.office_closet
-        - binary_sensor.bedroom_wardrobe_left_door
-        - binary_sensor.bedroom_wardrobe_right_door
-      to: "on"
-  condition:
-    - condition: and
-      conditions:
-      - condition: state
-        entity_id: alarm_control_panel.ha_alarm
-        state: armed_away
-      - condition: state
-        entity_id: input_boolean.guest_mode
-        state: "off"
-  action:
-    service: alarm_control_panel.alarm_trigger
-    target:
-      entity_id: alarm_control_panel.ha_alarm
+# - alias: 'Trigger alarm while armed away'
+#   trigger:
+#     - platform: state
+#       entity_id: 
+#         - binary_sensor.front_door
+#         - binary_sensor.bedroom_bed_right_motion_occupancy
+#         - binary_sensor.bedroom_bed_left_motion_occupancy
+#         - binary_sensor.office_wardrobe_left_door
+#         - binary_sensor.office_wardrobe_right_door
+#         - binary_sensor.office_closet
+#         - binary_sensor.bedroom_wardrobe_left_door
+#         - binary_sensor.bedroom_wardrobe_right_door
+#       to: "on"
+#     - platform: state
+#       entity_id: 
+#         - light.hallway_bedroom_all_lights
+#         - light.livingroom_all_lights
+#         - light.office_all_lights
+#         - light.bedroom_all_lights
+#         - light.bathroom_all_lights
+#         - light.terace_all_lights
+      
+#   condition:
+#     - condition: and
+#       conditions:
+#       - condition: state
+#         entity_id: alarm_control_panel.ha_alarm
+#         state: armed_home
+#       - condition: state
+#         entity_id: input_boolean.guest_mode
+#         state: "off"
+#       - condition: template
+#         value_template: "{{trigger.to_state.state not in ['unavailable','unknown']}}"
+#   action:
+#     - service: alarm_control_panel.alarm_trigger
+#       target:
+#         entity_id: alarm_control_panel.ha_alarm
+#     # - service: notify.mobile_app_anjas_iphone
+#     #   data:
+#     #     title: "POTENTIAL THIEF ALERT!"
+#     #     message: "Please do not attempt by yourself to approach to the apartment. Call the police!"
+#     #     data:
+#     #       push:
+#     #         sound:
+#     #           name: "default"
+#     #           critical: 1
+#     #           volume: 1.0
+#     #       actions:
+#     #         - action: "CALL"
+#     #           title: "Call Police"
+#     #           uri: "tel:+381192"
+    
+#     - service: notify.mobile_app_stefans_iphone
+#       data:
+#         title: "POTENTIAL THIEF ALERT!"
+#         message: "Please do not attempt by yourself to approach to the apartment. Call the police!"
+#         data:
+#           push:
+#             sound:
+#               name: "default"
+#               critical: 1
+#               volume: 1.0
+#           actions:
+#             - action: "CALL"
+#               title: "Call Police"
+#               uri: "tel:+381192"

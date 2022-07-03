@@ -1,0 +1,6 @@
+- platform: group
+  name: Hallway Wled
+  entities:
+    - light.hallway_wled_segment_1
+    - light.hallway_wled_segment_2
+    - light.hallway_wled_segment_3

@@ -8,12 +8,35 @@
     event_data:
       type: single_short_click_2
   action:
-    - service: light.toggle
-      entity_id: light.hallway_wled
-      data:
-        effect: 'solid'
-        rgb_color: [255,212,138]
-        brightness: 255
+    choose:
+      - conditions: "{{ is_state('light.hallway_wled_segment_1', 'off') and is_state('light.hallway_wled_segment_2', 'off') and is_state('light.hallway_wled_segment_3', 'off')}}"
+        sequence:
+          service: light.turn_on
+          entity_id: light.hallway_wled_segment_1
+          data:
+              effect: "Solid"
+              rgb_color: [255,212,138]
+              brightness: 255
+      - conditions:  "{{ is_state('light.hallway_wled_segment_1', 'on') and is_state('light.hallway_wled_segment_2', 'off') and is_state('light.hallway_wled_segment_3', 'off')}}"
+        sequence:
+          service: light.turn_on
+          entity_id: light.hallway_wled_segment_2
+          data:
+              effect: "Solid"
+              rgb_color: [255,212,138]
+              brightness: 255
+      - conditions:  "{{ is_state('light.hallway_wled_segment_1', 'on') and is_state('light.hallway_wled_segment_2', 'on') and is_state('light.hallway_wled_segment_3', 'off')}}"
+        sequence:
+          service: light.turn_on
+          entity_id: light.hallway_wled_segment_3
+          data:
+              effect: "Solid"
+              rgb_color: [255,212,138]
+              brightness: 255
+      - conditions:  "{{ is_state('light.hallway_wled_segment_1', 'on') and is_state('light.hallway_wled_segment_2', 'on') and is_state('light.hallway_wled_segment_3', 'on')}}"
+        sequence:
+          service: light.turn_off
+          entity_id: light.hallway_wled
 
 #SINGLE LONG CLICK
 
@@ -40,11 +63,21 @@
     event_data:
       type: double_click_2
   action:
-    - service: script.turn_on
-      entity_id: script.wled_random
-      data:
-        variables:
-          wled: light.hallway_wled
+    service: script.turn_on
+    target:
+      entity_id: script.light_wled_on
+    data:
+      variables:
+        brightness: 255
+        intensity: 255
+        speed: 255
+        palette: Default
+        wled_light_entity: light.hallway_wled
+        
+        wled_intensity_entity: number.hallway_wled_intensity
+        wled_speed_entity: number.hallway_wled_speed
+        rgb_random: 'True'
+        effect_random: 'True'
 
 #ROTARY ENCODER
 

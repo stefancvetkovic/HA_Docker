@@ -1,7 +1,7 @@
 - platform: template
   sensors:
     bedroom_bed_right_motion_last_occured:
-      value_template: "{{as_timestamp(states.binary_sensor.bedroom_bed_right_motion.last_changed) | timestamp_custom('%A %d-%b-%y, %H:%M:%S')}}"
+      value_template: "{{as_timestamp(states.binary_sensor.bedroom_bed_right_motion_occupancy.last_changed) | timestamp_custom('%A %d-%b-%y, %H:%M:%S')}}"
 
 
       

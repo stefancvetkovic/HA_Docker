@@ -1,28 +1,35 @@
-  - alias: 'Armed alarm'
-    trigger:
-      - platform: state
-        entity_id: alarm_control_panel.ha_alarm
-        to: "armed_away"
-        
-    action:
-      - service: light.turn_on
-        data:
-          entity_id: light.alarm_lights
-          rgb_color: [255,0,0]
-          brightness_pct: 100
-          effect: "Solid"
-
-      - service: input_number.set_value
-        data:
-          entity_id: number.hallway_wled_speed
-          value: 146
-
-      - service: input_number.set_value
-        data:
-          entity_id: number.hallway_wled_intensity
-          value: 172
-
-      - delay: 00:00:10
-
-      - service: light.turn_off
-        entity_id: light.alarm_lights
+  # - alias: 'Armed alarm'
+  #   trigger:
+  #     - platform: state
+  #       entity_id: alarm_control_panel.ha_alarm
+  #       to: "arming"
+  #   action:
+  #    - service: scene.create
+  #      data:
+  #        scene_id: armed_home_leds
+  #        snapshot_entities: light.alarm_lights
+  #    - service: light.turn_on
+  #      data:
+  #        entity_id: light.alarm_lights
+  #        rgb_color: [0,255,0]
+  #        brightness_pct: 100
+  #        effect: "Blink"
+  #    - service: input_number.set_value
+  #      data:
+  #         entity_id: number.hallway_wled_speed
+  #         value: 146
+  #    - service: input_number.set_value
+  #      data:
+  #         entity_id: number.hallway_wled_intensity
+  #         value: 172
+  #    - delay: 00:00:05
+  #    - service: light.turn_on
+  #      data:
+  #        entity_id: light.alarm_lights
+  #        rgb_color: [255,0,0]
+  #        brightness_pct: 100
+  #        effect: "Solid"
+  #    - delay: 00:00:02
+  #    - service: scene.turn_on
+  #      data:
+  #        entity_id: scene.armed_home_leds

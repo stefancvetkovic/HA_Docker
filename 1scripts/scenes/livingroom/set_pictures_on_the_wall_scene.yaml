@@ -1,0 +1,11 @@
+# alias: Scene Livingroom Romantic 
+# description: 'turn off current lights, and sets appropriete lights'
+# sequence:
+#   # first kill all livingroom lights including hallway_livingroom lights
+#   - service: light.turn_off
+#     entity_id: light.livingroom_all_lights, light.hallway_livingroom_all_lights, light.kitchen_all_lights
+#   - service: light.turn_on
+#     target:
+#       entity_id: light.livingroom_spotlight_1_4,light.livingroom_spotlight_1_5,light.livingroom_spotlight_1_6
+#     data:
+#       brightness: 100

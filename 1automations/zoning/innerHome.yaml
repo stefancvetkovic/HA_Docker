@@ -1,0 +1,13 @@
+- alias: 'Toggle innerhome zone'
+  description: 'Brings the message for entering and leaving the zone'
+  trigger:
+    - platform: zone
+      entity_id: person.stefan_cvetkovic
+      zone: zone.innerhome
+      # Event is either enter or leave
+      event: enter # or "leave"
+  action:
+    service: persistent_notification.create
+    data:
+      title: "{{trigger}}"
+      message: "Test indeed."

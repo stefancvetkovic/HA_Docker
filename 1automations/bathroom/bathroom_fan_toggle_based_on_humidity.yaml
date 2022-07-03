@@ -1,16 +1,25 @@
-- alias: 'control fan by humidity'
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.bathroom_thp_humidity
-      above: 55  
-    - platform: numeric_state
-      entity_id: sensor.bathroom_thp_humidity
-      below: 45  
-  action:
-    - service_template: >
-        {% if states('sensor.bathroom_thp_humidity') | float >= 60 and states('light.bathroom_main_light') == 'on' %}
-          switch.turn_on
-        {% else %}
-          switch.turn_off
-        {% endif %}
-      entity_id: switch.bathroom_fan
+# - alias: 'control fan by humidity'
+#   trigger:
+#     - platform: numeric_state
+#       entity_id: sensor.bathroom_thp_humidity
+#       above: 55  
+#     - platform: numeric_state
+#       entity_id: sensor.bathroom_thp_humidity
+#       below: 45  
+#   action:
+#     - if: "{{states('sensor.bathroom_thp_humidity')|float > 55}}"
+#       then: 
+#        - alias: "pull down covers in bedroom"
+#          service: cover.set_cover_position
+#          data:
+#            position: 22
+#            entity_id: 
+#              - cover.ss_l
+#              - cover.ss_d
+#     - service_template: >
+#         {% if states('sensor.bathroom_thp_humidity') | float >= 60 and states('light.bathroom_main_light') == 'on' %}
+#           switch.turn_on
+#         {% else %}
+#           switch.turn_off
+#         {% endif %}
+#       entity_id: switch.bathroom_fan

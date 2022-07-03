@@ -2,5 +2,5 @@
   name: Bedroom Bed Motion Sensors
   device_class: motion
   entities:
-    - binary_sensor.bedroom_bed_right_motion
-    - binary_sensor.bedroom_bed_left_motion
+    - binary_sensor.bedroom_bed_right_motion_occupancy
+    - binary_sensor.bedroom_bed_left_motion_occupancy

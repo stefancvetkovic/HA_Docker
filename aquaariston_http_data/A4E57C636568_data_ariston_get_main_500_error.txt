@@ -1,1 +1,1 @@
-":-( EverywareCloud error from A4E57C636568 (Http status: 404 - Not Found) (FailureId: 170711215454)"
+":-( EverywareCloud error from A4E57C636568 (Http status: 504 - Gateway Timeout) (FailureId: 170711215454)"

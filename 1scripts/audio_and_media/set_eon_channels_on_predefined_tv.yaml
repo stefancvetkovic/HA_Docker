@@ -15,21 +15,21 @@ fields:
 
 sequence:
   - choose:
-    - conditions: "{{not is_state('media_player.bedroom_bravia','on')}}"
+    - conditions: "{{not is_state('media_player.bedroom_tv','on')}}"
       sequence:
         - service: braviatv_psk.bravia_open_app
           data:
-            entity_id: media_player.bedroom_bravia
+            entity_id: media_player.bedroom_tv
             uri: >-
               com.sony.dtv.com.ug.eon.android.tv.com.ug.eon.android.tv.TvActivity
               
-  - wait_template: "{{ is_state('media_player.bedroom_bravia', 'on')}}"
+  - wait_template: "{{ is_state('media_player.bedroom_tv', 'on')}}"
   
 
 
   # - service: braviatv_psk.bravia_command
   #   data:
-  #     entity_id: media_player.bedroom_bravia
+  #     entity_id: media_player.bedroom_tv
   #     command_id: CursorLeft
   - delay: 00:00:02
 
@@ -39,7 +39,7 @@ sequence:
       sequence:
         - service: braviatv_psk.bravia_command
           data:
-            entity_id: media_player.bedroom_bravia
+            entity_id: media_player.bedroom_tv
             command_id: "Num{{first_digit_channel}}"
 
 #second digit channel
@@ -48,7 +48,7 @@ sequence:
       sequence:
         - service: braviatv_psk.bravia_command
           data:
-            entity_id: media_player.bedroom_bravia
+            entity_id: media_player.bedroom_tv
             command_id: "Num{{second_digit_channel}}"
 
 #third digit channel
@@ -57,5 +57,5 @@ sequence:
       sequence: 
         - service: braviatv_psk.bravia_command
           data:
-            entity_id: media_player.bedroom_bravia
+            entity_id: media_player.bedroom_tv
             command_id: "Num{{third_digit_channel}}"

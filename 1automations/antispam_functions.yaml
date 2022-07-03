@@ -1,0 +1,14 @@
+- alias: Antispam Wife
+  description: "First intention is to be use when you are in the toilet, and your wife is turning off the light for some reason"
+  trigger:
+    - platform: state
+      entity_id: light.toilet_light
+      to: 'off'
+  action:
+    choose:
+      - conditions: "{{is_state('input_boolean.antispam', 'on')}}"
+        sequence:
+          service: light.turn_on
+          entity_id: light.toilet_light
+
+          

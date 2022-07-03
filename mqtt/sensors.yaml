@@ -1,0 +1,18 @@
+sensor:
+  - state_topic: "home/bedroom/temperature"
+  - state_topic: "tele/bathroomBoilerSonoff/SENSOR"
+    name: "Bathroom Boiler Power Consumption"
+    availability_topic: "tele/bathroomBoilerSonoff/LWT"
+    qos: 2
+    value_template: "{{value_json['ENERGY'].Current }}"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    unit_of_measurement: "amps"
+  - state_topic: "tele/teraceHeaterSonoff/SENSOR"
+    name: "Terace Heater Power Consumption"
+    availability_topic: "tele/teraceHeaterSonoff/LWT"
+    qos: 2
+    value_template: "{{value_json['ENERGY'].Current }}"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    unit_of_measurement: "amps"

@@ -9,17 +9,58 @@
   condition:
     - condition: template
       value_template: > 
-        {{  states.input_boolean.guest_mode.state == 'off' and (states.device_tracker.stefans_iphone.state == 'not_home' or states.device_tracker.stefans_iphone_2.state == 'not_home') and states.device_tracker.anjas_iphone.state == 'not_home' }}
+        {{  states.input_boolean.guest_mode.state == 'off' and (states.device_tracker.stefans_iphone.state == 'not_home') and states.device_tracker.anjas_iphone.state == 'not_home' }}
     - condition: state
       entity_id: input_boolean.guest_mode
       state:  'off'
   action:
-    - service: persistent_notification.create
-      data:
-        title: 'Residents are not at home'
-        message: "Turning all the lights and media."
+    - choose:
+      - conditions: "{{is_state('lock.nuki_front_door_lock', 'unlocked')}}"
+        sequence:
+          - service: notify.mobile_app_stefans_iphone
+            data:
+              title: "Residents are away and frontdoor is unlocked!"
+              message: "Door is unlocked!"
+              data:
+                push:
+                  sound:
+                    name: "default"
+                    critical: 1
+                    volume: 1.0
+                actions:
+                  - action: "LOCK_FRONTDOOR"
+                    title: "Lock frontdoor"
+                    icon: "sfsymbols: lock"
+                  - action: "CALL"
+                    title: "Call Anja"
+                    uri: "tel:+381637719991"
+          - service: notify.mobile_app_anjas_iphone
+            data:
+              title: "Residents are away and frontdoor is unlocked!"
+              message: "Door is unlocked!"
+              data:
+                push:
+                  sound:
+                    name: "default"
+                    critical: 1
+                    volume: 1.0
+                actions:
+                  - action: "LOCK_FRONTDOOR"
+                    title: "Lock frontdoor"
+                    icon: "sfsymbols: lock"
+                  - action: "CALL"
+                    title: "Call Stefan"
+                    uri: "tel:+381638958890"
+
+            
+    # - service: persistent_notification.create
+    #   data:
+    #     title: 'Residents are not at home'
+    #     message: "Turning all the lights and media."
+
     - service: script.turn_on
       entity_id: script.turn_off_all_lights_and_devices
     - service: alert.turn_off
       entity_id: alert.pick_up_laundry
     
+

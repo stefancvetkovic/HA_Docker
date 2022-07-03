@@ -5,16 +5,13 @@
     - platform: state
       entity_id: media_player.bedroom_tv
       to:
-        - "playing"
+        - "on"
         - "off"  
-    # - platform: state
-    #   entity_id: media_player.bedroom_bravia
-
   action:
     - choose:
       - conditions:
           - condition: template
-            value_template: "{{trigger.to_state.state == 'playing' or trigger.to_state.state == 'on'}}"
+            value_template: "{{trigger.to_state.state == 'on'}}"
         sequence:
           - service: script.turn_on
             entity_id: script.set_speaker
@@ -23,11 +20,16 @@
                 speaker: "media_player.bedroom_ceiling_speaker"
                 volume: "0.2"
                 source: "Bedroom TV"
-          # - service: braviatv_psk.bravia_open_app
-          #   data:
-          #     entity_id: media_player.bedroom_bravia
-          #     uri: >-
-          #       com.sony.dtv.com.ug.eon.android.tv.com.ug.eon.android.tv.TvActivity
+          - service: braviatv_psk.bravia_open_app
+            data:
+              entity_id: media_player.bedroom_tv
+              uri: >-
+                com.sony.dtv.com.ug.eon.android.tv.com.ug.eon.android.tv.TvActivity
+          - delay: 00:00:05
+          - service: braviatv_psk.bravia_command
+            data:
+              entity_id: media_player.bedroom_tv
+              command_id: Confirm
       - conditions:
           - condition: template
             value_template: "{{trigger.to_state.state == 'off'}}"
@@ -35,31 +37,20 @@
           - service: media_player.turn_off
             entity_id: media_player.bedroom_ceiling_speaker
 
+
+            
+
 - alias: 'Sync bedroom speakers ceiling to tv volume'
   mode: single
   trigger:
   - platform: state
     entity_id: media_player.bedroom_tv
     attribute: volume_level
-  # - platform: state
-  #   entity_id: media_player.bedroom_bravia
-  #   attribute: volume_level
-  condition:
-    condition: and
-    conditions:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: media_player.bedroom_bravia
-            state: "on"          
-          - condition: state
-            entity_id: media_player.bedroom_tv
-            state: "playing"
-      - condition: state
-        entity_id: "media_player.bedroom_ceiling_speaker"
-        state: "on"
+  - platform: state
+    entity_id: media_player.bedroom_tv
+    to: 'on'
   action:
-    - service: media_player.volume_set
-      data:
-        entity_id: media_player.bedroom_ceiling_speaker
-        volume_level: "{{ state_attr(trigger.to_state.entity_id, 'volume_level') }}" 
+    service: media_player.volume_set
+    data:
+      entity_id: media_player.bedroom_ceiling_speaker
+      volume_level: "{{ state_attr(trigger.to_state.entity_id, 'volume_level') }}"

@@ -9,15 +9,15 @@
       to: 'off'
       for: '00:00:40'
   condition:
-    condition: numeric_state
-    entity_id: sensor.bedroom_illuminance_lux
-    below: 10
-  # condition:
-  #   condition: time
-  #   after: input_datetime.time_when_bed_motion_sensors_starts_to_trigger_light
-  #   before: input_datetime.time_when_bed_motion_sensors_ends_to_trigger_light
+    - condition: and
+      conditions:
+        - condition: numeric_state
+          entity_id: sensor.bedroom_illuminance_lux
+          below: 10
+        - condition: time
+          after: input_datetime.time_when_bed_motion_sensors_starts_to_trigger_light
+          before: input_datetime.time_when_bed_motion_sensors_ends_to_trigger_light
   action:
     service: >
        switch.turn_{{trigger.to_state.state}}
-    target:
-      entity_id: switch.bedroom_led_light_trafo
+    entity_id: switch.bedroom_led_light_trafo

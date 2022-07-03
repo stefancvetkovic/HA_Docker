@@ -52,9 +52,7 @@
       - conditions:  "{{ is_state('light.wled_kitchen_segment_1', 'on') and is_state('light.wled_kitchen_segment_2', 'on') and is_state('light.wled_kitchen_segment_3', 'on')}}"
         sequence:
           service: light.turn_off
-          entity_id: light.wled_kitchen_segment_1,light.wled_kitchen_segment_2,light.wled_kitchen_segment_3
-          data:
-              effect: "Solid"
+          entity_id: light.kitchen_desk
 
 - alias: Kitchen Actuator via encoder
   id: kitchen_actuator_click
@@ -64,11 +62,16 @@
     event_data:
       type: single_short_click_4
   action:
-    - service: script.turn_on
-      entity_id: script.watch_tv_livingroom
-      data:
-        variables:
-          tvsource: "SBB"
+    # - service: script.turn_on
+    #   entity_id: script.watch_tv_livingroom
+    #   data:
+    #     variables:
+    #       tvsource: "SBB"
+    service: remote.turn_on
+    target:
+      entity_id: remote.harmony_hub_livingroom
+    data:
+      activity: "Watch TV"
 
 #SINGLE LONG CLICK
 
@@ -239,17 +242,9 @@
     event_data:
       type: double_click_4
   action:
-    # - service: persistent_notification.create
-    #   data:
-    #     title: 'This is a Kitchen short click 1 test'
-    #     message: "Test indeed."
-    # - service: switch.turn_on
-    #   entity_id: switch.bedroom_led_light_trafo
-
-    # - service: light.turn_off
-    #   entity_id: light.bedroom_go_temp_bed       
-
-    # - service: light.turn_on
-    #   entity_id: light.bedroom_go_color_bed
-    #   data:
-    #     rgb_color: ["{{range(256)|random}}","{{range(256)|random}}","{{range(256)|random}}"]
+    # service: remote.send_command
+    # target:
+    #   entity_id: remote.harmony_hub_livingroom
+    # data:
+    #   command:
+    #     - ChannelUp

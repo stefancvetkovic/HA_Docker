@@ -1,0 +1,9 @@
+# - alias: "Turn on main climate based on delta temperature"
+#   description: "Delta is 5 degrees"
+  # trigger:
+  #   platform: state
+  #   entity_id: binary_sensor.bedroom_bed_right_rotary_button
+  # action:
+  #  service: input_boolean.toggle
+  #  target:
+  #   entity_id: input_boolean.baby_mode_button

@@ -1,9 +1,0 @@
-name: "ALARM! NEKO JE U STANU!"
-done_message: "OK"
-entity_id: alarm_control_panel.ha_alarm
-state: "triggered"
-repeat: 1
-skip_first: false
-notifiers:
-  - mobile_app_stefans_iphone
-  - mobile_app_anjas_iphone

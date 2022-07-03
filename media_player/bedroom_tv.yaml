@@ -1,5 +1,5 @@
 - platform: braviatv_psk
-  name: bedroom_bravia
+  name: bedroom_tv
   host: !secret bedroom_tv_ip
   psk: !secret psk_bedroom_tv
   mac: !secret bedroom_tv_mac

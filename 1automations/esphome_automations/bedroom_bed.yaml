@@ -102,15 +102,15 @@
     - service: media_player.turn_off
       entity_id: media_player.bedroom_tv
 
-- alias: Bedroom Bed Right TV turn off via encoder
+- alias: Bedroom Bed Right Single Long Click
   trigger:
     platform: event
     event_type: esphome.bedroom_bed_right
     event_data:
       type: single_long_click_1
   action:
-    - service: media_player.turn_off
-      entity_id: media_player.bedroom_tv
+    - service: script.turn_on
+      entity_id: script.turn_off_all_lights_and_devices
 
 #DOUBLE CLICK
 

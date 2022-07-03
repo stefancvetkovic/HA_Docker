@@ -18,10 +18,9 @@
   alias: 'Notify when terace heater is ON'
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.terace_heater_state
-      from: 'off'
-      to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.terace_heater_energy_power
+      above: 100
       for: 00:00:10
   action:
     service: notify.mobile_app_stefans_iphone

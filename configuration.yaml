@@ -1,7 +1,8 @@
 #start_time:
 default_config:
 my:
-ios: !include ios_settings.yaml
+mqtt: !include_dir_merge_list mqtt
+#ios: !include ios_settings.yaml
 http:
   use_x_forwarded_for: true
   trusted_proxies:
@@ -10,17 +11,19 @@ http:
     - 172.17.0.11
     - 172.17.0.10
 alert: !include_dir_named alerts/
+
 alarm_control_panel:
   - platform: manual
     code: !secret alarm_code 
-    arming_time: 5
+    arming_time: 10
     delay_time: 5
     trigger_time: 5
     disarmed:
       trigger_time: 0
     armed_home:
-      arming_time: 0
+      arming_time: 10
       delay_time: 0
+      
 frontend:
   themes: !include_dir_merge_named themes
 
@@ -28,10 +31,10 @@ homeassistant:
   packages: !include_dir_named packages/
   media_dirs:
     local: /media
-
+browser:
 stream:
 camera: !include_dir_merge_list cameras
-
+powercalc:
 proximity: !include_dir_named proximity
 
 # influxdb:
@@ -54,9 +57,9 @@ input_text: !include_dir_named  helpers/input_text/
 input_datetime: !include_dir_named input_datetime/
 light: !include_dir_merge_list lights 
 
-script: !include_dir_named 1scripts/
-automation: !include automations.yaml
+script: !include_dir_merge_list 1scripts
 automation old: !include_dir_merge_list 1automations
+automation: !include automations.yaml
 
 #Google calendar
 # google:
@@ -81,36 +84,24 @@ wake_on_lan:
 # Text to speech
 tts:
   - platform: google_translate
-    base_url: !secret base_local_ha_uri
     cache: true
 #media devices
 media_player: !include_dir_merge_list media_player/
-# webostv:
-#   host: !secret office_tv_ip
-#   name: Office TV
-#   turn_on_action:
-#     service: wake_on_lan.send_magic_packet
-#     data:
-#       mac: !secret office_tv_mac_address
-#       broadcast_address: !secret unraid_ip
-#   customize:
-#     sources:
-#       - youtube
-#       - netflix
-#       - eon
-#       # - Spotify
-#       - plex
-#       # - Chromecast
-spotcast:
-  sp_dc: !secret spotcast_sp_dc
-  sp_key: !secret spotcast_sp_key
 
-spotify:
-  client_id: !secret spotify_client_id
-  client_secret: !secret spotify_secret_id
+# spotcast:
+#   sp_dc: !secret spotcast_sp_dc
+#   sp_key: !secret spotcast_sp_key
+
+# spotify:
+#   client_id: !secret spotify_client_id
+#   client_secret: !secret spotify_secret_id
 
 
 #devices
 aquaariston: !include aquaariston.yaml
 
 
+utility_meter:
+  energy:
+    source: sensor.kitchen_stove_energy_today
+    cycle: monthly

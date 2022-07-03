@@ -1,54 +1,60 @@
-- alias: Homeassistant Backup Started
-  description: 'Each night at some time homeassistant backups and therefore is unavailable. Some led lights will indicate that HA is unavailable till not started again'
-  trigger:
-    - platform: time
-      at: input_datetime.homeassistant_backup_start
-  action:
-    - choose:
-      - conditions: "{{is_state('input_boolean.guest_mode', 'on') }}"
-        sequence:
-          service: light.turn_on
-          target:
-            entity_id: light.hallway_wled
-          data:
-            effect: Twinkle
-            brightness: 60
-      - conditions: "{{is_state('input_boolean.guest_mode', 'off') }}"
-        sequence:
-          service: light.turn_on
-          target:
-            entity_id: light.hallway_wled, light.kitchen_desk
-          data:
-            effect: Twinkle
-            brightness: 60
-    #- service: homeassistant.stop
+# - alias: Homeassistant Backup Started
+#   description: 'Each night at some time homeassistant backups and therefore is unavailable. Some led lights will indicate that HA is unavailable till not started again'
+#   trigger:
+#     - platform: time
+#       at: input_datetime.homeassistant_backup_start
+#   action:
+#     - choose:
+#       - conditions: "{{is_state('input_boolean.guest_mode', 'on') }}"
+#         sequence:
+#           service: light.turn_on
+#           target:
+#             entity_id: light.hallway_wled
+#           data:
+#             effect: Twinkle
+#             brightness: 60
+#       - conditions: "{{is_state('input_boolean.guest_mode', 'off') }}"
+#         sequence:
+#           service: light.turn_on
+#           target:
+#             entity_id: light.hallway_wled, light.kitchen_desk
+#           data:
+#             effect: Twinkle
+#             brightness: 60
+#     #- service: homeassistant.stop
 
-- alias: Homeassistant Backup Started
-  description: "Starting up HA after backup"
-  trigger:
-    platform: event
-    event_type: homeassistant_start
-  # condition:
-  #   condition: time
-  #   after: input_datetime.homeassistant_backup_start
-  #   before: input_datetime.homeassistant_backup_end
-  action:
-     - delay: 00:00:10
-     - service: persistent_notification.create
-       data:
-         title: "{{ state_attr('light.hallway_wled', 'effect')}}"
-         message: "{{ state_attr('light.hallway_wled', 'state')}}"
-     - choose:
-       - conditions: >
-          {{is_state ('light.hallway_wled','on') and states.light.hallway_wled.attributes.effect == "Twinkle"}}           
-         sequence:
-           service: light.turn_off
-           target:
-            entity_id: light.hallway_wled
-     - choose:
-       - conditions: >
-          {{is_state ('light.kitchen_desk','on') and states.light.kitchen_desk.attributes.effect == "Twinkle"}}           
-         sequence:
-           service: light.turn_off
-           target:
-            entity_id: light.kitchen_desk  
+# - alias: Homeassistant Started
+#   description: "Starting up HA after backup"
+#   trigger:
+#     platform: homeassistant
+#     event: start
+#   action:
+#      - delay: 00:00:30
+#      - service: persistent_notification.create
+#        data:
+#          title: "HA Started."
+#          message: "System is ready."
+#      - service: persistent_notification.create
+#        data:
+#          title: "{{ state_attr('light.hallway_wled', 'effect')}}"
+#          message: >
+#           {% if states('light.hallway_wled') == 'on' and states.light.hallway_wled.attributes.effect == "Twinkle" %}
+#             Yes
+#           {% else %}
+#             No
+#           {% endif %}
+#       # "{{ states('light.hallway_wled')}}"
+#      - choose:
+#        - conditions: >
+#           {{is_state ('light.hallway_wled','on') and states.light.hallway_wled.attributes.effect == "Twinkle"}}           
+#          sequence:
+#            service: light.turn_off
+#            target:
+#             entity_id: light.hallway_wled
+#      - choose:
+#        - conditions: >
+#           {{is_state ('light.kitchen_desk','on') and states.light.kitchen_desk.attributes.effect == "Twinkle"}}           
+#          sequence:
+#            service: light.turn_off
+#            target:
+#             entity_id: light.kitchen_desk  

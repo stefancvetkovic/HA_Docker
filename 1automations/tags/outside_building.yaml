@@ -1,0 +1,51 @@
+- alias: Outside Flat Group
+  trigger:
+    - platform: tag
+      tag_id: f3925c47-24bd-46f1-bb17-5ada28a6a6bb
+    - platform: tag
+      tag_id: 28836806-cb69-46e0-ac02-5862f20b9264
+    - platform: tag
+      tag_id: dec35c1a-d373-4baf-9612-f2dffd51147b
+    - platform: tag
+      tag_id: f3170b0c-88cf-414f-aea8-a1e82e800237
+
+  action:
+    - service: >
+        {% if is_state('lock.nuki_front_door_lock', 'locked') %}
+          lock.unlock
+        {% elif is_state('lock.nuki_front_door_lock', 'unlocked') %}
+          lock.lock
+        {% endif %} 
+      target: 
+        entity_id: lock.nuki_front_door_lock
+    - delay: 00:00:06
+    - service: notify.mobile_app_stefans_iphone
+      data:
+        message: >
+          {% if is_state('lock.nuki_front_door_lock', 'locked') %}
+            Ulazna vrata od stana su se zaključala.
+          {% elif is_state('lock.nuki_front_door_lock', 'unlocked') %}
+          Ulazna vrata od stana su se otključala.
+          {% endif %}
+        data:
+          push:
+            sound:
+              name: default
+              critical: 1
+              volume: 0.5
+          actions:
+            - action: >
+                {% if is_state('lock.nuki_front_door_lock', 'locked') %}
+                  UNLOCK_FRONTDOOR
+                {% elif is_state('lock.nuki_front_door_lock', 'unlocked') %}
+                  LOCK_FRONTDOOR
+                {% endif %}            
+          
+              title: >
+                {% if is_state('lock.nuki_front_door_lock', 'locked') %}
+                  Otključaj vrata
+                {% elif is_state('lock.nuki_front_door_lock', 'unlocked') %}
+                  Zaključaj vrata
+                {% endif %}    
+          
+              icon: "sfsymbols: lock"

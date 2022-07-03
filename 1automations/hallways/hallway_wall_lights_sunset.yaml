@@ -8,14 +8,15 @@
       offset: +00:59:00
       platform: sun
   action:
-    service: >
-      {% if trigger.event == 'sunset' %}
-        light.turn_on
-      {% elif trigger.event == 'sunrise' %}
-          light.turn_off
-      {% endif %}
-    target:
-      entity_id: light.hallway_bedroom_wall_light
-    data: {}
-
+    choose:
+      - conditions: "{{ states.input_boolean.guest_mode.state == 'on' or (states.device_tracker.stefans_iphone.state == 'home' or states.device_tracker.stefans_iphone_cloud.state == 'home') and states.device_tracker.anjas_iphone.state == 'home' }}"
+        sequence:
+          service: >
+            {% if trigger.event == 'sunset' %}
+              light.turn_on
+            {% elif trigger.event == 'sunrise' %}
+                light.turn_off
+            {% endif %}
+          target:
+            entity_id: light.hallway_bedroom_wall_light
   

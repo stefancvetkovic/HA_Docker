@@ -17,13 +17,13 @@
             effect: Solid
     - conditions: "{{is_state('binary_sensor.kitchen_stove_state', 'off')}}"
       sequence:
-        #- delay: 00:00:10
+        - delay: 00:00:10
         - choose:
-          - conditions: #"{{is_state('binary_sensor.kitchen_stove_state', 'off')}}"
-              condition: state
-              entity_id: binary_sensor.kitchen_stove_state
-              state: 'off'
-              for: "00:00:10"
+          - conditions: "{{is_state('binary_sensor.kitchen_stove_state', 'off')}}"
+              # condition: state
+              # entity_id: binary_sensor.kitchen_stove_state
+              # state: 'off'
+              # for: "00:00:10"
             sequence:
               - service: switch.turn_off
                 entity_id: switch.kitchen_extraction_fan
